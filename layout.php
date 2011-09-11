@@ -73,7 +73,7 @@ t=setTimeout('startTime()',500);
 	
 		<div id='header' class='blackbox'>
 			<!--Title or logo & Navigation links-->
-			<b><font size="5">ANONTASK</font> </b>| Home | Search | Submit
+			<b><a href="?"><font size="5">ANONTASK</font></a> </b>| <a href="?q=/tagSearch">Search</a> | <a href="?q=/submitForm">Submit</a>
 			<!--Title or logo-->
 			
 			<!--Most commonly accessed tags this week-->
@@ -87,6 +87,8 @@ t=setTimeout('startTime()',500);
 			
 		</div>
 		
+		<!--List of task-->
+		<?php if (in_array("tasksList", $mode)) { ?>
 		<div class="tasklist">
 			<?php foreach($tasks as $task){ ?>
 					<div class="task">
@@ -95,6 +97,46 @@ t=setTimeout('startTime()',500);
 					</div>
 			<?php } ?>
 		</div>
+		<?php } ?>
+		<!--List of task-->
+
+		
+		
+		<!--Search by tag-->
+		<?php if (in_array("tagSearch", $mode)) { ?>
+		</br>
+		<div class="blackbox">
+			Tag Search:
+			</br>
+			(Tags seperated by spaces)
+			</br>
+			<FORM action='?a=/tags/' method='post'>
+				<INPUT type='text' name='tags' value=''><INPUT type='submit' value='Tag Search'> 
+			</FORM>
+		</div>
+		<?php } ?>
+		<!--Search by tag-->
+		
+		<!--Submit field-->
+		<?php if (in_array("submitForm", $mode)) { ?>
+		</br>
+		<div class="blackbox">
+			New Task Submission Form:
+			</br>
+			<FORM action='?q=/submit' method='post'>
+				<P>
+					Title*:<BR>		<INPUT type='text' name='title'value=''><BR>	
+					Message*:</BR>	<textarea class='' rows=5 name='message'></textarea><BR>			
+					Tags:<BR><INPUT type='text' name='tags' value=''><BR>
+					PASSWORD(OPTIONAL):<BR>	<INPUT type='text' name='password'value=''><BR>	
+					<INPUT type='submit' value='Send'> <INPUT type='reset'>
+				</P>
+			</FORM>
+			</br>
+			Note: Tags are seperated by spaces e.g."cat hat cake"
+		</div>
+		<?php } ?>
+		<!--Submit field-->
 		
 		</br>
 		
