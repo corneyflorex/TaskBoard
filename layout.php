@@ -73,7 +73,7 @@ t=setTimeout('startTime()',500);
 	
 		<div id='header' class='blackbox'>
 			<!--Title or logo & Navigation links-->
-			<b><a href="?"><font size="5">ANONTASK</font></a> </b>| <a href="?q=/tagSearch">Search</a> | <a href="?q=/submitForm">Submit</a>
+			<b><a href="?"><font size="5">ANONTASK</font></a> </b>| <a href="?q=/tasks/search">Search</a> | <a href="?q=/tasks/new">New task</a>
 			<!--Title or logo-->
 			
 			<!--Most commonly accessed tags this week-->
@@ -110,7 +110,7 @@ t=setTimeout('startTime()',500);
 			</br>
 			(Tags seperated by spaces)
 			</br>
-			<FORM action='?a=/tags/' method='post'>
+			<FORM action='?q=/tags/search' method='post'>
 				<INPUT type='text' name='tags' value=''><INPUT type='submit' value='Tag Search'> 
 			</FORM>
 		</div>
@@ -123,7 +123,7 @@ t=setTimeout('startTime()',500);
 		<div class="blackbox">
 			New Task Submission Form:
 			</br>
-			<FORM action='?q=/submit' method='post'>
+			<FORM action='?q=/tasks/submitnew' method='post'>
 				<P>
 					Title*:<BR>		<INPUT type='text' name='title'value=''><BR>	
 					Message*:</BR>	<textarea class='' rows=5 name='message'></textarea><BR>			

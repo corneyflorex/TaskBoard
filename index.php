@@ -9,7 +9,7 @@ tasks_to_show = 10
 lifespan = 1
 
 [database]
-dsn = sqlite:tasks.sq3
+dsn = sqlite:/home/darren/tasks.sq3
 username = 
 password =
 SETTINGS;
@@ -25,6 +25,24 @@ SETTINGS;
 	$config = parse_ini_string($config_str, true);
 
 	Database::openDatabase('rw', $config['database']['dsn'], $config['database']['username'], $config['database']['password']);
+
+
+	// Define a few functions
+	//Placeholder Trip gen (until we settle on a proper system)
+	//Source http://www.moparisthebest.com/smf/index.php?topic=439049.0
+	function __tripCode($password){
+			$password = mb_convert_encoding($password,'SJIS','UTF-8');
+			$password = str_replace(
+					array( '&',     '"',      "'",     '<',    '>'    ),
+					array( '&amp;', '&quot;', '&#38;#39;', '&lt;', '&gt;' ),
+					$password
+			);
+			$salt = substr($password.'H.',1,2);
+			$salt = preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
+			$salt = strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
+			return substr(crypt($password,$salt),-10);
+	}
+
 
 
 	// Decide what we're trying to do
@@ -53,69 +71,73 @@ SETTINGS;
 
 			break;
 			
-		case 'submit':
-				
-			//NOTE: does create task auto sanatise input? if not, then need to santise from here.
 			
-			//Placeholder Trip gen (until we settle on a proper system)
-			//Source http://www.moparisthebest.com/smf/index.php?topic=439049.0
-			function __tripCode($password){
-					$password = mb_convert_encoding($password,'SJIS','UTF-8');
-					$password = str_replace(
-							array( '&',     '"',      "'",     '<',    '>'    ),
-							array( '&amp;', '&quot;', '&#38;#39;', '&lt;', '&gt;' ),
-							$password
-					);
-					$salt = substr($password.'H.',1,2);
-					$salt = preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
-					$salt = strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
-					return substr(crypt($password,$salt),-10);
-			}
-			
-			//Extract tag to array
-			// a ? b : c = if a true, then do b, else do c
-			$s_tag = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : array();
-			//Extract everything else too...
-			$s_pass = isset($_POST['password']) ? __tripCode($_POST['password']) : 'Anonymous';
-			//Only pass though message and title if it is set already
-			if( ($_POST['title']=='')or($_POST['message']=='')  ){
-			echo "Missing title and/or message \n";
-			break;
-			}
-
-			//Posting to database
-			$board->initDatabase();
-			$board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag);
-			echo "Post submitted!\n";
-			break;
-			
-		case 'submitForm':
-			//mode (what to display in layout.php)
-			$mode = array('submitForm');
-			//pagesetup
-			$top_tags = $board->topTags(10);
-			require("layout.php");
-			break;
-			
-		case 'tagSearch':
-			//mode (what to display in layout.php)
-			$mode = array('tagSearch');
-			//pagesetup
-			$top_tags = $board->topTags(10);
-			require("layout.php");
-			break;
 			
 		default:
-		case 'tags':
+		case 'tasks':
 			
-			//mode (what to display in layout.php)
-			$mode = array('tasksList');
-			
-			$tags = isset($uri_parts[1]) ? explode(',', $uri_parts[1]) : array();
-			//OVERRIDE IF SEARCHING FOR TAGS VIA $_POST
-			$tags = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : $tags;
-			
-			$tasks = $board->getTasks($tags);
+			$sub_act = isset($uri_parts[1]) ? $uri_parts[1] : '';
+			if($sub_act){
+				switch($uri_parts[1]){
+					case 'new':
+						//mode (what to display in layout.php)
+						$mode = array('submitForm');
+						break;
+
+					case 'submitnew':
+						//Only pass though message and title if it is set already
+						if(!isset($_POST['title'], $_POST['message']) || empty($_POST['title']) || empty($_POST['message'])){
+							echo "Missing title and/or message \n";
+							break;
+						}
+
+						//Extract tag to array
+						$s_tag = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : array();
+						$s_pass = isset($_POST['password']) ? __tripCode($_POST['password']) : 'Anonymous';
+
+						$board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag);
+						echo "Post submitted!\n";
+						break;
+					
+
+					case 'search':
+						// If we're posting a search, redirect to the URL search (helps copy/pasting URLs)
+						if(isset($_POST['tags'])){
+							$tags = explode(' ', $_POST['tags']);
+							header('Location: ?q=/tags/search/'.implode(',', $tags));
+							exit;
+						}
+
+						if(isset($uri_parts[2])){
+							$tags = explode(',', $uri_parts[2]);
+							$mode = array('tasksList');
+						} else {
+							$mode = array('tagSearch');
+						}
+
+						if(!empty($tags)){
+							$tasks = $board->getTasks($tags);
+						} else {
+							$tasks = array();
+						}
+
+						break;
+
+					default:
+						// Browsing/searching the tasks
+
+						//mode (what to display in layout.php)
+						$mode = array('tasksList');
+						
+						$tags = isset($uri_parts[1]) ? explode(',', $uri_parts[1]) : array();
+						//OVERRIDE IF SEARCHING FOR TAGS VIA $_POST
+						$tags = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : $tags;
+						
+						$tasks = $board->getTasks($tags);
+				}	
+			}
+
+			if(!isset($mode)) $mode = array();
 			$top_tags = $board->topTags(10);
 			require("layout.php");
 			break;
