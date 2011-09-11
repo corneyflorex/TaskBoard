@@ -9,7 +9,7 @@ tasks_to_show = 10
 lifespan = 1
 
 [database]
-dsn = sqlite:/home/darren/tasks.sq3
+dsn = sqlite:tasks.sq3
 username = 
 password =
 SETTINGS;
@@ -38,6 +38,7 @@ SETTINGS;
 
 
 	// Do stuff based on on the URI sent
+	// FORMAT: index.php?q=/['CASE NAME']
 	switch($uri_parts[0]){
 		case 'init':
 			// Insert test data if requested..
@@ -50,6 +51,35 @@ SETTINGS;
 			echo "Inserted test data\n";
 
 			break;
+			
+		case 'submit':
+				
+			//NOTE: does create task auto sanatise input? if not, then need to santise from here.
+			
+			//Placeholder Trip gen (until we settle on a proper system)
+			//Source http://www.moparisthebest.com/smf/index.php?topic=439049.0
+			function __tripCode($password){
+					$password = mb_convert_encoding($password,'SJIS','UTF-8');
+					$password = str_replace(
+							array( '&',     '"',      "'",     '<',    '>'    ),
+							array( '&amp;', '&quot;', '&#38;#39;', '&lt;', '&gt;' ),
+							$password
+					);
+					$salt = substr($password.'H.',1,2);
+					$salt = preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
+					$salt = strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
+					return substr(crypt($password,$salt),-10);
+			}
+			
+			// Submit a new post
+			//TAGS
+			$tags_array = explode(' ', $_POST['tags']);	
+			//Posting to database
+			$board->initDatabase();
+			$board->createTask(__tripCode($_POST['pass']), $_POST['title'], $_POST['message'], tags_array);
+			echo "Post submitted!\n";
+			break;
+			
 
 		default:
 		case 'tags':
