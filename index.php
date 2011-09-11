@@ -42,6 +42,7 @@ SETTINGS;
 	switch($uri_parts[0]){
 		case 'init':
 			// Insert test data if requested..
+			// activate by typing ?q=/init
 			$board->initDatabase();
 			$board->createTask('23r34r', 'My first', 'This could be my second.. but blahh', array('first', 'misc'));
 			$board->createTask('23r34r', 'Poster needed', 'I kinda need a poster making, gotta be x y z', array('graphics', 'first'));
@@ -71,19 +72,49 @@ SETTINGS;
 					return substr(crypt($password,$salt),-10);
 			}
 			
-			// Submit a new post
-			//TAGS
-			$tags_array = explode(' ', $_POST['tags']);	
+			//Extract tag to array
+			// a ? b : c = if a true, then do b, else do c
+			$s_tag = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : array();
+			//Extract everything else too...
+			$s_pass = isset($_POST['password']) ? __tripCode($_POST['password']) : 'Anonymous';
+			//Only pass though message and title if it is set already
+			if( ($_POST['title']=='')or($_POST['message']=='')  ){
+			echo "Missing title and/or message \n";
+			break;
+			}
+
 			//Posting to database
 			$board->initDatabase();
-			$board->createTask(__tripCode($_POST['pass']), $_POST['title'], $_POST['message'], tags_array);
+			$board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag);
 			echo "Post submitted!\n";
 			break;
 			
-
+		case 'submitForm':
+			//mode (what to display in layout.php)
+			$mode = array('submitForm');
+			//pagesetup
+			$top_tags = $board->topTags(10);
+			require("layout.php");
+			break;
+			
+		case 'tagSearch':
+			//mode (what to display in layout.php)
+			$mode = array('tagSearch');
+			//pagesetup
+			$top_tags = $board->topTags(10);
+			require("layout.php");
+			break;
+			
 		default:
 		case 'tags':
+			
+			//mode (what to display in layout.php)
+			$mode = array('tasksList');
+			
 			$tags = isset($uri_parts[1]) ? explode(',', $uri_parts[1]) : array();
+			//OVERRIDE IF SEARCHING FOR TAGS VIA $_POST
+			$tags = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : $tags;
+			
 			$tasks = $board->getTasks($tags);
 			$top_tags = $board->topTags(10);
 			require("layout.php");
