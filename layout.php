@@ -80,7 +80,7 @@ t=setTimeout('startTime()',500);
 			<div id="tagcloud">
 				Tags: 
 				<?php foreach($top_tags as $tag){ ?>
-							<a href="?tags=<?php echo $tag['label']; ?>" title="Count: <?php echo $tag['count']; ?>"><?php echo htmlentities($tag['label']); ?></a>
+							<a href="?q=/tags/<?php echo $tag['label']; ?>" title="Count: <?php echo $tag['count']; ?>"><?php echo htmlentities($tag['label']); ?></a>
 				<?php } ?>
 			</div>
 			<!--Most commonly accessed tags this week-->

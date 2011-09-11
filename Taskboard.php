@@ -4,6 +4,8 @@
 		const TASK_OPEN = 0;
 		const TASK_CLOSED = 1;
 
+		public $task_lifespan = 30;		// Days after the last bump in a task for it to disapear from searches
+
 		public function __construct(){
 		}
 
@@ -43,6 +45,12 @@
 
 
 
+		public function randomTasks($limit=50){
+			
+		}
+
+
+
 		public function getTasks($tags=array(), $limit=50){
 			if(!is_array($tags)) $tags = array();
 
@@ -58,22 +66,22 @@
 				$sql_where_tags = '';
 			}
 			
-			$sql_where_status = 'tasks.status = ' . $this::TASK_OPEN;
 			$sql = <<<SQL
 SELECT
-	DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.created, tasks.title, tasks.message
+	DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title, tasks.message
 FROM tasks
 INNER JOIN tags ON tasks.id = tags.task_id
 WHERE
-	$sql_where_status
+	tasks.status = ?
 	$sql_where_tags
+	AND tasks.bumped > ?
 
-ORDER BY tasks.bumped
+ORDER BY tasks.bumped DESC
 LIMIT ?
 SQL;
 			
 			try {
-				$rs = Database::query($sql, array($limit));
+				$rs = Database::query($sql, array($this::TASK_OPEN, time() - strtotime('-'.$this->task_lifespan.' days'), $limit));
 			} catch (Eception $e){
 				return array();
 			}
