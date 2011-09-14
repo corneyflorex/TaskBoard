@@ -9,7 +9,7 @@ tasks_to_show = 10
 lifespan = 1
 
 [database]
-dsn = sqlite:/home/darren/tasks.sq3
+dsn = sqlite:tasks.sq3
 username = 
 password =
 SETTINGS;
@@ -71,9 +71,7 @@ SETTINGS;
 
 			break;
 			
-			
-			
-		default:
+		
 		case 'tasks':
 			
 			$sub_act = isset($uri_parts[1]) ? $uri_parts[1] : '';
@@ -135,10 +133,20 @@ SETTINGS;
 						
 						$tasks = $board->getTasks($tags);
 				}	
-			}
+				
 
-			if(!isset($mode)) $mode = array();
-			$top_tags = $board->topTags(10);
-			require("layout.php");
+			}
+			break;
+		default:
+			// FRONTPAGE Occour if no settings was chosen
+			//mode (what to display in layout.php)
+			$mode = array('tasksList');
+
+			$tags = array();
+			$tasks = $board->getTasks($tags);
 			break;
 	}
+	if(!isset($mode)) $mode = array();
+	$top_tags = $board->topTags(10);
+	require("layout.php");
+			
