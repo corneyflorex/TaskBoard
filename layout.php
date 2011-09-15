@@ -96,11 +96,11 @@ t=setTimeout('startTime()',500);
 			<?php foreach($tasks as $task){ ?>
 					<div class="task">
 						<span class="title">
-							<?php echo $task['title']; ?>  
 							<div style='border-radius:15px;padding:5px;float:right;/*color:#<?php echo substr(md5($task['tripcode']),6,6); ?>*/;background-color:#<?php echo substr(md5($task['tripcode']),0,6); ?>'>
 								<?php echo $task['tripcode']; ?>
 							</div> 
 						</span>
+						<span class="title"><?php echo $task['title']; ?> </span>
 						<span class="message"><?php echo $task['message']; ?></span>
 					</div>
 					</br>

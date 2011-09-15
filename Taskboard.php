@@ -10,7 +10,7 @@
 		}
 
 		// CREATE NEW TASK
-		public function createTask($tripcode, $title, $message, $tags=array()){
+		public function createTask($tripcode, $title, $message, $tags){
 			// Create the task
 			$data = array(
 				'created' => time(),
@@ -26,7 +26,7 @@
 
 
 			// Create the tags
-			if(!empty($tags)) {
+			if( isset($tags) AND !empty($tags)) {
 				$sql_tags = array();
 				foreach($tags as $t){
 					$t = (string)$t;
@@ -155,7 +155,8 @@ SQL;
 					SELECT
 						DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, substr(tasks.title,0,40) AS title, substr(tasks.message,0,40) AS message
 					FROM tasks
-					INNER JOIN tags ON tasks.id = tags.task_id
+					/*Would use this except sqlite doesnt support it... : OUTER JOIN tags ON tasks.id = tags.task_id */
+						LEFT OUTER JOIN tags ON tasks.id = tags.task_id 
 					WHERE
 						tasks.status = ?
 						$sql_where_tags

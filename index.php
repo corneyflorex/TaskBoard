@@ -92,7 +92,15 @@ SETTINGS;
 						//Extract tag to array
 						$s_tag = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : array();
 						//Insert password
-						$s_pass = isset($_POST['password']) ? __tripCode($_POST['password']) : 'Anonymous';
+						
+						if(isset($_POST['password']) AND $_POST['password']!=''){
+							$s_pass=__tripCode($_POST['password']);
+						}else{
+							$newpass = md5(mt_rand());
+							$s_pass=__tripCode($newpass);
+							echo  	"<div style='background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>
+									<div style='float:left;padding:10px;background-color:#".substr(md5($s_pass),0,6)."'>".$s_pass."</div>";
+						}
 
 						$board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag);
 						echo "Post submitted!\n";
@@ -121,11 +129,9 @@ SETTINGS;
 						
 					case 'delete':
 						$s_array[0]=$_POST['taskID'];
-						if($_POST['password']!=''){
-							$s_array[1]=__tripCode($_POST['password']);
-						}else{
-							echo  "<div style='background-color:#".substr(md5($s_array[1]),0,6)."'>".$s_array[1]."/div>";
-						}
+
+						$s_array[1]=__tripCode($_POST['password']);
+
 						//print_r($s_array);
 						$command = 'Delete single task with normal password';
 						$board->delTaskBy($command,$s_array);
