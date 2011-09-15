@@ -73,11 +73,11 @@ SETTINGS;
 			
 			
 		case 'tasks':
-			
+			// for when ?q=/tasks/[sub_act]
 			$sub_act = isset($uri_parts[1]) ? $uri_parts[1] : '';
 			if($sub_act){
 				switch($uri_parts[1]){
-					case 'new':
+					case 'new': // show a form to submit a new task
 						//mode (what to display in layout.php)
 						$mode = array('submitForm');
 						break;
@@ -92,10 +92,9 @@ SETTINGS;
 						//Extract tag to array
 						$s_tag = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : array();
 						//Insert password
-						
 						if(isset($_POST['password']) AND $_POST['password']!=''){
 							$s_pass=__tripCode($_POST['password']);
-						}else{
+						}else{// If user give blank password, generate a new one for them
 							$newpass = md5(mt_rand());
 							$s_pass=__tripCode($newpass);
 							echo  	"<div style='background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>
@@ -111,7 +110,8 @@ SETTINGS;
 						// If we're posting a search, redirect to the URL search (helps copy/pasting URLs)
 						if(isset($_POST['tags'])){
 							$tags = explode(' ', $_POST['tags']);
-							header('Location: ?q=/tags/search/'.implode(',', $tags));
+							header('Location: ?q=/tasks/search/'.implode(',', $tags));
+							echo 'tags'.implode(',', $tags);
 							exit;
 						}
 						if(isset($uri_parts[2])){

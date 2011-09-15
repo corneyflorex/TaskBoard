@@ -138,7 +138,7 @@ t=setTimeout('startTime()',500);
 			</br>
 			(Tags seperated by spaces)
 			</br>
-			<FORM action='?q=/tags/search' method='post'>
+			<FORM action='?q=/tasks/search' method='post'>
 				<INPUT type='text' name='tags' value=''><INPUT type='submit' value='Tag Search'> 
 			</FORM>
 		</div>
