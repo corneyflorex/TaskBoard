@@ -71,7 +71,8 @@ SETTINGS;
 
 			break;
 			
-		
+			
+			
 		case 'tasks':
 			
 			$sub_act = isset($uri_parts[1]) ? $uri_parts[1] : '';
@@ -105,48 +106,55 @@ SETTINGS;
 							header('Location: ?q=/tags/search/'.implode(',', $tags));
 							exit;
 						}
-
 						if(isset($uri_parts[2])){
 							$tags = explode(',', $uri_parts[2]);
 							$mode = array('tasksList');
 						} else {
 							$mode = array('tagSearch');
 						}
-
 						if(!empty($tags)){
 							$tasks = $board->getTasks($tags);
 						} else {
 							$tasks = array();
 						}
-
+						break;
+						
+					case 'delete':
+						$s_array[0]=$_POST['taskID'];
+						$s_array[1]=$_POST['password'];
+						print_r($s_array);
+						$command = 'Delete single task with normal password';
+						$board->delTaskBy($command,$s_array);
 						break;
 
-					default:
-						// Browsing/searching the tasks
+				}//							//end of:	switch($uri_parts[1]){
+			}//								//end of:	if($sub_act){
+			break;//						//End of:	case 'tasks':
 
-						//mode (what to display in layout.php)
-						$mode = array('tasksList');
-						
-						$tags = isset($uri_parts[1]) ? explode(',', $uri_parts[1]) : array();
-						//OVERRIDE IF SEARCHING FOR TAGS VIA $_POST
-						$tags = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : $tags;
-						
-						$tasks = $board->getTasks($tags);
-				}	
-				
-
-			}
+		case 'view':
+			// Browsing/searching the tasks
+			$mode = array('tasksView');					//mode (what to display in layout.php)
+			$tasks = $board->getTaskByID($uri_parts[1]);			//Retrieve a task entry by id
 			break;
+			
 		default:
-			// FRONTPAGE Occour if no settings was chosen
-			//mode (what to display in layout.php)
-			$mode = array('tasksList');
-
-			$tags = array();
+		case 'tags':
+			// Browsing/searching the tasks
+			$mode = array('tasksList');					//mode (what to display in layout.php)
+						
+			if(isset($uri_parts[1])){					//Standard search via "/tags/NAMEOFTAG"
+				$tags = explode(',', $uri_parts[1]);		
+			}else if(isset($_POST['tags'])){ 			//OVERRIDE IF SEARCHING FOR TAGS VIA $_POST
+				$tags = explode(' ', $_POST['tags']);		
+			}else{										//If we are simply in the front page.
+				$tags = array();							
+			}
+			
 			$tasks = $board->getTasks($tags);
+			
 			break;
 	}
-	if(!isset($mode)) $mode = array();
-	$top_tags = $board->topTags(10);
-	require("layout.php");
-			
+			//Display Layout
+			if(!isset($mode)) $mode = array(); //set default mode (should be error page perhaps)
+			$top_tags = $board->topTags(10);
+			require("layout.php");

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title> AnonTask</title>
+<title> TaskBoard</title>
 
 <style type="text/css">
 
@@ -73,7 +73,7 @@ t=setTimeout('startTime()',500);
 	
 		<div id='header' class='blackbox'>
 			<!--Title or logo & Navigation links-->
-			<b><a href="?"><font size="5">ANONTASK</font></a> </b>| <a href="?q=/tasks/search">Search</a> | <a href="?q=/tasks/new">New task</a>
+			<b><a href="?"><font size="5">TASKBOARD</font></a> </b>| <a href="?q=/tasks/search">Search</a> | <a href="?q=/tasks/new">New task</a>
 			<!--Title or logo-->
 			
 			<!--Most commonly accessed tags this week-->
@@ -87,12 +87,33 @@ t=setTimeout('startTime()',500);
 			
 		</div>
 		
+		<!--TaskView-->
+		<?php if (in_array("tasksView", $mode)) { ?>
+		<div class="blackbox">
+			<?php foreach($tasks as $task){ ?>
+					<div class="task">
+						<span class="title"><?php echo $task['task_id']; ?></span>
+						<span class="title"><?php echo $task['title']; ?></span>
+						<span class="message"><?php echo $task['message']; ?></span>
+					</div>
+					</br>
+					<div class="blackbox">
+						<FORM action='?q=/tasks/delete' method='post'>
+							<input type="hidden" name="taskID" value="<?php echo $task['task_id']; ?>">
+							Password: <INPUT type='text' name='password' value=''><INPUT type='submit' value='delete task'> 
+						</FORM>
+					</div>
+			<?php } ?>
+		</div>
+		<?php } ?>
+		<!--TaskView-->
+		
 		<!--List of task-->
 		<?php if (in_array("tasksList", $mode)) { ?>
 		<div class="tasklist">
 			<?php foreach($tasks as $task){ ?>
 					<div class="task">
-						<span class="title"><?php echo $task['title']; ?></span>
+						<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo $task['title']; ?></a></span>
 						<span class="message"><?php echo $task['message']; ?></span>
 					</div>
 			<?php } ?>
