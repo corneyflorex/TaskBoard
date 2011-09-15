@@ -21,15 +21,18 @@ ul li { margin-left:3em; }
 
 /* Styling */
 body { font-family:Arial, Helvetica, sans-serif; font-size:14px; background-color:black; color:#FFFFFF; }
-.blackbox { border: 1px solid gray; background-color:#000000; width:100%;}
+
+/*Standard Black Box for any non list content*/
+.blackbox { border: 1px solid gray; background-color:#000000; width:100%;border-radius: 3px;}
 
 
 
 /* Elements */
-.tasklist { border: 1px solid gray; background-color:#000000; border-bottom-width:0px; width:300px; }
+.tasklist { border: 1px solid gray; background-color:#000000; border-bottom-width:0px; width:300px; border-radius: 10px;}
 .tasklist .task {
 	border-bottom: 1px solid gray;
 	padding: 0.5em;
+	border-radius: 10px;
 }
 .tasklist .task .title { display:block; font-weight:bold; }
 .tasklist .task .message { font-size:0.9em; }
@@ -84,16 +87,20 @@ t=setTimeout('startTime()',500);
 				<?php } ?>
 			</div>
 			<!--Most commonly accessed tags this week-->
-			
+			</br>
 		</div>
 		
 		<!--TaskView-->
 		<?php if (in_array("tasksView", $mode)) { ?>
-		<div class="blackbox">
+		<div class="tasklist">
 			<?php foreach($tasks as $task){ ?>
 					<div class="task">
-						<span class="title"><?php echo $task['task_id']; ?></span>
-						<span class="title"><?php echo $task['title']; ?></span>
+						<span class="title">
+							<?php echo $task['title']; ?>  
+							<div style='border-radius:15px;padding:5px;float:right;/*color:#<?php echo substr(md5($task['tripcode']),6,6); ?>*/;background-color:#<?php echo substr(md5($task['tripcode']),0,6); ?>'>
+								<?php echo $task['tripcode']; ?>
+							</div> 
+						</span>
 						<span class="message"><?php echo $task['message']; ?></span>
 					</div>
 					</br>

@@ -44,7 +44,6 @@ SETTINGS;
 	}
 
 
-
 	// Decide what we're trying to do
 	$uri = isset($_GET['q']) ? $_GET['q'] : '/';
 	$uri_parts = explode('/', trim($uri, '/'));
@@ -92,6 +91,7 @@ SETTINGS;
 
 						//Extract tag to array
 						$s_tag = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : array();
+						//Insert password
 						$s_pass = isset($_POST['password']) ? __tripCode($_POST['password']) : 'Anonymous';
 
 						$board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag);
@@ -121,8 +121,12 @@ SETTINGS;
 						
 					case 'delete':
 						$s_array[0]=$_POST['taskID'];
-						$s_array[1]=$_POST['password'];
-						print_r($s_array);
+						if($_POST['password']!=''){
+							$s_array[1]=__tripCode($_POST['password']);
+						}else{
+							echo  "<div style='background-color:#".substr(md5($s_array[1]),0,6)."'>".$s_array[1]."/div>";
+						}
+						//print_r($s_array);
 						$command = 'Delete single task with normal password';
 						$board->delTaskBy($command,$s_array);
 						break;

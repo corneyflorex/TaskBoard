@@ -10,7 +10,7 @@
 		}
 
 		// CREATE NEW TASK
-		public function createTask($tripcode, $title, $message, $tags){
+		public function createTask($tripcode, $title, $message, $tags=array()){
 			// Create the task
 			$data = array(
 				'created' => time(),
@@ -26,17 +26,19 @@
 
 
 			// Create the tags
-			$sql_tags = array();
-			foreach($tags as $t){
-				$t = (string)$t;
-				if(empty($t)) continue;
+			if(!empty($tags)) {
+				$sql_tags = array();
+				foreach($tags as $t){
+					$t = (string)$t;
+					if(empty($t)) continue;
 
-				$sql_tags = array(
-					'label' => $t,
-					'task_id' => $task_id
-				);
-				// TODO: These values should really be in 1 insert query
-				Database::insert('tags', $sql_tags);
+					$sql_tags = array(
+						'label' => $t,
+						'task_id' => $task_id
+					);
+					// TODO: These values should really be in 1 insert query
+					Database::insert('tags', $sql_tags);
+				}
 			}
 			
 			return $task_id;
@@ -49,6 +51,7 @@
 			
 		}
 		
+		// NOTE: This does not remove any entries that are still in the 'tags' table
 		// DELETE a task by either ID or Tripcode
 		public function delTaskBy($delType, $input=array()){
 			if(!is_array($input)) $input = array(); // Input array is always zero
@@ -76,7 +79,7 @@ SQL;
 					
 				case 'Delete single task with normal password': // $input <-- Task ID, Task Password
 					$s_ID = $input[0] ;
-					$s_pass = __tripCode($input[1]) ;
+					$s_pass = $input[1] ;
 					
 								$sql[] = <<<SQL
 											DELETE FROM tasks 
@@ -115,7 +118,6 @@ SQL;
 								tasks.id = $id
 							LIMIT 1
 SQL;
-			
 			try {
 				$rs = Database::query($sql);
 			} catch (Eception $e){
@@ -151,7 +153,7 @@ SQL;
 			
 			$sql = <<<SQL
 					SELECT
-						DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title, tasks.message
+						DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, substr(tasks.title,0,40) AS title, substr(tasks.message,0,40) AS message
 					FROM tasks
 					INNER JOIN tags ON tasks.id = tags.task_id
 					WHERE
@@ -162,7 +164,6 @@ SQL;
 					ORDER BY tasks.bumped DESC
 					LIMIT ?
 SQL;
-			
 			try {
 				$rs = Database::query($sql, array($this::TASK_OPEN, time() - strtotime('-'.$this->task_lifespan.' days'), $limit));
 			} catch (Eception $e){
@@ -198,7 +199,7 @@ SQL;
 							created INTEGER ,
 							bumped INTEGER ,
 							title VARCHAR(100),
-							message TEXT
+							message VARCHAR(2000)
 						);
 SQL;
 			
