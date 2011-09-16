@@ -78,4 +78,26 @@
 			$salt = strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
 			return substr(crypt($password,$salt),-10);
 	}
+	
+	// FUNCTION: PRETTY TRIP DISPLAY
+	// Usage: just place  echo __prettyTripFormatter($tripcode); to your desired location.
+	// e.g. echo __prettyTripFormatter($task['tripcode']);
+	function __prettyTripFormatter($tripcode='Anonymous',$displayLimit=0){
+	$colorHash = substr(md5($tripcode),0,6);
+	if ($displayLimit>0){
+		$text=substr($tripcode,0,$displayLimit);
+	}else{
+		$text=$tripcode;
+	}
+	return "							
+				<div style='
+							border-radius:15px;
+							padding:5px;
+							float:right;
+							background-color:#$colorHash
+							'>
+					$text
+				</div> 
+			";
+	}
 ?> 

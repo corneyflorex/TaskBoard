@@ -20,22 +20,47 @@ ul li { margin-left:3em; }
 
 
 /* Styling */
-body { font-family:Arial, Helvetica, sans-serif; font-size:14px; background-color:black; color:#F5F5F5; }
+body { font-family:Arial family sanserif ; font-size:14px; background-color:black; color:#F5F5F5; }
 
 /*Standard Black Box for any non list content*/
 .blackbox { border: 1px solid gray; background-color:#000000; width:100%;border-radius: 3px;}
+.greybox { border: 1px solid gray; background-color:#ababab; width:100%;border-radius: 3px;	color: #515151;}
 
-
+/*Header*/
+#header {  background-color:#7d7d7d; }
 
 /* Elements */
 .tasklist { border: 1px solid gray; background-color:#000000; border-bottom-width:0px; width:300px; border-radius: 10px;}
-.tasklist .task {
+.tasklist .task{
 	border-bottom: 1px solid gray;
 	padding: 0.5em;
 	border-radius: 10px;
+	background-color:#ababab;
 }
-.tasklist .task .title { display:block; font-weight:bold; }
-.tasklist .task .message { font-size:0.9em; }
+.tasklist .task0{
+	border-bottom: 1px solid gray;
+	padding: 0.5em;
+	color: #515151;
+	background-color:#ababab;
+	
+}
+.tasklist .task0 .title { display:block; font-weight:bold; }
+.tasklist .task0 .message { font-size:0.9em; }
+
+.tasklist .task1{
+	border-bottom: 1px solid gray;
+	padding: 0.5em;
+	color: #515151;
+	background-color:#e1e1e1;
+}
+
+.tasklist .task1 .title { display:block; font-weight:bold; }
+.tasklist .task1 .message { font-size:0.9em; }
+
+.task0 a:link,.task1 a:link {color: #515151; text-decoration: underline; }
+.task0 a:active,.task1 a:active {color: #515151; text-decoration: underline; }
+.task0 a:visited,.task1 a:visited {color: #515151; text-decoration: underline; }
+.task0 a:hover,.task1 a:hover {color: #66FFFF; text-decoration: none; }
 
 /* LINKS */
 a:link {color: #FFFFFF; text-decoration: underline; }
@@ -74,7 +99,7 @@ t=setTimeout('startTime()',500);
 <body onload="startTime()">
 	<div class="center">
 	
-		<div id='header' class='blackbox'>
+		<div id='header' class='greybox'>
 			<!--Title or logo & Navigation links-->
 			<b><a href="?"><font size="5">TASKBOARD</font></a> </b>| <a href="?q=/tasks/search">Search</a> | <a href="?q=/tasks/new">New task</a>
 			<!--Title or logo-->
@@ -87,7 +112,6 @@ t=setTimeout('startTime()',500);
 				<?php } ?>
 			</div>
 			<!--Most commonly accessed tags this week-->
-			</br>
 		</div>
 		
 		<!--TaskView-->
@@ -96,9 +120,7 @@ t=setTimeout('startTime()',500);
 			<?php foreach($tasks as $task){ ?>
 					<div class="task">
 						<span class="title">
-							<div style='border-radius:15px;padding:5px;float:right;/*color:#<?php echo substr(md5($task['tripcode']),6,6); ?>*/;background-color:#<?php echo substr(md5($task['tripcode']),0,6); ?>'>
-								<?php echo $task['tripcode']; ?>
-							</div> 
+							<?php echo __prettyTripFormatter($task['tripcode']);?>
 						</span>
 						<span class="title"><?php echo $task['title']; ?> </span>
 						<span class="message"><?php echo $task['message']; ?></span>
@@ -118,12 +140,17 @@ t=setTimeout('startTime()',500);
 		<!--List of task-->
 		<?php if (in_array("tasksList", $mode)) { ?>
 		<div class="tasklist">
-			<?php foreach($tasks as $task){ ?>
-					<div class="task">
+			<?php $i=1;
+				foreach($tasks as $task){ ?>
+			
+					<div class="task<?php echo $i%2?>">
+						<?php //echo __prettyTripFormatter($task['tripcode'],4);?>
 						<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo $task['title']; ?></a></span>
 						<span class="message"><?php echo $task['message']; ?></span>
 					</div>
-			<?php } ?>
+			<?php 
+				$i++;
+				} ?>
 		</div>
 		<?php } ?>
 		<!--List of task-->
@@ -133,7 +160,7 @@ t=setTimeout('startTime()',500);
 		<!--Search by tag-->
 		<?php if (in_array("tagSearch", $mode)) { ?>
 		</br>
-		<div class="blackbox">
+		<div class="greybox">
 			Tag Search:
 			</br>
 			(Tags seperated by spaces)
@@ -148,7 +175,7 @@ t=setTimeout('startTime()',500);
 		<!--Submit field-->
 		<?php if (in_array("submitForm", $mode)) { ?>
 		</br>
-		<div class="blackbox">
+		<div class="greybox">
 			New Task Submission Form:
 			</br>
 			<FORM action='?q=/tasks/submitnew' method='post' enctype='multipart/form-data'>
@@ -171,9 +198,9 @@ t=setTimeout('startTime()',500);
 		</br>
 		
 		<!--JAVASCRIPT CLOCK-->
-		<div class="blackbox" id="utcDate"></div>
-		<div class="blackbox" id="utcTime"></div>
-		<div class="blackbox" id="localTime"></div>
+		<div class="greybox" id="utcDate"></div>
+		<div class="greybox" id="utcTime"></div>
+		<div class="greybox" id="localTime"></div>
 		<!--JAVASCRIPT CLOCK-->
 		
 		</br>
@@ -181,10 +208,9 @@ t=setTimeout('startTime()',500);
 		<!--QR CODE - To help encourage acesses by mobile phone-->
 		<div class="blackbox">
 		<center>
-		<b>SCAN ME</b></br>
-		<img src="http://qr.ai/q1vlx" alt="QrDroid" width="200px" height="200px" /></br>
-		URL: http:thissite.com
+		<b>SCAN ME </b> <a href="http://qrcode.kaywa.com/img.php?s=8&d=http%3A%2F%2F<?php if(isset($_SERVER["SERVER_NAME"]) AND isset($_SERVER["REQUEST_URI"]) )echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];?>">QR Code Image<a> 
 		</center>
+		
 		</div>
 		<!--QR CODE - To help encourage acesses by mobile phone-->
 
