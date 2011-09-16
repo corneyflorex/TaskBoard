@@ -21,27 +21,14 @@ SETTINGS;
 
 	require("Database.php");
 	require("Taskboard.php");
+	require("anonregkit.php");
 
 	$config = parse_ini_string($config_str, true);
 
 	Database::openDatabase('rw', $config['database']['dsn'], $config['database']['username'], $config['database']['password']);
 
 
-	// Define a few functions
-	//Placeholder Trip gen (until we settle on a proper system)
-	//Source http://www.moparisthebest.com/smf/index.php?topic=439049.0
-	function __tripCode($password){
-			$password = mb_convert_encoding($password,'SJIS','UTF-8');
-			$password = str_replace(
-					array( '&',     '"',      "'",     '<',    '>'    ),
-					array( '&amp;', '&quot;', '&#38;#39;', '&lt;', '&gt;' ),
-					$password
-			);
-			$salt = substr($password.'H.',1,2);
-			$salt = preg_replace('/[^.\/0-9:;<=>?@A-Z\[\\\]\^_`a-z]/','.',$salt);
-			$salt = strtr($salt,':;<=>?@[\]^_`','ABCDEFGabcdef');
-			return substr(crypt($password,$salt),-10);
-	}
+
 
 
 	// Decide what we're trying to do
