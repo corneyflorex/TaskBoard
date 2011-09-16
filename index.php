@@ -79,8 +79,8 @@ SETTINGS;
 						//Extract tag to array
 						$s_tag = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : array();
 						//Insert password
-						if(isset($_POST['password']) AND $_POST['password']!=''){
-							$s_pass=__tripCode($_POST['password']);
+						if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR __getKeyFile()!=''){
+							$s_pass=__tripCode($_POST['password'].__getKeyFile());
 						}else{// If user give blank password, generate a new one for them
 							$newpass = md5(mt_rand());
 							$s_pass=__tripCode($newpass);
@@ -117,7 +117,7 @@ SETTINGS;
 					case 'delete':
 						$s_array[0]=$_POST['taskID'];
 
-						$s_array[1]=__tripCode($_POST['password']);
+						$s_array[1]=__tripCode($_POST['password'].__getKeyFile());
 
 						//print_r($s_array);
 						$command = 'Delete single task with normal password';

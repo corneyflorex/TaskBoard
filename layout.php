@@ -20,7 +20,7 @@ ul li { margin-left:3em; }
 
 
 /* Styling */
-body { font-family:Arial, Helvetica, sans-serif; font-size:14px; background-color:black; color:#FFFFFF; }
+body { font-family:Arial, Helvetica, sans-serif; font-size:14px; background-color:black; color:#F5F5F5; }
 
 /*Standard Black Box for any non list content*/
 .blackbox { border: 1px solid gray; background-color:#000000; width:100%;border-radius: 3px;}
@@ -105,9 +105,9 @@ t=setTimeout('startTime()',500);
 					</div>
 					</br>
 					<div class="blackbox">
-						<FORM action='?q=/tasks/delete' method='post'>
+						<FORM action='?q=/tasks/delete' method='post' enctype='multipart/form-data'>
 							<input type="hidden" name="taskID" value="<?php echo $task['task_id']; ?>">
-							Password: <INPUT type='text' name='password' value=''><INPUT type='submit' value='delete task'> 
+							KeyFile:<input type='file' name='keyfile' />Password: <INPUT type='text' name='password' value=''><INPUT type='submit' value='delete task'> 
 						</FORM>
 					</div>
 			<?php } ?>
@@ -151,12 +151,14 @@ t=setTimeout('startTime()',500);
 		<div class="blackbox">
 			New Task Submission Form:
 			</br>
-			<FORM action='?q=/tasks/submitnew' method='post'>
+			<FORM action='?q=/tasks/submitnew' method='post' enctype='multipart/form-data'>
 				<P>
 					Title*:<BR>		<INPUT type='text' name='title'value=''><BR>	
 					Message*:</BR>	<textarea class='' rows=5 name='message'></textarea><BR>			
 					Tags:<BR><INPUT type='text' name='tags' value=''><BR>
-					PASSWORD(OPTIONAL):<BR>	<INPUT type='text' name='password'value=''><BR>	
+					KEYFILE OR PASSWORD(OPTIONAL):<BR>	
+					<label for='file'>KeyFile:</label><input type='file' name='keyfile' />
+					<label>Password:</label><INPUT type='text' name='password'value=''><BR>
 					<INPUT type='submit' value='Send'> <INPUT type='reset'>
 				</P>
 			</FORM>

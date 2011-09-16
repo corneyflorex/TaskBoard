@@ -51,7 +51,7 @@
 	//NOTES FOR IMPROVEMENT: http://crackstation.net/hashing-security.html
 	
 	//Try using crypt() instead lol
-	// Usage 
+	// Usage __getHaser($username.$userpassword.__getKeyFile(),$salt)
 	function __getHasher($password,$salt='Add Your Site Specific Hash Here'){
 		$Hash=$password;	 									// Inital password hash.
 		$salt = $salt.$Hash.sha1($Hash); 					 	// $salt should never be empty
