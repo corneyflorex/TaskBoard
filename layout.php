@@ -27,7 +27,7 @@ body { font-family:Arial family sanserif ; font-size:14px; background-color:blac
 .greybox { border: 1px solid gray; background-color:#ababab; width:100%;border-radius: 3px;	color: #515151;}
 
 /*Header*/
-#header {  background-color:#7d7d7d; }
+#header {  margin-top:10px;margin-bottom:1pxbackground-color:#7d7d7d;}
 
 /* Elements */
 .tasklist { border: 1px solid gray; background-color:#000000; border-bottom-width:0px; width:300px; border-radius: 10px;}
@@ -126,7 +126,7 @@ t=setTimeout('startTime()',500);
 						<span class="message"><?php echo $task['message']; ?></span>
 					</div>
 					</br>
-					<div class="blackbox">
+					<div class="greybox">
 						<FORM action='?q=/tasks/delete' method='post' enctype='multipart/form-data'>
 							<input type="hidden" name="taskID" value="<?php echo $task['task_id']; ?>">
 							KeyFile:<input type='file' name='keyfile' />Password: <INPUT type='text' name='password' value=''><INPUT type='submit' value='delete task'> 
