@@ -209,8 +209,8 @@ t=setTimeout('startTime()',500);
 		<div class="blackbox">
 		<center>
 		<b>SCAN ME </b> <a href="http://qrcode.kaywa.com/img.php?s=8&d=http%3A%2F%2F<?php if(isset($_SERVER["SERVER_NAME"]) AND isset($_SERVER["REQUEST_URI"]) )echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];?>">QR Code Image<a> 
+		| <a href='./anonregkit.php'>AnonRegKit</a>
 		</center>
-		
 		</div>
 		<!--QR CODE - To help encourage acesses by mobile phone-->
 
