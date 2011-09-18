@@ -11,6 +11,7 @@
 
 		// CREATE NEW TASK
 		public function createTask($tripcode, $title, $message, $tags){
+
 			// Create the task
 			$data = array(
 				'created' => time(),
@@ -51,7 +52,6 @@
 						'STR'
 					);
 					
-					
 					// TODO: These values should really be in 1 insert query
 					Database::insert('tags', $sql_tags, $sql_tagsType);
 				}
@@ -84,6 +84,7 @@ SQL;
 					break;
 					
 				case 'Delete all post by trip':	// $input <-- Tripcode name ##DANGER## This will delete everything done by a poster
+				
 					$s_pass = $input[0];
 					
 								$sql[] = <<<SQL
@@ -92,9 +93,9 @@ DELETE FROM tasks
 		tripcode=$s_pass														
 SQL;
 					break;
-					
+				
 				case 'Delete single task with normal password': // $input <-- Task ID, Task Password
-					$s_ID = $input[0] ;
+					$s_ID = $input[0];
 					$s_pass = $input[1] ;
 					
 								$sql[] = <<<SQL
@@ -124,7 +125,6 @@ SQL;
 		
 		// RETURN 1 TASK BY TASK ID
 		public function getTaskByID($id=''){
-
 			// btw '?' in sql is basically the biggest number allowed in SQL
 			$sql = <<<SQL
 SELECT

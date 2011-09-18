@@ -5,7 +5,7 @@
 // configuration
 $__debug = true; // Dev mode
 	
-	$settingMode = "sqlite";
+	$settingMode = "mysql";
 	switch($settingMode){
 		case "mysql":
 			$dbType		= "mysql";

@@ -145,7 +145,7 @@ t=setTimeout('startTime()',500);
 			<div id="tagcloud">
 				Tags: 
 				<?php foreach($top_tags as $tag){ ?>
-							<a href="?q=/tags/<?php echo $tag['label']; ?>" title="Count: <?php echo $tag['count']; ?>"><?php echo htmlentities($tag['label']); ?></a>
+							<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>" title="Count: <?php echo htmlentities(stripslashes($tag['count'])); ?>"><?php echo htmlentities(stripslashes(htmlentities($tag['label']))); ?></a>
 				<?php } ?>
 			</div>
 			<!--Most commonly accessed tags this week-->
@@ -157,8 +157,8 @@ t=setTimeout('startTime()',500);
 			<?php foreach($tasks as $task){ ?>
 					<div class="task1">
 						<?php echo __prettyTripFormatter($task['tripcode']);?>
-						<span class="title"><?php echo $task['title']; ?> </span>
-						<span class="message"><?php echo $task['message']; ?></span>
+						<span class="title"><?php echo htmlentities(stripslashes($task['title'])); ?> </span>
+						<span class="message"><?php echo nl2br(htmlentities(stripslashes($task['message']))); ?></span>
 					</div>
 					</br>
 					<div class="greybox">
@@ -179,8 +179,8 @@ t=setTimeout('startTime()',500);
 			<?php foreach($tasks as $task){ ?>
 					<div class="task<?php echo $i%2?>">
 						<?php //echo __prettyTripFormatter($task['tripcode'],4);?>
-						<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo substr($task['title'],0,40); ?></a></span>
-						<span class="message"><?php echo substr($task['message'],0,100); ?></span>
+						<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo substr(htmlentities(stripslashes($task['title'])),0,40); ?></a></span>
+						<span class="message"><?php echo substr(htmlentities(stripslashes($task['message'])),0,100); ?></span>
 					</div>
 			<?php 
 				$i++;
