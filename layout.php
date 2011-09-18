@@ -145,7 +145,7 @@ t=setTimeout('startTime()',500);
 			<div id="tagcloud">
 				Tags: 
 				<?php foreach($top_tags as $tag){ ?>
-							<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>" title="Count: <?php echo htmlentities(stripslashes($tag['count'])); ?>"><?php echo htmlentities(stripslashes(htmlentities($tag['label']))); ?></a>
+							<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>" title="Count: <?php echo htmlentities(stripslashes($tag['count'])); ?>"><?php echo substr( htmlentities(stripslashes(htmlentities($tag['label']))) ,0,10) ; ?></a>
 				<?php } ?>
 			</div>
 			<!--Most commonly accessed tags this week-->
