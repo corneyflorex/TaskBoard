@@ -20,38 +20,38 @@ ul li { margin-left:3em; }
 
 
 /* Styling */
-body { font-family:Arial family sanserif ; font-size:14px; background-color:black; color:#F5F5F5; }
+body { font-family: Arial, "Sans-Serif", "Sans Serif"; ; font-size:14px; background-color:black; color:#F5F5F5; }
 
 /*Standard Black Box for any non list content*/
-.blackbox { border: 1px solid gray; background-color:#000000; width:100%;border-radius: 3px;}
-.greybox { border: 1px solid gray; background-color:#ababab; width:100%;border-radius: 3px;	color: #515151;}
+.blackbox { padding:10px;border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
+.greybox { padding:10px;border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #515151;}
 
 /*Header*/
-#header {  margin-top:10px;margin-bottom:1pxbackground-color:#7d7d7d;}
+#header {  margin-top:10px;margin-bottom:5px;background-color:#7d7d7d;}
 
 /* Elements */
-.tasklist { border: 1px solid gray; background-color:#000000; border-bottom-width:0px; width:300px; border-radius: 10px;}
+.tasklist { background-color:#515151; border-bottom-width:0px; width:100%; border-radius: 10px;}
 .tasklist .task{
 	border-bottom: 1px solid gray;
-	padding: 0.5em;
 	border-radius: 10px;
 	background-color:#ababab;
 }
 .tasklist .task0{
-	border-bottom: 1px solid gray;
-	padding: 0.5em;
+	border-bottom: 2px solid gray;
+	padding:10px;
 	color: #515151;
 	background-color:#ababab;
-	
+	border-bottom-left-radius: 10px;	border-bottom-right-radius: 10px;
 }
 .tasklist .task0 .title { display:block; font-weight:bold; }
 .tasklist .task0 .message { font-size:0.9em; }
 
 .tasklist .task1{
-	border-bottom: 1px solid gray;
-	padding: 0.5em;
+	border-bottom: 2px solid gray;
+	padding:10px;
 	color: #515151;
 	background-color:#e1e1e1;
+	border-bottom-left-radius: 10px;	border-bottom-right-radius: 10px;
 }
 
 .tasklist .task1 .title { display:block; font-weight:bold; }
@@ -121,10 +121,8 @@ t=setTimeout('startTime()',500);
 		<?php if (in_array("tasksView", $mode)) { ?>
 		<div class="tasklist">
 			<?php foreach($tasks as $task){ ?>
-					<div class="task">
-						<span class="title">
-							<?php echo __prettyTripFormatter($task['tripcode']);?>
-						</span>
+					<div class="task1">
+						<?php echo __prettyTripFormatter($task['tripcode']);?>
 						<span class="title"><?php echo $task['title']; ?> </span>
 						<span class="message"><?php echo $task['message']; ?></span>
 					</div>
@@ -143,9 +141,8 @@ t=setTimeout('startTime()',500);
 		<!--List of task-->
 		<?php if (in_array("tasksList", $mode)) { ?>
 		<div class="tasklist">
-			<?php $i=1;
-				foreach($tasks as $task){ ?>
-			
+			<?php $i=1; ?>
+			<?php foreach($tasks as $task){ ?>
 					<div class="task<?php echo $i%2?>">
 						<?php //echo __prettyTripFormatter($task['tripcode'],4);?>
 						<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo substr($task['title'],0,40); ?></a></span>
@@ -153,7 +150,8 @@ t=setTimeout('startTime()',500);
 					</div>
 			<?php 
 				$i++;
-				} ?>
+				} 
+				?>
 		</div>
 		<?php } ?>
 		<!--List of task-->
