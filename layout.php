@@ -98,6 +98,9 @@ t=setTimeout('startTime()',500);
 
 <body onload="startTime()">
 	<div class="center">
+		<?php if($__debug) echo "<div style='width:100%;background-color:darkred;'>This is a development preview of TaskBoard. <br/>
+		Please help out with making it better by contributing to <a href='https://github.com/corneyflorex/TaskBoard'>here</a> <br/>
+		Alternatively, suggest ideas or improvements to <a href='http://www.nero.secondsource.info/news.php?item.107.4'>here</a></div>"?>
 	
 		<div id='header' class='greybox'>
 			<!--Title or logo & Navigation links-->
@@ -145,8 +148,8 @@ t=setTimeout('startTime()',500);
 			
 					<div class="task<?php echo $i%2?>">
 						<?php //echo __prettyTripFormatter($task['tripcode'],4);?>
-						<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo $task['title']; ?></a></span>
-						<span class="message"><?php echo $task['message']; ?></span>
+						<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo substr($task['title'],0,40); ?></a></span>
+						<span class="message"><?php echo substr($task['message'],0,100); ?></span>
 					</div>
 			<?php 
 				$i++;
