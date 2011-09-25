@@ -1,14 +1,10 @@
-ABOUT: 
+About
+======
 This will be an international small task board website for anons around the world. 
 It shall require no registration or signing in, and shall allow for anons to post up small task.
 For example "Make poster for #OpTaskForceAlpha ". 
 As well as allow other anons to alert if they are interested, or to submit a message or upload a file on completion of a posted task. 
 Also allow for searching or sorting task by language, country, or tags (or a combination of each).
-
-
-LATEST DICUSSION:
-FORUM: http://nero.secondsource.info/p/forum/forum_viewtopic.php?6478.last
-
 
 So basically anyone can create an AnonTask, spammers kept out with captcha
 
@@ -22,30 +18,35 @@ No Mods
 
 No Tracking
 
-Clean &amp; Simple
+Clean & Simple
+
+Discussion
+======
+FORUM: http://nero.secondsource.info/p/forum/forum_viewtopic.php?6478.last
 
 
-INSTALL:
+Install
+======
 Copy this folder to your PHP and SQLite enabled webserver. To insert test data (you may need to do this first, if it throws an error), type index.php?q=/init
 
 also if there is an error still, please check index.php settings, to see if it matches this
 
-// Settings
-	$config_str = <<<SETTINGS
-[homepage]
-tasks_to_show = 10
+    // Settings
+            $config_str = <<<SETTINGS
+    [homepage]
+    tasks_to_show = 10
 
-[tasks]
-lifespan = 1
+    [tasks]
+    lifespan = 1
 
-[database]
-dsn = sqlite:tasks.sq3
-username = 
-password =
-SETTINGS;
+    [database]
+    dsn = sqlite:tasks.sq3
+    username = 
+    password =
+    SETTINGS;
 
-
-Currenly Missing features:
+Todo
+======
 + Moderation/Admin
 + Messaging
 + Voting
