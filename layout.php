@@ -164,9 +164,30 @@ t=setTimeout('startTime()',500);
 					<div class="greybox">
 						<FORM action='?q=/tasks/delete' method='post' enctype='multipart/form-data'>
 							<input type="hidden" name="taskID" value="<?php echo $task['task_id']; ?>">
-							KeyFile:<input type='file' name='keyfile' />Password: <INPUT type='text' name='password' value=''><INPUT type='submit' value='delete task'> 
+							KeyFile:<input type='file' name='keyfile' />
+                                                        Password: <INPUT type='text' name='password' value=''>
+                                                        <INPUT type='submit' value='delete task'> 
 						</FORM>
 					</div>
+                                        
+                                        <div id="add_comment">
+                                            Comments?
+                                            <form name="add_comment" action="?q=/tasks/comment/<?php echo $task['task_id']; ?>" method="post">
+                                                <textarea id="comment" name="comment">
+                                                    
+                                                </textarea>
+                                                <input type="submit" value="Submit" />
+                                            </form>
+                                        </div>
+                                        
+                                        <div class="greybox">
+                                        <?php
+                                        //TODO make this look nicer and add a comment adder thingiemajigggggggie
+                                        foreach ($comments as $comment):
+                                            echo $comments['message'] . "<br />";
+                                        endforeach; ?>
+                                            
+                                        </div>
 			<?php } ?>
 		</div>
 		<?php } ?>
