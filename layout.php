@@ -27,7 +27,7 @@ body { font-family: Arial, "Sans-Serif", "Sans Serif"; ; font-size:14px; backgro
 .greybox { padding:10px;border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #515151;}
 
 /*Header*/
-#header {  margin-top:10px;margin-bottom:2px;background-color:#7d7d7d;}
+#header {  margin-top:10px;background-color:#7d7d7d;}
 
 /*SVG BG*/
 #svgBackground {
@@ -63,7 +63,6 @@ body { font-family: Arial, "Sans-Serif", "Sans Serif"; ; font-size:14px; backgro
 	background-color:#ababab;
 	border-radius: 10px;
 	/*border-bottom:2px;*/
-	margin-bottom:1px;
 }
 .tasklist .task0 .title { display:block; font-weight:bold; }
 .tasklist .task0 .message { font-size:0.9em; }
@@ -75,7 +74,6 @@ body { font-family: Arial, "Sans-Serif", "Sans Serif"; ; font-size:14px; backgro
 	background-color:#e1e1e1;
 	border-radius: 10px;
 	/*border-bottom:2px;*/
-	margin-bottom:1px;
 }
 
 .tasklist .task1 .title { display:block; font-weight:bold; }
@@ -161,7 +159,7 @@ t=setTimeout('startTime()',500);
 						<span class="message"><?php echo nl2br(htmlentities(stripslashes($task['message']))); ?></span>
 					</div>
 					<div class="task1">
-					<a href="http://tinychat.com/<?php echo md5($task['title'].$task['message']);?>">Click for Video/Voice/Chat (via TinyChat)</a>
+					<a href="http://tinychat.com/<?php echo md5($task['title'].$task['message']);?>" target="_blank">Conference via TinyChat - click here</a>
 					</div>
 					</br>
 					<div class="greybox">
@@ -200,6 +198,13 @@ t=setTimeout('startTime()',500);
 		
 		<!--List of task-->
 		<?php if (in_array("tasksList", $mode)) { ?>
+		
+			<?php if (!empty($tags)){?>
+			<div class="greybox">
+				<a href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
+			</div>
+			<?php } ?>
+			
 		<div class="tasklist">
 			<?php $i=1; ?>
 			<?php foreach($tasks as $task){ ?>
@@ -235,6 +240,7 @@ t=setTimeout('startTime()',500);
 		
 		<!--Submit field-->
 		<?php if (in_array("submitForm", $mode)) { ?>
+		
 		</br>
 		<div class="greybox">
 			New Task Submission Form:
@@ -243,7 +249,7 @@ t=setTimeout('startTime()',500);
 				<P>
 					Title*:<BR>		<INPUT type='text' name='title'value=''><BR>	
 					Message*:</BR>	<textarea class='' rows=5 name='message'></textarea><BR>			
-					Tags:<BR><INPUT type='text' name='tags' value=''><BR>
+					Tags:<BR><INPUT type='text' name='tags' value='<?php if(isset($_GET['tag'])){echo $_GET['tag'];}?>'><BR>
 					KEYFILE OR PASSWORD(OPTIONAL):<BR>	
 					<label for='file'>KeyFile:</label><input type='file' name='keyfile' />
 					<label>Password:</label><INPUT type='text' name='password'value=''><BR>
