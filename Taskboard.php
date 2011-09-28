@@ -282,15 +282,16 @@ message VARCHAR(25),
 PRIMARY KEY (id)
 );
 SQL;
-                            //Create comments table
-                            $sql[] = "CREATE TABLE IF NOT EXISTS comments (
-                                id INTEGER NOT NULL AUTO_INCREMENT,
-                                task_id INT NOT NULL,
-                                message TEXT,
-                                PRIMARY KEY (id)
-                            );";
+			//Create comments table
+			$sql[] = "CREATE TABLE IF NOT EXISTS comments (
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	task_id INT NOT NULL,
+	message TEXT,
+	PRIMARY KEY (id)
+);";
 
             break;
+			
         default:
         case "sqlite":
                 $sql[] = <<<SQL
@@ -315,23 +316,23 @@ SQL;
 
                             //Create messages table
                             $sql[] = "CREATE TABLE IF NOT EXISTS messages (
-                                id INTEGER NOT NULL,
-                                task_id INTEGER NOT NULL,
-                                user_id INTEGER,
-                                created INTEGER,
-                                msg_type VARCHAR(25),
-                                title VARCHAR(25),
-                                message VARCHAR(25),
-                                PRIMARY KEY (id)
-                            );";
+	id INTEGER NOT NULL,
+	task_id INTEGER NOT NULL,
+	user_id INTEGER,
+	created INTEGER,
+	msg_type VARCHAR(25),
+	title VARCHAR(25),
+	message VARCHAR(25),
+	PRIMARY KEY (id)
+);";
 
                             //Create comments table
                             $sql[] = "CREATE TABLE IF NOT EXISTS comments (
-                                id INTEGER NOT NULL AUTO_INCREMENT,
-                                task_id INTEGER NOT NULL,
-                                message TEXT,
-                                PRIMARY KEY (id)
-                            );";
+	id INTEGER NOT NULL,
+	task_id INTEGER NOT NULL,
+	message TEXT,
+	PRIMARY KEY (id)
+);";
             break;
 }
 
