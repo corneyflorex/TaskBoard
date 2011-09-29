@@ -18,7 +18,8 @@ Tasks:
 
 Discussion
 ======
-FORUM: http://nero.secondsource.info/p/forum/forum_viewtopic.php?6478.last
+The discussion thread for this project can be found at
+http://nero.secondsource.info/p/forum/forum_viewtopic.php?6478.last
 
 Requirments
 ======
