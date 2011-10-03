@@ -66,7 +66,8 @@ class Taskboard {
 
                 $sql_tags = array(
                     'task_id' => $task_id,
-                    'label' => $t
+                    'label' => $t,
+                    'created' => time()
                 );
 
                 $sql_tagsType = array(
@@ -133,6 +134,38 @@ class Taskboard {
             echo 'Delete Operation failed, did you get your password wrong?';
         }
     }
+	
+	/*
+	* Create a new comment
+	*
+	*/
+    public function createComment($tripcode, $taskID, $replyID=NULL, $message, $vote=1){
+        //Create the array we will store in the database
+        $data = array(
+			'task_id' => $taskID,
+            'tripcode' => $tripcode,
+			'reply_comment_id' => $replyID,
+            'created' => time(),
+            'message' => $message,
+            'vote' => $vote
+        );
+
+        //Data types to put into the database
+        $dataType = array(
+            'INT',
+            'STR',
+            'INT',
+            'INT',
+            'STR',
+            'INT'
+        );
+
+        //Insert the data
+        $task_id = Database::insert('comments', $data, $dataType);
+        if(!$task_id) {echo " error in creating new comment <br/>";return false;}
+
+        return $task_id;
+    }
 
     /**
      * Gets comments by a certain task id.
@@ -140,7 +173,7 @@ class Taskboard {
      * @param type $id The id of tje task
      */
     public function getCommentsByTaskId($id) {
-        $sql = "SELECT * FROM comments WHERE task_id = " . $id;
+        $sql = "SELECT * FROM comments WHERE task_id = " . $id." ORDER BY comments.created DESC";
         $result = Database::query($sql);
         return $result;
     }
@@ -249,52 +282,10 @@ class Taskboard {
         $dbType = Database::getDataBaseType();
         echo $dbType."<br/>";
         switch ( $dbType ){
-            case "mysql":
-                $sql[] = <<<SQL
-CREATE TABLE IF NOT EXISTS tasks ( 
-id INTEGER NOT NULL AUTO_INCREMENT,
-tripcode VARCHAR(25),
-status INT ,
-created INT ,
-bumped INT ,
-title VARCHAR(100),
-message VARCHAR(2000),
-PRIMARY KEY (id)
-);
-SQL;
-
-            $sql[] = <<<SQL
-CREATE TABLE IF NOT EXISTS tags ( 
-task_id INT,
-label VARCHAR(50)
-);
-SQL;
-
-            $sql[] = <<<SQL
-CREATE TABLE IF NOT EXISTS messages (
-id INTEGER NOT NULL AUTO_INCREMENT,
-task_id INT NOT NULL,
-user_id INT,
-created INT,
-msg_type VARCHAR(25),    
-title VARCHAR(25),
-message VARCHAR(25),
-PRIMARY KEY (id)
-);
-SQL;
-			//Create comments table
-			$sql[] = "CREATE TABLE IF NOT EXISTS comments (
-	id INTEGER NOT NULL AUTO_INCREMENT,
-	task_id INT NOT NULL,
-	message TEXT,
-	PRIMARY KEY (id)
-);";
-
-            break;
-			
-        default:
-        case "sqlite":
-                $sql[] = <<<SQL
+		
+			/*SQLite*/
+			case "sqlite":
+				$sql[] = <<<SQL
 CREATE TABLE IF NOT EXISTS tasks ( 
 id INTEGER NOT NULL,
 tripcode VARCHAR(25),
@@ -307,33 +298,93 @@ PRIMARY KEY (id)
 );
 SQL;
 
-            $sql[] = <<<SQL
+				$sql[] = <<<SQL
 CREATE TABLE IF NOT EXISTS tags ( 
 task_id INTEGER,
-label VARCHAR(50)
+label VARCHAR(50),
+created INTEGER
 );
 SQL;
 
-                            //Create messages table
-                            $sql[] = "CREATE TABLE IF NOT EXISTS messages (
-	id INTEGER NOT NULL,
-	task_id INTEGER NOT NULL,
-	user_id INTEGER,
-	created INTEGER,
-	msg_type VARCHAR(25),
-	title VARCHAR(25),
-	message VARCHAR(25),
-	PRIMARY KEY (id)
+				//Create messages table
+				$sql[] = "CREATE TABLE IF NOT EXISTS messages (
+id INTEGER NOT NULL,
+task_id INTEGER NOT NULL,
+user_id INTEGER,
+created INTEGER,
+msg_type VARCHAR(25),
+title VARCHAR(25),
+message VARCHAR(25),
+PRIMARY KEY (id)
 );";
 
-                            //Create comments table
-                            $sql[] = "CREATE TABLE IF NOT EXISTS comments (
-	id INTEGER NOT NULL,
-	task_id INTEGER NOT NULL,
-	message TEXT,
-	PRIMARY KEY (id)
+				//Create comments table
+				$sql[] = "CREATE TABLE IF NOT EXISTS comments (
+id INTEGER NOT NULL,
+task_id INTEGER NOT NULL,
+tripcode VARCHAR(25),
+reply_comment_id INTEGER,
+created INTEGER,
+message TEXT,
+vote INTEGER,
+PRIMARY KEY (id)
 );";
-            break;
+				break;
+			/*SQLite END*/
+		    
+			
+			/*MYSQL VERSION*/
+			default:
+			case "mysql":
+				$sql[] = <<<SQL
+CREATE TABLE IF NOT EXISTS tasks ( 
+id INTEGER NOT NULL AUTO_INCREMENT,
+tripcode VARCHAR(25),
+status INT ,
+created INT ,
+bumped INT ,
+title VARCHAR(100),
+message VARCHAR(2000),
+PRIMARY KEY (id)
+);
+SQL;
+
+				$sql[] = <<<SQL
+CREATE TABLE IF NOT EXISTS tags ( 
+task_id INT,
+label VARCHAR(50),
+created INT
+);
+SQL;
+
+				$sql[] = <<<SQL
+CREATE TABLE IF NOT EXISTS messages (
+id INTEGER NOT NULL AUTO_INCREMENT,
+task_id INT NOT NULL,
+user_id INT,
+created INT,
+msg_type VARCHAR(25),    
+title VARCHAR(25),
+message VARCHAR(25),
+PRIMARY KEY (id)
+);
+SQL;
+				//Create comments table
+				$sql[] = "CREATE TABLE IF NOT EXISTS comments (
+id INTEGER NOT NULL AUTO_INCREMENT,
+task_id INT NOT NULL,
+tripcode VARCHAR(25),
+reply_comment_id INT,
+created INT,
+message TEXT,
+vote INT,
+PRIMARY KEY (id)
+);";
+				break;
+			/* END OF MYSQL VERSION*/
+			
+
+
 }
 
 

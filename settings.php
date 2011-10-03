@@ -3,6 +3,7 @@
 	
 	
 // configuration
+$__initEnable = true; // Disable After Install (set to 'false' rather than 'true')
 $__debug = true; // Dev mode
 	
 	$settingMode = "sqlite";

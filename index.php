@@ -24,6 +24,7 @@ switch($uri_parts[0]){
     case 'init':
         // Insert test data if requested..
         // activate by typing ?q=/init
+		if (!$__initEnable) {break;}
         $board->initDatabase();
         if($__debug)$board->createTask('23r34r', 'My first', 'This could be my second.. but blahh', array('first', 'misc'));
         if($__debug)$board->createTask('23r34r', 'Poster needed', 'I kinda need a poster making, gotta be x y z', array('graphics', 'first'));
@@ -67,12 +68,42 @@ switch($uri_parts[0]){
                     }else{// If user give blank password, generate a new one for them
                         $newpass = md5(mt_rand());
                         $s_pass=__tripCode($newpass);
-                        echo      "<div style='background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>
-                                <div style='float:left;padding:10px;background-color:#".substr(md5($s_pass),0,6)."'>".$s_pass."</div>";
+                        echo      "<div style='z-index:100;background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>";
+						echo		__prettyTripFormatter($s_pass);
                     }
 
-                    $board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag);
+                    $newTaskID = $board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag);
                     echo "Post submitted!\n";
+					echo "<a href='?q=/view/".$newTaskID."'>Click to go to your new task</a>";
+					exit;
+                    break;
+					
+                /*
+                 * Submit and process the new Comment
+                 */
+                case 'comment':
+                    //Only pass though message and title if it is set already
+                    if(!isset( $_POST['comment']) || empty($_POST['comment'])){
+                        echo "Missing comment \n";
+						echo "<a href='?q=/view/".$uri_parts[2]."'>Click to go back</a>";
+						exit;
+                        break;
+                    }
+
+                    //Insert password
+                    if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR __getKeyFile()!=''){
+                        $s_pass=__tripCode($_POST['password'].__getKeyFile());
+                    }else{// If user give blank password, generate a new one for them
+                        $newpass = md5(mt_rand());
+                        $s_pass=__tripCode($newpass);
+                        echo      "<div style='z-index:100;background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>";
+						echo		__prettyTripFormatter($s_pass);
+                    }
+
+					$board->createComment($s_pass, $uri_parts[2], $replyID=NULL, $_POST['comment'], 1);
+                    echo "Post submitted!\n";
+					echo "<a href='?q=/view/".$uri_parts[2]."'>Click to go back</a>";
+					exit;
                     break;
 
                 /*

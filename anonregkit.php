@@ -32,7 +32,7 @@
 		<input type='submit' name='submit' value='Submit' />
 		</form>
 	*/
-	function __getKeyFile($fileSizeLimit=200){
+	function __getKeyFile($fileSizeLimit=1000){
 		$pass = ''; // Gives Empty String on Error
 		if(!empty($_FILES['keyfile']['tmp_name'])){
 			if($_FILES["keyfile"]["size"] < ($fileSizeLimit*1024)){ // $fileSizeLimit is in kb
@@ -82,21 +82,45 @@
 	// FUNCTION: PRETTY TRIP DISPLAY
 	// Usage: just place  echo __prettyTripFormatter($tripcode); to your desired location.
 	// e.g. echo __prettyTripFormatter($task['tripcode']);
-	function __prettyTripFormatter($tripcode='Anonymous',$displayLimit=0){
-	$colorHash = substr(md5($tripcode),0,6);
+	function __prettyTripFormatter($tripcode='Anonymous',$displayLimit=0,$width=80,$align='right',$link=''){
+	
+	// colour hashing
+	$hash = md5($tripcode);
+	$colorHash = substr($hash,0,6);
+	$colorHash2 = substr($hash,6,6);
 	if ($displayLimit>0){
 		$text=substr($tripcode,0,$displayLimit);
 	}else{
 		$text=$tripcode;
 	}
+	// For link
+	if ($link==''){
+		$link=$tripcode;
+	}
+	// font colour
+	$avgBrightness = ( HEXDEC(SUBSTR($colorHash,0,2))+HEXDEC(SUBSTR($colorHash,2,2))+HEXDEC(SUBSTR($colorHash,4,2)) )/3;
+	if( $avgBrightness > (255/2) ){
+		$fontColour = 'black';
+	}else{
+		$fontColour = 'white';
+	}
+	
+	$width=$width."px";
 	return "							
 				<div style='
+							width:$width; 
 							border-radius:15px;
+							border-width: 2px;
+							border-style: outset;
 							padding:5px;
-							float:right;
-							background-color:#$colorHash
+							float:$align;
+							background-color:#$colorHash;
+							border-color:#$colorHash2;
+							overflow:hidden;
 							'>
-					$text
+					<div style='text-align:center;'>
+					<a style=' color:$fontColour' href='#$link'>$text</a>
+					</div>
 				</div> 
 			";
 	}
