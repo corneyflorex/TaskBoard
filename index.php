@@ -24,7 +24,7 @@ switch($uri_parts[0]){
     case 'init':
         // Insert test data if requested..
         // activate by typing ?q=/init
-		if (!$__initEnable) {break;}
+		if (!$__initEnable) {echo 'Permission Denied. init command disabled';exit;}
         $board->initDatabase();
         if($__debug)$board->createTask('23r34r', 'My first', 'This could be my second.. but blahh', array('first', 'misc'));
         if($__debug)$board->createTask('23r34r', 'Poster needed', 'I kinda need a poster making, gotta be x y z', array('graphics', 'first'));
