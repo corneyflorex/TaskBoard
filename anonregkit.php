@@ -119,7 +119,7 @@
 							overflow:hidden;
 							'>
 					<div style='text-align:center;'>
-					<a style=' color:$fontColour' href='#$link'>$text</a>
+					<a style=' color:$fontColour' href='#$link' title='$tripcode'>$text</a>
 					</div>
 				</div> 
 			";

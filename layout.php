@@ -20,7 +20,9 @@ ul li { margin-left:3em; }
 
 
 /* Styling */
-body { font-family: Arial, "Sans-Serif", "Sans Serif"; ; font-size:14px; background-color:black; color:#F5F5F5; }
+body { font-family: Arial, "Sans-Serif", "Sans Serif"; font-size:14px; background-color:black; color:#F5F5F5; }
+
+button{border-radius: 10px; background-color: rgb(13, 72, 90); border-color: rgb(104, 128, 210);}
 
 /*Standard Black Box for any non list content*/
 .blackbox { padding:10px;border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
@@ -93,32 +95,111 @@ a:hover {color: #66FFFF; text-decoration: none; }
 </style>
 
 <script type="text/javascript">
-function startTime()
-{
-dateObject=new Date();
 
-//[local to UTC offset(minutes) -> converted to msec] + [msec since Jan 1 1970 (locally)]
-local = dateObject.getTime();
-utc =  dateObject.getTimezoneOffset()*60*1000 + dateObject.getTime();
 
-//milisec to string
-utctime = new Date(utc);
-localtime = new Date(local);
+// Autoupdate
+	// Global Tracker Vars
+	//prev content
+	prev_content = "";
+	//number of tries
+	tries = 0;
+	
+function autoUpdate(){
+	var xmlhttp;
+	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	} else {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	
 
-//Update the clock display
-document.getElementById('utcDate').innerHTML= 
-												"<b>UTC DATE: </b>"+utctime.toLocaleDateString();
-document.getElementById('utcTime').innerHTML= 
-												"<b>UTC TIME: </b>"+utctime.toLocaleTimeString();
-document.getElementById('localTime').innerHTML=
-												"<b>CUR TIME: </b>"+localtime.toLocaleTimeString();
-t=setTimeout('startTime()',500);
+	
+	<?php 
+	if ( in_array("tasksView", $mode) or in_array("tasksList", $mode) ) { 
+		
+		if ( in_array("tasksView", $mode) ){
+			$DivLoc = "commentDIV";
+		} else if ( in_array("tasksList", $mode) ){
+			$DivLoc = "taskDIV";
+		}
+	
+	?>
+		
+	
+		// Function to run on receive.
+		xmlhttp.onreadystatechange=function() {
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+					if(prev_content != xmlhttp.responseText){
+						document.getElementById("<?php echo $DivLoc ?>").innerHTML=xmlhttp.responseText;
+						// save new content to track it
+						prev_content = xmlhttp.responseText;
+						// track more often
+						t=setTimeout('autoUpdate()',1000*3);
+						tries = 0;
+					} else {
+						tries ++;
+						document.getElementById("stopAutoUpdateButton").innerHTML = "Refresh Now - tries:"+tries;
+						if (tries>60){
+							t=setTimeout('autoUpdate()',1000*60*5);
+						} else if (tries>40) {
+							t=setTimeout('autoUpdate()',1000*30);
+						} else if (tries>20){							
+							t=setTimeout('autoUpdate()',1000*10);
+						}else{
+							t=setTimeout('autoUpdate()',1000*5);
+						}
+					}
+			}
+		}
+		
+		<?php
+		if ( in_array("tasksView", $mode) ){
+		?>
+			xmlhttp.open("POST","?q=/ajaxcomments/",true);
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			randomLargeNumber=Math.floor(Math.random()*10000000);
+			xmlhttp.send("taskid=<?php echo $taskid; ?>&sid="+Math.random());		
+		<?php
+		} else if ( in_array("tasksList", $mode) ){
+		?>
+			xmlhttp.open("POST","?q=/ajaxtasks/",true);
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			randomLargeNumber=Math.floor(Math.random()*10000000);
+			xmlhttp.send("tags=<?php echo $tagslist; ?>&sid="+Math.random());
+		<?php
+		}
+		?>
+
+	<?php } ?>
+}
+
+
+// Time and date in local and UTC
+function startTime(){
+	dateObject=new Date();
+
+	//[local to UTC offset(minutes) -> converted to msec] + [msec since Jan 1 1970 (locally)]
+	local = dateObject.getTime();
+	utc =  dateObject.getTimezoneOffset()*60*1000 + dateObject.getTime();
+
+	//milisec to string
+	utctime = new Date(utc);
+	localtime = new Date(local);
+
+	//Update the clock display
+	document.getElementById('utcDate').innerHTML= 
+													"<b>UTC DATE: </b>"+utctime.toLocaleDateString();
+	document.getElementById('utcTime').innerHTML= 
+													"<b>UTC TIME: </b>"+utctime.toLocaleTimeString();
+	document.getElementById('localTime').innerHTML=
+													"<b>CUR TIME: </b>"+localtime.toLocaleTimeString();
+	t=setTimeout('startTime()',500);
 }
 </script>
 
 </head>
 
-<body onload="startTime()">
+<body onload="startTime();autoUpdate();">
 	<!--THIS IS THE BACKGROUND SVG DO NOT REMOVE-->
 	<div id="svgBackground">
 	<svg xmlns="http://www.w3.org/2000/svg" version="1.1"  viewBox="-2794 0 3818 1880" style="width:100%; height:100%; position:absolute; top:0px; left:0px; z-index:-1;" >
@@ -167,18 +248,18 @@ t=setTimeout('startTime()',500);
 						<form name="add_comment" action="?q=/tasks/comment/<?php echo $task['task_id']; ?>" method="post" enctype='multipart/form-data'>
 							<textarea id="comment" name="comment"></textarea>
 							<input type="hidden" name="taskID" value="<?php echo $task['task_id']; ?>"><br/>
-							KeyFile:<input type='file' name='keyfile' />
-                                                        Password: <INPUT type='text' name='password' value=''>
+							Passfile (Optional): <INPUT type='file' name='keyfile' />
+                            Password: <INPUT type='text' name='password' value='<?php echo "Your IP Hash: ".substr(md5($_SERVER['REMOTE_ADDR']),0,4);?>'>
 							<input type="submit" value="Submit" />
 						</form>
 					</div>
 					
-
+					<div id="commentDIV" >
 						<?php
 						//TODO make this look nicer and add a comment adder thingiemajigggggggie
 						foreach ($comments as $comment):
 						?>
-						<div class="greybox">						
+						<div  class="greybox">						
 							<?php
 							echo date('F j, Y, g:i a', $comment['created']).'</br>'.__prettyTripFormatter($comment['tripcode']);
 							echo nl2br(htmlentities(stripslashes($comment['message']))) . "<br /><br />";
@@ -186,6 +267,7 @@ t=setTimeout('startTime()',500);
 						</div>						
 						<?php
 						endforeach; ?>
+					</div>
 
 					
 					</br>
@@ -206,25 +288,29 @@ t=setTimeout('startTime()',500);
 		<!--List of task-->
 		<?php if (in_array("tasksList", $mode)) { ?>
 		
-			<?php if (!empty($tags)){?>
-			<div class="greybox">
-				<a href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
+			<div style="text-align:center"class="greybox">
+				<?php if (!empty($tags)){?>
+					<a href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
+				<?php } else {?>
+					<a href="?q=/tasks/new">Post new task here</a>
+				<?php }?>
 			</div>
-			<?php } ?>
 			
-		<div class="tasklist">
-			<?php $i=1; ?>
-			<?php foreach($tasks as $task){ ?>
-					<div class="task<?php echo $i%2?>">
-						<?php //echo __prettyTripFormatter($task['tripcode'],4);?>
-						<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo substr(htmlentities(stripslashes($task['title'])),0,40); ?></a></span>
-						<span class="message"><?php echo substr(htmlentities(stripslashes($task['message'])),0,100); ?></span>
-					</div>
-			<?php 
-				$i++;
-				} 
-				?>
-		</div>
+			
+			
+			<div id="taskDIV" class="tasklist">
+				<?php $i=1; ?>
+				<?php foreach($tasks as $task){ ?>
+						<div class="task<?php echo $i%2?>">
+							<?php //echo __prettyTripFormatter($task['tripcode']);?>
+							<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo substr(htmlentities(stripslashes($task['title'])),0,40); ?></a></span>
+							<span class="message"><?php echo substr(htmlentities(stripslashes($task['message'])),0,100); ?></span>
+						</div>
+				<?php 
+					$i++;
+					} 
+					?>
+			</div>
 		<?php } ?>
 		<!--List of task-->
 
@@ -276,8 +362,10 @@ t=setTimeout('startTime()',500);
 		<div class="greybox" id="utcTime"></div>
 		<div class="greybox" id="localTime"></div>
 		<!--JAVASCRIPT CLOCK-->
-		
 		</br>
+		
+		<button id="stopAutoUpdateButton" onclick="tries=0;">Refresh Now</button>
+		
 		
 		<!--QR CODE - To help encourage acesses by mobile phone-->
 		<div class="blackbox">

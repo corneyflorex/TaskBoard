@@ -1,6 +1,7 @@
 <?php
 //Initialize required files
 require("settings.php");
+require("LayoutEngine.php");
 require("Database.php");
 require("Taskboard.php");
 require("anonregkit.php");
@@ -142,6 +143,7 @@ switch($uri_parts[0]){
                     $command = 'Delete single task with normal password';
                     $board->delTaskBy($command,$s_array);
                     break;
+					
             }
         }
         
@@ -152,11 +154,39 @@ switch($uri_parts[0]){
      */
     case 'view':
         $mode = array('tasksView');
+		$taskid =$uri_parts[1];
         
         //Retrieve the task and get its comments
-        $tasks = $board->getTaskByID($uri_parts[1]);
-        $comments = $board->getCommentsByTaskId($uri_parts[1]);
+        $tasks = $board->getTaskByID($taskid);
+        $comments = $board->getCommentsByTaskId($taskid);
         break;
+		
+	case 'ajaxcomments':
+		/*Ajax Update Commands go here*/
+		$mode = array('tasksView');
+		$taskid = $_POST['taskid'];
+		
+        //Retrieve latest comment
+        $comments = $board->getCommentsByTaskId($taskid);
+		
+		echo commentDisplay($comments);
+		
+		exit;
+		break;
+		
+	case 'ajaxtasks':
+		/*Ajax Update Commands go here*/
+		$mode = array('tasksList');
+		
+		$tags = explode(',', $_POST['tags']);
+		
+        //Retrieve latest comment
+        $tasks = $board->getTasks($tags);
+		
+		echo taskDisplay($tasks);
+		
+		exit;
+		break;
 
     /*
      * The default thing we want to do is get tags.
@@ -177,6 +207,8 @@ switch($uri_parts[0]){
         } else {
             $tags = array();                            
         }
+		
+		$tagslist = implode(",",$tags);
 
         $tasks = $board->getTasks($tags);
         break;
