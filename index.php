@@ -66,8 +66,10 @@ switch($uri_parts[0]){
                     //Insert password
                     if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR __getKeyFile()!=''){
                         $s_pass=__tripCode($_POST['password'].__getKeyFile());
+						echo "<meta http-equiv='refresh' content='3; url=?q=/view/".$uri_parts[2]."'> Refreshing in 3 sec";
                     }else{// If user give blank password, generate a new one for them
-                        $newpass = md5(mt_rand());
+						//$newpass = md5(mt_rand());
+						$newpass = substr(md5($_SERVER['REMOTE_ADDR']),0,6);
                         $s_pass=__tripCode($newpass);
                         echo      "<div style='z-index:100;background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>";
 						echo		__prettyTripFormatter($s_pass);
@@ -94,8 +96,11 @@ switch($uri_parts[0]){
                     //Insert password
                     if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR __getKeyFile()!=''){
                         $s_pass=__tripCode($_POST['password'].__getKeyFile());
-                    }else{// If user give blank password, generate a new one for them
-                        $newpass = md5(mt_rand());
+						echo "<meta http-equiv='refresh' content='3; url=?q=/view/".$uri_parts[2]."'> Refreshing in 3 sec";
+                    }else{
+						// If user give blank password, generate a new one for them                  
+						//$newpass = md5(mt_rand());
+						$newpass = substr(md5($_SERVER['REMOTE_ADDR']),0,6);
                         $s_pass=__tripCode($newpass);
                         echo      "<div style='z-index:100;background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>";
 						echo		__prettyTripFormatter($s_pass);
@@ -169,7 +174,7 @@ switch($uri_parts[0]){
         //Retrieve latest comment
         $comments = $board->getCommentsByTaskId($taskid);
 		
-		echo commentDisplay($comments);
+		echo __commentDisplay($comments);
 		
 		exit;
 		break;
@@ -183,7 +188,7 @@ switch($uri_parts[0]){
         //Retrieve latest comment
         $tasks = $board->getTasks($tags);
 		
-		echo taskDisplay($tasks);
+		echo __taskDisplay($tasks);
 		
 		exit;
 		break;

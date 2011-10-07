@@ -102,7 +102,7 @@ a:hover {color: #66FFFF; text-decoration: none; }
 	//prev content
 	prev_content = "";
 	//number of tries
-	tries = 0;
+	tries = 20;
 	
 function autoUpdate(){
 	var xmlhttp;
@@ -141,9 +141,9 @@ function autoUpdate(){
 						document.getElementById("stopAutoUpdateButton").innerHTML = "Refresh Now - tries:"+tries;
 						if (tries>60){
 							t=setTimeout('autoUpdate()',1000*60*5);
-						} else if (tries>40) {
+						} else if (tries>20) {
 							t=setTimeout('autoUpdate()',1000*30);
-						} else if (tries>20){							
+						} else if (tries>10){							
 							t=setTimeout('autoUpdate()',1000*10);
 						}else{
 							t=setTimeout('autoUpdate()',1000*5);
@@ -212,8 +212,7 @@ function startTime(){
 	<div class="contentBox">
 	<div class="center">
 		<?php if($__debug) echo "<div style='width:100%;background-color:darkred;'>This is a development preview of TaskBoard. <br/>
-		Please help out with making it better by contributing to <a href='https://github.com/corneyflorex/TaskBoard'>here</a> <br/>
-		Alternatively, suggest ideas or improvements to <a href='http://www.nero.secondsource.info/news.php?item.107.4'>here</a></div>"?>
+		Please help out with making it better by contributing to <a href='https://github.com/corneyflorex/TaskBoard'>here</a> </div>"?>
 	
 		<div id='header' class='greybox'>
 			<!--Title or logo & Navigation links-->
@@ -237,7 +236,8 @@ function startTime(){
 					<div class="task1">
 						<?php echo __prettyTripFormatter($task['tripcode']);?>
 						<span class="title"><?php echo htmlentities(stripslashes($task['title'])); ?> </span>
-						<span class="message"><?php echo nl2br(htmlentities(stripslashes($task['message']))); ?></span>
+						<span><?php echo date('F j, Y, g:i a', $task['created']);?></span>
+						<span class="message"><?php echo nl2br(__encodeTextStyle(htmlentities(stripslashes($task['message'])))); ?></span>
 					</div>
 					<div class="task1">
 						<a href="http://tinychat.com/<?php echo md5($task['message']);?>" target="_blank">Conference via TinyChat - click here</a>
@@ -249,24 +249,13 @@ function startTime(){
 							<textarea id="comment" name="comment"></textarea>
 							<input type="hidden" name="taskID" value="<?php echo $task['task_id']; ?>"><br/>
 							Passfile (Optional): <INPUT type='file' name='keyfile' />
-                            Password: <INPUT type='text' name='password' value='<?php echo "Your IP Hash: ".substr(md5($_SERVER['REMOTE_ADDR']),0,4);?>'>
+                            Password: <INPUT type='text' name='password' >
 							<input type="submit" value="Submit" />
 						</form>
 					</div>
 					
 					<div id="commentDIV" >
-						<?php
-						//TODO make this look nicer and add a comment adder thingiemajigggggggie
-						foreach ($comments as $comment):
-						?>
-						<div  class="greybox">						
-							<?php
-							echo date('F j, Y, g:i a', $comment['created']).'</br>'.__prettyTripFormatter($comment['tripcode']);
-							echo nl2br(htmlentities(stripslashes($comment['message']))) . "<br /><br />";
-							?>
-						</div>						
-						<?php
-						endforeach; ?>
+						<?php echo __commentDisplay($comments);?>
 					</div>
 
 					
@@ -299,17 +288,7 @@ function startTime(){
 			
 			
 			<div id="taskDIV" class="tasklist">
-				<?php $i=1; ?>
-				<?php foreach($tasks as $task){ ?>
-						<div class="task<?php echo $i%2?>">
-							<?php //echo __prettyTripFormatter($task['tripcode']);?>
-							<span class="title"><a href='?q=/view/<?php echo $task['task_id']?>' ><?php echo substr(htmlentities(stripslashes($task['title'])),0,40); ?></a></span>
-							<span class="message"><?php echo substr(htmlentities(stripslashes($task['message'])),0,100); ?></span>
-						</div>
-				<?php 
-					$i++;
-					} 
-					?>
+				<?php echo __taskDisplay($tasks);?>
 			</div>
 		<?php } ?>
 		<!--List of task-->

@@ -162,6 +162,23 @@ class Taskboard {
 
         //Insert the data
         $task_id = Database::insert('comments', $data, $dataType);
+		
+		//Bump the topic
+		/*Would use this except sqlite doesnt support it... : OUTER JOIN tags ON tasks.id = tags.task_id */
+        $sql = "UPDATE tasks
+            SET
+			bumped = ?
+			WHERE id == ?
+";
+
+        try {
+            $rs = Database::query($sql, array(time(),$taskID) , array("INT","INT") );
+        } catch (Exception $e){
+            echo $e;
+        }
+		
+		
+		
         if(!$task_id) {echo " error in creating new comment <br/>";return false;}
 
         return $task_id;

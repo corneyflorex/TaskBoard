@@ -124,4 +124,29 @@
 				</div> 
 			";
 	}
+	
+	// Styles the text so it looks better
+	function __encodeTextStyle($text) {
+		$text = preg_replace('/\*([^\*]+)\*/', '<b>\1</b>', $text);
+		$text = preg_replace('/_([^_]+)_/', '<i>\1</i>', $text);
+		
+		// makes link clickable
+		$text = __makeClickableLinks($text);
+		
+		return $text;
+    }
+	
+	// Adds html code to make any links clickable
+	// Source: http://www.webhostingtalk.com/showthread.php?t=905469
+	// Source: http://www.snipe.net/2009/09/php-twitter-clickable-links/ - This one works, thanks
+	function __makeClickableLinks($text) { 
+		//$Regex = "/(www\.[a-z\d-\.]*\.[a-z]{2,4}?\/?(?:[^\s]*[\/a-z\d]))/i";
+		//$text = preg_replace($Regex, "<a href='$1'>$1</a>", $text);  
+		$text = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t< ]*)#", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>", $text);
+		$text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r< ]*)#", "\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>", $text);
+		$text = preg_replace("/@(\w+)/", "<a href=\"http://www.twitter.com/\\1\" target=\"_blank\">@\\1</a>", $text);
+		$text = preg_replace("/#(\w+)/", "<a href=\"http://search.twitter.com/search?q=\\1\" target=\"_blank\">#\\1</a>", $text);
+
+		return $text; 
+	} 
 ?> 

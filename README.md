@@ -16,10 +16,11 @@ Tasks:
 * Move to the Active Tasks board while receiving heavy participation
 * Expire after 24 hours without activity
 
-Discussion
-======
-The discussion thread for this project can be found at
-http://nero.secondsource.info/p/forum/forum_viewtopic.php?6478.last
+Stuff that still needs to be coded:
+* Moderation/Admin
+* Voting
+* Spam filter
+* Stickied message per tag ( goes to the top of the page on particular tags)
 
 Requirments
 ======
