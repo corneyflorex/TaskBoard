@@ -21,6 +21,10 @@ class Taskboard {
     public function __construct(){
         //asdf
     }
+	
+	/*
+	* Check who is online in a particular page.
+	*/
 
     /**
      * Creates a new task and adds it to the database.

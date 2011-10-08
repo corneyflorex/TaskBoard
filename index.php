@@ -134,7 +134,7 @@ switch($uri_parts[0]){
                     if(isset($_POST['tags'])){
                         $tags = explode(' ', $_POST['tags']);
                         header('Location: ?q=/tasks/search/'.implode(',', $tags));
-                        echo 'tags'.implode(',', $tags);
+                        //echo 'tags'.implode(',', $tags);
                         exit;
                     }
                     if(isset($uri_parts[2])){
