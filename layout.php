@@ -26,10 +26,10 @@ button{border-radius: 10px; background-color: rgb(13, 72, 90); border-color: rgb
 
 /*Standard Black Box for any non list content*/
 .blackbox { padding:10px;border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
-.greybox { padding:10px;border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #C6C6C6;}
+.greybox { padding:10px;border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #505050}
 
 /*Header*/
-#header {  margin-top:10px;background-color:#7d7d7d; colour:white;}
+#header {  margin-top:10px;background-color:#7d7d7d; color: #C6C6C6}
 
 /*SVG BG*/
 #svgBackground {
