@@ -69,7 +69,11 @@ switch($uri_parts[0]){
 					};
 
                     //Extract tag to array
-                    $s_tag = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : array();
+					//preg_replace('/[^a-zA-Z0-9\s]/', '', $text) - Removes nonalphanumeric char
+                    $s_tag = isset($_POST['tags']) ? preg_replace('/[^a-zA-Z0-9\s]/', '', $_POST['tags']) : "";
+					// turn it into an array
+					$s_tag_array = explode(' ', $s_tag);
+					
                     //Insert password
                     if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR __getKeyFile()!=''){
                         $s_pass=__tripCode($_POST['password'].__getKeyFile());
@@ -82,7 +86,7 @@ switch($uri_parts[0]){
 						echo		__prettyTripFormatter($s_pass);
                     }
 
-                    $newTaskID = $board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag);
+                    $newTaskID = $board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag_array);
                     echo "Post submitted!\n";
 					echo "<a href='?q=/view/".$newTaskID."'>Click to go to your new task</a>";
 					exit;
@@ -154,9 +158,14 @@ switch($uri_parts[0]){
                  * Delete a task
                  */
                 case 'delete':
+					$pass = $_POST['password'].__getKeyFile();
+					if ($pass == ""){
+						$pass = substr(md5($_SERVER['REMOTE_ADDR']),0,6);
+					}
+					
                     $s_array[0]=$_POST['taskID'];
 
-                    $s_array[1]=__tripCode($_POST['password'].__getKeyFile());
+                    $s_array[1]=__tripCode($pass);
 
                     //print_r($s_array);
                     $command = 'Delete single task with normal password';
