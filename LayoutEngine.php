@@ -61,6 +61,8 @@
 			$commentContent = $commentContent . "
 			<div  style='$style' class='greybox'>
 				<a name=".$comment['id']."></a>".
+				"Comment ID >>".$comment['id'].
+				"</br>".
 				date('F j, Y, g:i a', $comment['created']).
 				" | ".
 				__humanTiming ($comment['created']). " ago"	.

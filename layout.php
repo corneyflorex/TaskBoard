@@ -26,10 +26,10 @@ button{border-radius: 10px; background-color: rgb(13, 72, 90); border-color: rgb
 
 /*Standard Black Box for any non list content*/
 .blackbox { padding:10px;border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
-.greybox { padding:10px;border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #515151;}
+.greybox { padding:10px;border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #C6C6C6;}
 
 /*Header*/
-#header {  margin-top:10px;background-color:#7d7d7d;}
+#header {  margin-top:10px;background-color:#7d7d7d; colour:white;}
 
 /*SVG BG*/
 #svgBackground {
@@ -134,19 +134,17 @@ function autoUpdate(){
 						// save new content to track it
 						prev_content = xmlhttp.responseText;
 						// track more often
-						t=setTimeout('autoUpdate()',1000*3);
+						t=setTimeout('autoUpdate()',1000*5);
 						tries = 0;
 					} else {
 						tries ++;
 						document.getElementById("stopAutoUpdateButton").innerHTML = "Refresh Now - tries:"+tries;
 						if (tries>60){
 							t=setTimeout('autoUpdate()',1000*60*5);
-						} else if (tries>20) {
+						} else if (tries>30) {
 							t=setTimeout('autoUpdate()',1000*30);
-						} else if (tries>10){							
+						} else {							
 							t=setTimeout('autoUpdate()',1000*10);
-						}else{
-							t=setTimeout('autoUpdate()',1000*5);
 						}
 					}
 			}

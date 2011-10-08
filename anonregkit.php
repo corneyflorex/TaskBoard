@@ -147,7 +147,7 @@
 		$text = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t< ]*)#", "\\1<a rel=\"nofollow\" href=\"\\2\" target=\"_blank\">\\2</a>", $text);
 		$text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r< ]*)#", "\\1<a rel=\"nofollow\" href=\"http://\\2\" target=\"_blank\">\\2</a>", $text);
 		$text = preg_replace("/@(\w+)/", "<a rel=\"nofollow\" href=\"http://www.twitter.com/\\1\" target=\"_blank\">@\\1</a>", $text);
-		$text = preg_replace("/#(\w+)/", "<a rel=\"nofollow\" href=\"http://search.twitter.com/search?q=\\1\" target=\"_blank\">#\\1</a>", $text);
+		$text = preg_replace("/#(\w+)/", "<a rel=\"nofollow\" href=\"?q=/tags/\\1\" target=\"_blank\">#\\1</a>", $text);
 
 		return $text; 
 	} 
