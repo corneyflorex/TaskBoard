@@ -323,17 +323,6 @@ created INTEGER
 );
 SQL;
 
-				//Create messages table
-				$sql[] = "CREATE TABLE IF NOT EXISTS messages (
-id INTEGER NOT NULL,
-task_id INTEGER NOT NULL,
-user_id INTEGER,
-created INTEGER,
-msg_type VARCHAR(25),
-title VARCHAR(25),
-message VARCHAR(25),
-PRIMARY KEY (id)
-);";
 
 				//Create comments table
 				$sql[] = "CREATE TABLE IF NOT EXISTS comments (
@@ -345,6 +334,22 @@ created INTEGER,
 message TEXT,
 vote INTEGER,
 PRIMARY KEY (id)
+);";
+
+				//Uniqueness check (for enforcing originality
+				$sql[] = "CREATE TABLE IF NOT EXISTS uniqueHash (
+id INTEGER NOT NULL,
+hash VARCHAR(25),
+created INT
+);";
+				
+				//Generalized 'session' holder. E.g. whos online recently.
+				$sql[] = "CREATE TABLE IF NOT EXISTS miniSessionHash (
+id INTEGER NOT NULL,
+hash VARCHAR(25),
+info VARCHAR(25),
+intinfo INTEGER,
+created INTEGER
 );";
 				break;
 			/*SQLite END*/
@@ -374,18 +379,6 @@ created INT
 );
 SQL;
 
-				$sql[] = <<<SQL
-CREATE TABLE IF NOT EXISTS messages (
-id INTEGER NOT NULL AUTO_INCREMENT,
-task_id INT NOT NULL,
-user_id INT,
-created INT,
-msg_type VARCHAR(25),    
-title VARCHAR(25),
-message VARCHAR(25),
-PRIMARY KEY (id)
-);
-SQL;
 				//Create comments table
 				$sql[] = "CREATE TABLE IF NOT EXISTS comments (
 id INTEGER NOT NULL AUTO_INCREMENT,
@@ -396,6 +389,22 @@ created INT,
 message TEXT,
 vote INT,
 PRIMARY KEY (id)
+);";
+
+				//Uniqueness check (for enforcing originality
+				$sql[] = "CREATE TABLE IF NOT EXISTS uniqueHash (
+id INTEGER NOT NULL AUTO_INCREMENT,
+hash VARCHAR(25),
+created INT
+);";
+				
+				//Generalized 'session' holder. E.g. whos online recently.
+				$sql[] = "CREATE TABLE IF NOT EXISTS miniSessionHash (
+id INTEGER NOT NULL AUTO_INCREMENT,
+hash VARCHAR(25),
+info VARCHAR(25),
+intinfo INT,
+created INT
 );";
 				break;
 			/* END OF MYSQL VERSION*/

@@ -60,6 +60,13 @@ switch($uri_parts[0]){
                         echo "Missing title and/or message \n";
                         break;
                     }
+					
+					// check if message is up to scratch (is not stupid, and does not have spammy words)
+					if( ! __postGateKeeper($_POST['message']) ){
+                        echo "Your post was rejected by the gatekeeper. Did you make your message too small? 
+						Does it have too many mispelling? Or was it just plain stupid? \n";
+						exit;
+					};
 
                     //Extract tag to array
                     $s_tag = isset($_POST['tags']) ? explode(' ', $_POST['tags']) : array();
@@ -92,6 +99,13 @@ switch($uri_parts[0]){
 						exit;
                         break;
                     }
+					
+					// check if message is up to scratch (is not stupid, and does not have spammy words)
+					if( ! __postGateKeeper($_POST['comment']) ){
+                        echo "Your post was rejected by the gatekeeper. Did you make your post too small? 
+						Does it have too many mispelling? Or was it just plain stupid? \n";
+						exit;
+					};
 
                     //Insert password
                     if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR __getKeyFile()!=''){

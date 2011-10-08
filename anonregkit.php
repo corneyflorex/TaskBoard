@@ -82,7 +82,7 @@
 	// FUNCTION: PRETTY TRIP DISPLAY
 	// Usage: just place  echo __prettyTripFormatter($tripcode); to your desired location.
 	// e.g. echo __prettyTripFormatter($task['tripcode']);
-	function __prettyTripFormatter($tripcode='Anonymous',$displayLimit=0,$width=80,$align='right',$link=''){
+	function __prettyTripFormatter($tripcode='Anonymous',$link=NULL,$displayLimit=0,$width=80,$align='right'){
 	
 	// colour hashing
 	$hash = md5($tripcode);
@@ -94,8 +94,8 @@
 		$text=$tripcode;
 	}
 	// For link
-	if ($link==''){
-		$link=$tripcode;
+	if ($link==NULL){
+		$link='#'.$tripcode;
 	}
 	// font colour
 	$avgBrightness = ( HEXDEC(SUBSTR($colorHash,0,2))+HEXDEC(SUBSTR($colorHash,2,2))+HEXDEC(SUBSTR($colorHash,4,2)) )/3;
@@ -119,13 +119,15 @@
 							overflow:hidden;
 							'>
 					<div style='text-align:center;'>
-					<a style=' color:$fontColour' href='#$link' title='$tripcode'>$text</a>
+					<a style=' color:$fontColour' href='$link' title='$tripcode'>$text</a>
 					</div>
 				</div> 
 			";
 	}
 	
-	// Styles the text so it looks better
+	/*
+	Styles the text so it looks better
+	*/
 	function __encodeTextStyle($text) {
 		$text = preg_replace('/\*([^\*]+)\*/', '<b>\1</b>', $text);
 		$text = preg_replace('/_([^_]+)_/', '<i>\1</i>', $text);
@@ -136,12 +138,12 @@
 		return $text;
     }
 	
-	// Adds html code to make any links clickable
-	// Source: http://www.webhostingtalk.com/showthread.php?t=905469
-	// Source: http://www.snipe.net/2009/09/php-twitter-clickable-links/ - This one works, thanks
+	/*
+	Adds html code to make any links clickable
+	 Source: http://www.webhostingtalk.com/showthread.php?t=905469
+	 Source: http://www.snipe.net/2009/09/php-twitter-clickable-links/ - This one works, thanks
+	*/
 	function __makeClickableLinks($text) { 
-		//$Regex = "/(www\.[a-z\d-\.]*\.[a-z]{2,4}?\/?(?:[^\s]*[\/a-z\d]))/i";
-		//$text = preg_replace($Regex, "<a href='$1'>$1</a>", $text);  
 		$text = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t< ]*)#", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>", $text);
 		$text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r< ]*)#", "\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>", $text);
 		$text = preg_replace("/@(\w+)/", "<a href=\"http://www.twitter.com/\\1\" target=\"_blank\">@\\1</a>", $text);
@@ -149,4 +151,41 @@
 
 		return $text; 
 	} 
+	
+	
+	/*
+	The aim of this function is to enforce ligibity of the text
+	useful info http://weblogtoolscollection.com/regex/regex.php
+	*/
+	function __postGateKeeper($text,$minWordCount=0,$goodtext=""){		
+		$wordarray = explode(" ",$text);
+		$wordcount = count($wordarray);
+		$stupidity = 0;
+		
+		// Minimum word count enforcement ( 0 is infinite)
+		if ( ($minWordCount != 0) && ($minWordCount > $wordcount ) ){
+			return false;
+		}
+		
+		//enforce minimum word standard (English Only at this stage)
+		$stupidwords = array('lol', 'first post', '8=*d', 'cunt', 'dick', 'nigger', 'fuck', 'tits', 'tit', 'screw', 'gtfo');
+		foreach ($wordarray as $word){
+			foreach ($stupidwords as $stupidword){
+				$stupidity += preg_match_all('/'.strtolower($stupidword).'/',strtolower($word),$matches);
+				if (strtoupper($word) == $word){
+					$stupidity+=0.1;
+					}
+			}
+		} 
+		echo " ratio:".($stupidity / ($wordcount^2) ) ;
+		
+		
+		
+		if( ($stupidity / ($wordcount^2) ) > 0.1 ) 
+			{ return false;}
+		
+		
+		return true;
+	}
+	
 ?> 

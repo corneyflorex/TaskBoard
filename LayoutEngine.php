@@ -5,10 +5,11 @@
 		foreach ($comments as $comment){
 			$commentContent =
 			$commentContent												.
-			"<div  class='greybox'>"									.
+			"<div  class='greybox'>
+				<a name=".$comment['id']."></a>"									.
 				date('F j, Y, g:i a', $comment['created'])				.
 				"</br>"													.
-				__prettyTripFormatter($comment['tripcode'])				.
+				__prettyTripFormatter($comment['tripcode'],'#'.$comment['id'])				.
 				nl2br(__encodeTextStyle(htmlentities(stripslashes($comment['message'])))) 	. 
 				"</br></br>"													.
 			"</div>";
