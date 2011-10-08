@@ -213,15 +213,31 @@ function startTime(){
 	<div class="center">
 		<?php if($__debug) echo "<div style='width:100%;background-color:darkred;'>This is a development preview of TaskBoard. <br/>
 		Please help out with making it better by contributing to <a href='https://github.com/corneyflorex/TaskBoard'>here</a> </div>"?>
+		
+		<?php if (in_array("tasksList", $mode)) {echo __tagPageMessage($mode,$tags,$__tagPageArray); }?>
 	
 		<div id='header' class='greybox'>
 			<!--Title or logo & Navigation links-->
 			<b><a href="?"><font size="5">TASKBOARD</font></a> </b>| <a href="?q=/tasks/search">Search</a> | <a href="?q=/tasks/new">New task</a>
 			<!--Title or logo-->
 			
+			<!-- Perm Tags Board -->
+			<div id="tagcloud">
+				Boards: 
+				<?php 
+				if(!empty($__defaultTags) and isset($__defaultTags)){
+					foreach($__defaultTags as $tag){ 
+				?>
+						<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag)); ?>" "><?php echo $tag ; ?></a>
+				<?php 
+					}
+				}?>
+			</div>
+			<!---->
+			
 			<!--Most commonly accessed tags this week-->
 			<div id="tagcloud">
-				Tags: 
+				Top Tags: 
 				<?php foreach($top_tags as $tag){ ?>
 							<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>" title="Count: <?php echo htmlentities(stripslashes($tag['count'])); ?>"><?php echo substr( htmlentities(stripslashes(htmlentities($tag['label']))) ,0,10) ; ?></a>
 				<?php } ?>

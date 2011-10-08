@@ -4,7 +4,7 @@
 	
 // configuration
 $__initEnable = true; // Disable After Install (set to 'false' rather than 'true')
-$__debug = true; // Dev mode
+$__debug = false; // Dev mode
 	
 	$settingMode = "sqlite";
 	switch($settingMode){
@@ -24,8 +24,14 @@ $__debug = true; // Dev mode
 			break;
 	}
 
+	/*Annoucements for each tag. "Home" is the tag for the front page */
+	$__tagPageArray = array(
+							"home"	=> "Hi all and thanks for coming to TaskBoard, click below to start posting!"
+							,
+							"anonymous"		=> "Hey anons, well this is just a short message from admin"
+							);
 	
-	
+	$__defaultTags = array("home","news","personal");
 	
 	// There was a problem with using parse_ini_string, when using it with MySQL
 	// Basically it borked at the string "dsn = ' mysql:host=HOSTNAME;dbname=DBNAME' " 

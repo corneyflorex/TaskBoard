@@ -177,11 +177,12 @@
 					}
 			}
 		} 
-		echo " ratio:".($stupidity / ($wordcount^2) ) ;
 		
+		if ($wordcount == 0 ){$wordcount = 1;}
+		echo " ratio:".($stupidity / pow($wordcount,2) ) ;
+
 		
-		
-		if( ($stupidity / ($wordcount^2) ) > 0.1 ) 
+		if( ($stupidity / pow($wordcount,2) ) > 0.1 ) 
 			{ return false;}
 		
 		
