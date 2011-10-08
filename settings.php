@@ -26,7 +26,8 @@ $__debug = false; // Dev mode
 
 	/*Annoucements for each tag. "Home" is the tag for the front page */
 	$__tagPageArray = array(
-							"home"	=> "Hi all and thanks for coming to TaskBoard, click below to start posting!"
+							"home"	=> "This is a development preview of TaskBoard. <br/>
+		Please help to make it better by contributing to our <a href='https://github.com/corneyflorex/TaskBoard'>github repo</a>"
 							,
 							"anonymous"		=> "Hey anons, well this is just a short message from admin"
 							);

@@ -28,7 +28,7 @@
 									background: linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* W3C */
 								'>
 						<div style='padding:10px;'>
-							Announcement for $tag:
+							<b>Admin Message:</b> 
 							$__tagPageArray[$tag]
 						</div>
 					</div>";
@@ -80,7 +80,7 @@
 		$i=1;
 		foreach($tasks as $task){
 		
-			$time = time() - $task['created'];
+			$time = time() - $task['bumped'];
 			if ( $time < strtotime("5 minutes",0)){
 				$style = "border:1px;border-style:solid;border-color:green;";
 			}else if($time < strtotime("30 minutes",0)){
@@ -94,7 +94,7 @@
 			$taskDisplayContent = $taskDisplayContent."
 				<div style='$style' class='task".($i%2)."'>
 					<span style='float:right;'>".date('M j, Y', $task['created'])."</span>
-					<span style='float:right;clear:right;'>"."<b>".__humanTiming ($task['created'])." ago</b>"."</span>
+					<span style='float:right;clear:right;'>"."<b>".__humanTiming ($task['bumped'])." ago</b>"."</span>
 					<span class='title'>
 						<a href='?q=/view/".$task['task_id']."' >".substr(htmlentities(stripslashes($task['title'])),0,40)."</a>
 					</span>
