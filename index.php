@@ -183,7 +183,7 @@ switch($uri_parts[0]){
     case 'view':
         $mode = array('tasksView');
 		$taskid =$uri_parts[1];
-        
+        if(!is_numeric($uri_parts[1])){Echo "YOU FAIL";exit;}
         //Retrieve the task and get its comments
         $tasks = $board->getTaskByID($taskid);
         $comments = $board->getCommentsByTaskId($taskid);
