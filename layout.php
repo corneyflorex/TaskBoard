@@ -9,7 +9,7 @@
 .center
 {
 margin:auto;
-width:300px;
+max-width: 450px;
 }
 
 /* Reset */
@@ -25,8 +25,8 @@ body { font-family: Arial, "Sans-Serif", "Sans Serif"; font-size:14px; backgroun
 button{border-radius: 10px; background-color: rgb(13, 72, 90); border-color: rgb(104, 128, 210);}
 
 /*Standard Black Box for any non list content*/
-.blackbox { padding:10px;border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
-.greybox { padding:10px;border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #505050}
+.blackbox { margin-top:2px; padding:10px;border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
+.greybox { margin-top:2px; padding:10px;border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #505050}
 
 /*Header*/
 #header {  margin-top:10px;background-color:#7d7d7d; color: #C6C6C6}
@@ -52,14 +52,17 @@ button{border-radius: 10px; background-color: rgb(13, 72, 90); border-color: rgb
 }
 
 /* Elements */
-.tasklist {border-bottom-width:0px; width:100%; border-radius: 10px;}
+.tasklist {margin-top:2px; border-bottom-width:0px; width:100%; border-radius: 10px;}
 .tasklist .task{
+	margin-top:2px;
 	border-bottom: 1px solid gray;
 	border-radius: 10px;
 	background-color:#ababab;
 }
+/*Task 1*/
 .tasklist .task0{
 	/*border-bottom: 2px solid gray;*/
+	margin-top:2px;
 	padding:10px;
 	color: #515151;
 	background-color:#ababab;
@@ -68,9 +71,10 @@ button{border-radius: 10px; background-color: rgb(13, 72, 90); border-color: rgb
 }
 .tasklist .task0 .title { display:block; font-weight:bold; }
 .tasklist .task0 .message { font-size:0.9em; }
-
+/*Task 2*/
 .tasklist .task1{
 	/*border-bottom: 2px solid gray;*/
+	margin-top:2px;
 	padding:10px;
 	color: #515151;
 	background-color:#e1e1e1;
@@ -262,8 +266,11 @@ function startTime(){
 						<form name="add_comment" action="?q=/tasks/comment/<?php echo $task['task_id']; ?>" method="post" enctype='multipart/form-data'>
 							<textarea id="comment" name="comment"></textarea>
 							<input type="hidden" name="taskID" value="<?php echo $task['task_id']; ?>"><br/>
-							Passfile (Optional): <INPUT type='file' name='keyfile' />
+							</br>
+							Passfile:--- <INPUT type='file' name='keyfile' />
+							</br>
                             Password: <INPUT type='text' name='password' >
+							</br>
 							<input type="submit" value="Submit" />
 						</form>
 					</div>
@@ -279,8 +286,9 @@ function startTime(){
 						<FORM action='?q=/tasks/delete' method='post' enctype='multipart/form-data'>
 							<input type="hidden" name="taskID" value="<?php echo $task['task_id']; ?>">
 							KeyFile:<input type='file' name='keyfile' />
-                                                        Password: <INPUT type='text' name='password' value=''>
-                                                        <INPUT type='submit' value='delete task'> 
+							</br>
+							Password: <INPUT type='text' name='password' value=''>
+							<INPUT type='submit' value='delete task'> 
 						</FORM>
 					</div>
 			<?php } ?>
@@ -336,10 +344,10 @@ function startTime(){
 					Title*:<BR>		<INPUT type='text' name='title'value=''><BR>	
 					Message*:</BR>	<textarea class='' rows=5 name='message'></textarea><BR>			
 					Tags:<BR><INPUT type='text' name='tags' value='<?php if(isset($_GET['tag'])){echo $_GET['tag'];}?>'><BR>
-					KEYFILE OR PASSWORD(OPTIONAL):<BR>	
-					<label for='file'>KeyFile:</label><input type='file' name='keyfile' />
-					<label>Password:</label><INPUT type='text' name='password'value=''><BR>
+					</br> <label for='file'>KeyFile:</label></br> <input type='file' name='keyfile' />
+					</br> <label>Password:</label></br> <INPUT type='text' name='password'value=''><BR>
 					<INPUT type='submit' value='Send'> <INPUT type='reset'>
+					</br> '*' = Must be filled in
 				</P>
 			</FORM>
 			</br>
