@@ -5,7 +5,7 @@ require("LayoutEngine.php");
 require("Database.php");
 require("Taskboard.php");
 require("anonregkit.php");
-require(".\asciicapcha\asciicaptcha.php");
+require("./asciicapcha/asciicaptcha.php");
 
 //Open up the database connection
 Database::openDatabase('rw', $config['database']['dsn'], $config['database']['username'], $config['database']['password']);

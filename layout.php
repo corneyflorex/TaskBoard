@@ -348,7 +348,7 @@ function startTime(){
 					</br> <label>Password:</label></br> <INPUT type='text' name='password'value=''><BR>
 					<br>
 					
-					<b>CAPCHA:</b>
+					<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
 					<?php
 					$ascii_capcha = __getCAPCHA($__salt);
 					echo "<pre style='font-size:6px;'>".$ascii_capcha["image"]."</pre>"
