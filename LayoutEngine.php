@@ -83,17 +83,17 @@
 		
 			$time = time() - $task['bumped'];
 			if ( $time < strtotime("10 minutes",0)){
-				$style = "border:1px;border-style:solid;border-color:white;";
+				$style = "border:3px;border-style:solid;border-color:white;";
 			}else if ( $time < strtotime("20 minutes",0)){
 				$style = "border:3px;border-style:solid;border-color:LemonChiffon;";
 			}else if($time < strtotime("30 minutes",0)){
-				$style = "border:1px;border-style:solid;border-color:green;";
+				$style = "border:2px;border-style:solid;border-color:green;";
 			}else if($time < strtotime("1 day",0)){
-				$style = "border:1px;border-style:solid;border-color:Indigo;";
+				$style = "border:2px;border-style:solid;border-color:Indigo;";
 			}else if($time < strtotime("7 day",0)){
 				$style = "border:2px;border-style:solid;border-color:darkblue;";
 			}else {
-				$style = "border:1px;border-style:solid;border-color:black;";
+				$style = "border:2px;border-style:solid;border-color:black;";
 			}
 		
 			$taskDisplayContent = $taskDisplayContent."
