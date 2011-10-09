@@ -52,7 +52,7 @@
 			}else if($time < strtotime("60 minutes",0)){
 				$style = "border:2px;border-style:solid;border-color:orange;";
 			}else if($time < strtotime("12 hours",0)){
-				$style = "border:2px;border-style:solid;border-color:orange;";
+				$style = "border:2px;border-style:solid;border-color:Indigo;";
 			}else if($time < strtotime("1 day",0)){
 				$style = "border:1px;border-style:solid;border-color:grey;";
 			}else {
@@ -82,12 +82,16 @@
 		foreach($tasks as $task){
 		
 			$time = time() - $task['bumped'];
-			if ( $time < strtotime("5 minutes",0)){
+			if ( $time < strtotime("10 minutes",0)){
 				$style = "border:1px;border-style:solid;border-color:white;";
+			}else if ( $time < strtotime("20 minutes",0)){
+				$style = "border:3px;border-style:solid;border-color:LemonChiffon;";
 			}else if($time < strtotime("30 minutes",0)){
 				$style = "border:1px;border-style:solid;border-color:green;";
 			}else if($time < strtotime("1 day",0)){
-				$style = "border:1px;border-style:solid;border-color:darkblue;";
+				$style = "border:1px;border-style:solid;border-color:Indigo;";
+			}else if($time < strtotime("7 day",0)){
+				$style = "border:2px;border-style:solid;border-color:darkblue;";
 			}else {
 				$style = "border:1px;border-style:solid;border-color:black;";
 			}
