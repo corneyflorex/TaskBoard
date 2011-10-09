@@ -1,0 +1,32 @@
+<style type="text/css">
+<!--
+.style1 {font-style: italic}
+.style2 {font-size: 36px}
+-->
+</style>
+<p>Hello, and thank you for taking interest in my class.</p>
+<p><strong>ASCII CAPTCHA</strong> class is an innovative and brand new way to protect your website. If you've ever wondered how to avoid spambots or computer programs from automatically using a function on your website, you'll probably be recommended to use CAPTCHA, which stands for <span class="style1"><strong>C</strong>ompletely <strong>A</strong>utomated <strong>P</strong>ublic <strong>T</strong>uring test to tell <strong>C</strong>omputers and <strong>H</strong>umans <strong>A</strong>part</span>.</p>
+<p>For servers or browsers which cannot handle the standard CAPTCHA which displays graphical output, <strong>ASCII CAPTCHA</strong> is an innovative and still secure way to provide ASCII art for the use of CAPTCHA.</p>
+<p>This class has gotten a considerable amount of feedback as well as notability, so I've made this documentation.</p>
+<p><strong>ASCII CAPTCHA </strong>class uses built in (standard) fonts to adjust, distort, and &quot;noise&quot; the characters within the output of the class. Aside from distortion, there is a considerable amount of flexability for the class.</p>
+<p>For example, I've used this class for the development of a CMS. Here's a screenshot:</p>
+<p><img src="http://i29.tinypic.com/j7re6r.jpg"/></p>
+<p>As you can see, it is extremely simple. Notice double randomized distortion of letters, randomized backgrounds, and also the ease of viewing it. In this case, you can plainly tell it is &quot;FROJ62&quot;</p>
+<p><strong>Special Properties</strong></p>
+<p>The class is very flexible. Here are a few properties and notes about what you can modify of the class to personalize or make better.</p>
+<p><span class="style2"><em>fonts</em> property</span>: This property allows you to specify an array, demonstrated in the constructor of the class, which contains each letter. You can add new characters, take characters away, and more. Aside from simply defining the characters, you can personalize the characters. The main font shows that the class is able to automatically treat the sides of a letter that it can access from left or right as background.</p>
+<p>For example, the class treats fonts like this:</p>
+<p><img src="http://i31.tinypic.com/w7ekh0.jpg"/></p>
+<p>The whitespace on the edges are automatically considered &quot;transparent&quot;. This means that the background layer of the class can exist behind the whitespace on the edges. The &amp; characters are considered transparent symbols, meaning that the background should exist within the A and everywhere that edges to not directly conflict with whitespace.</p>
+<p>In the case of the letter G:</p>
+<p><img src="http://i28.tinypic.com/i56jkk.jpg"/></p>
+<p>In the above picture, on the left is a standard ASCII G. In order for the font to be recognized, so that characters that are not on the edge, &amp; symbols must be placed, like on the right. Obviously, # is the character for the letter, although this can be customized. </p>
+<p>The fonts system is unstable, although it works perfect. Please make sure within all fonts that the amount of lines are the same, and that there is a whitespace at the end of each character set. As long as it's configured perfect there should be no issues at all.</p>
+<p><span class="style2"><em>bgchar</em> property: </span>Within this property you can define the single character the the background should be. Please note that the background can be overwritten with random characters defined in the following property:</p>
+<p><span class="style2"><em>repset</em> property:  </span>This &quot;repset&quot; property defines an array of characters the background can be replaced with, in order to further obfuscate the output.</p>
+<p><span class="style2"><em>repset_count</em> property:  </span>This property is used to define the amount of background characters should be entered into the repset pool (see random_rep() method).</p>
+<p><span class="style2"><em>length</em> property:</span> This property defines the amount of characters to be used.</p>
+<p><span class="style2"><em>spacing</em> property:</span> the spacing between letters, by character count.   </p>
+<p align="center" class="style2">USAGE EXAMPLE</p>
+<p align="left"><img src="http://i29.tinypic.com/x2rjiw.jpg"/></p>
+<p align="left"><strong><em>Note: </em></strong>If you do not know what passed by reference means, a good reference I'll pass to you is <a href="http://php.net/">php.net</a>.</p>

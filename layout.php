@@ -346,8 +346,20 @@ function startTime(){
 					Tags:<BR><INPUT type='text' name='tags' value='<?php if(isset($_GET['tag'])){echo $_GET['tag'];}?>'><BR>
 					</br> <label for='file'>KeyFile:</label></br> <input type='file' name='keyfile' />
 					</br> <label>Password:</label></br> <INPUT type='text' name='password'value=''><BR>
-					<INPUT type='submit' value='Send'> <INPUT type='reset'>
-					</br> '*' = Must be filled in
+					<br>
+					
+					<b>CAPCHA:</b>
+					<?php
+					$ascii_capcha = __getCAPCHA($__salt);
+					echo "<pre style='font-size:6px;'>".$ascii_capcha["image"]."</pre>"
+					?>
+					<INPUT type='text' name='capcha' value=''>
+					<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'> 
+					
+					</br>
+					'*' = Must be filled in
+					</br><INPUT type='submit' value='Send'> <INPUT type='reset'>
+
 				</P>
 			</FORM>
 			</br>

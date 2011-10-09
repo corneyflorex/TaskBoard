@@ -5,6 +5,7 @@ require("LayoutEngine.php");
 require("Database.php");
 require("Taskboard.php");
 require("anonregkit.php");
+require(".\asciicapcha\asciicaptcha.php");
 
 //Open up the database connection
 Database::openDatabase('rw', $config['database']['dsn'], $config['database']['username'], $config['database']['password']);
@@ -58,8 +59,22 @@ switch($uri_parts[0]){
                     //Only pass though message and title if it is set already
                     if(!isset($_POST['title'], $_POST['message']) || empty($_POST['title']) || empty($_POST['message'])){
                         echo "Missing title and/or message \n";
-                        break;
+                        exit;
                     }
+					
+					// Also it must pass the capcha test
+                    if(!isset($_POST['capcha'], $_POST['digest']) || empty($_POST['capcha']) || empty($_POST['digest'])){
+                        echo "Missing CAPCHA Answer \n";
+                        exit;
+                    }
+					$answer = $_POST["capcha"];
+					$digest = $_POST["digest"];
+					if( __checkCAPCHA($answer,$digest,$__salt) ){
+						echo "Capcha Vaid</br>";
+					}else{
+						echo "Capcha Answer Invalid";
+						exit;
+					}
 					
 					// check if message is up to scratch (is not stupid, and does not have spammy words)
 					if( ! __postGateKeeper($_POST['message']) ){

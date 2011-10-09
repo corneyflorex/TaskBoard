@@ -2,10 +2,19 @@
 	// Settings
 	
 	
-// configuration
-$__initEnable = true; // Disable After Install (set to 'false' rather than 'true')
-$__debug = false; // Dev mode
+	// General configuration
+	$__initEnable = true; // Disable After Install (set to 'false' rather than 'true')
+	$__debug = false; // Dev mode
 	
+	// What Boards to support by default
+	$__defaultTags = array("home", "news", "music", "personal");
+
+	// Unique Salt
+	// Please set your own salt
+	// $__salt = "PUT RANDOM LETTERS HERE"
+	if(!isset($__salt)){$__salt = sha1($_SERVER['DOCUMENT_ROOT'].$_SERVER['SERVER_SOFTWARE']);}
+	
+	// DATABASE CONFIG
 	$settingMode = "sqlite";
 	switch($settingMode){
 		case "mysql":
@@ -24,6 +33,7 @@ $__debug = false; // Dev mode
 			break;
 	}
 
+	// ADMIN ANNOUNCEMENT
 	/*Annoucements for each tag. "Home" is the tag for the front page */
 	$__tagPageArray = array(
 							"home"	=> "This is a development preview of TaskBoard. <br/>
@@ -32,7 +42,14 @@ $__debug = false; // Dev mode
 							"anonymous"		=> "Hey anons, well this is just a short message from admin"
 							);
 	
-	$__defaultTags = array("home","news","personal");
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// There was a problem with using parse_ini_string, when using it with MySQL
 	// Basically it borked at the string "dsn = ' mysql:host=HOSTNAME;dbname=DBNAME' " 
@@ -56,22 +73,3 @@ $__debug = false; // Dev mode
 										)
 					);
 					
-	//if($__debug) var_dump($config);
-	
-	/*
-	$config_str = <<<SETTINGS
-[homepage]
-tasks_to_show = 10
-
-[tasks]
-lifespan = 1
-
-[database]
-dsn = sqlite:tasks.sq3
-username = 
-password =
-SETTINGS;
-$config = parse_ini_string($config_str, true);
-	*/
-	
-	?>
