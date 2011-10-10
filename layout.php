@@ -309,7 +309,8 @@ function startTime(){
 		<br />
 		
 		
-		<div style="overflow:auto;" class="blackbox">
+		<div style="overflow:auto; text-align:center; colour:grey" class="blackbox">
+		<a name="WorldMap" href="#WorldMap">WorldMap</a><br /> click map to view posts from each region<br /> 
 		<?php include("worldmap.html"); ?>
 		</div>
 		
