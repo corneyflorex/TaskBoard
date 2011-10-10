@@ -78,13 +78,13 @@ switch($uri_parts[0]){
 					$answer = $_POST["capcha"];
 					$digest = $_POST["digest"];
 					if( __checkCAPCHA($answer,$digest,$__salt) ){
-						echo "Capcha Vaid</br>";
+						echo "Capcha Vaid<br />";
 					}else{
 						echo "Capcha Answer Invalid. Did you type it incorrectly? Or did you take too long to answer the CAPCHA?";
 						?>
 							<FORM action='?q=/tasks/submitnew' method='post' >
 						Title*:<BR>		<INPUT type='text' name='title'value='<?php echo $_POST['title'];?>'><BR>	
-						Message*:</BR>	<textarea class='' rows=5 name='message'><?php echo $_POST['message'];?></textarea><BR>			
+						Message*:<br />	<textarea class='' rows=5 name='message'><?php echo $_POST['message'];?></textarea><BR>			
 						Tags:<BR><INPUT type='text' name='tags' value='<?php echo $_POST['tags'];?>'><BR>
 
 							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
@@ -97,7 +97,7 @@ switch($uri_parts[0]){
 							?>
 							<INPUT type='text' name='capcha' value=''>
 							<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'>
-							</br>
+							<br />
 							<input type="submit" value="Submit" />	
 						</form>
 						<?php	
@@ -149,7 +149,7 @@ switch($uri_parts[0]){
 					$answer = $_POST["capcha"];
 					$digest = $_POST["digest"];
 					if( __checkCAPCHA($answer,$digest,$__salt) ){
-						echo "Capcha Vaid</br>";
+						echo "Capcha Vaid<br />";
 					}else{
 						echo "Capcha Answer Invalid. Did you type it incorrectly? Or did you take too long to answer the CAPCHA?";
 						?>
@@ -165,7 +165,7 @@ switch($uri_parts[0]){
 							?>
 							<INPUT type='text' name='capcha' value=''>
 							<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'>
-							</br>
+							<br />
 							<input type="submit" value="Submit" />	
 						</form>
 						<?php	

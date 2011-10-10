@@ -6,9 +6,9 @@ if(!isset($__salt)){$__salt = sha1($_SERVER['DOCUMENT_ROOT'].$_SERVER['SERVER_SO
 
 echo $__salt;
 ?>
-</br>
-</br>
-</br>
+<br />
+<br />
+<br />
 
 CAPCHA FORM:
 <?php
@@ -36,12 +36,12 @@ if( __checkCAPCHA($answer,$digest,$__salt) ){
 ?>
 
 
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 
 TIME TOKEN SYSTEM:
@@ -50,10 +50,10 @@ var_dump( __timeToken_CAPCHA(-10,0,'hour') );
 ?>
 
 
-</br>
-</br>
-</br>
-</br>
+<br />
+<br />
+<br />
+<br />
 
 
 CAPCHA CORE CLASS EXAMPLE

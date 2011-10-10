@@ -25,7 +25,6 @@
 									background: -webkit-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* Chrome10+,Safari5.1+ */
 									background: -o-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* Opera11.10+ */
 									background: -ms-linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* IE10+ */
-									filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
 									background: linear-gradient(top, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* W3C */
 								'>
 						<div style='padding:10px;'>
@@ -64,13 +63,13 @@
 				<a name='".$comment['id']."'></a>".
 				__prettyTripFormatter($comment['tripcode'],'#'.$comment['id']).
 				"<span style='font-size:0.7em;' ><b>Comment ID >>".$comment['id']."</b></span>".
-				"</br>".
+				"<br />".
 				"<span style='font-size:0.6em;' ><i>".date('F j, Y, g:i a', $comment['created'])."".
 				" | ".
 				__humanTiming ($comment['created']). " ago</i></span>"	.
-				"</br>".
+				"<br />".
 				nl2br(__encodeTextStyle(htmlentities(stripslashes($comment['message'])))) 	. 
-				"</br></br>".
+				"<br /><br />".
 			"</div>";
 		};
 		return $commentContent;
