@@ -192,7 +192,7 @@ function startTime(){
 							<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
 							<?php
 							$ascii_capcha = __getCAPCHA($__salt);
-							echo "<pre style='font-size:4px;'>".$ascii_capcha["image"]."</pre>"
+							echo "<pre style='font-size:6px;'>".$ascii_capcha["image"]."</pre>"
 							?>
 							<INPUT type='text' name='capcha' value=''>
 							<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'>
@@ -282,7 +282,7 @@ function startTime(){
 					
 					<?php
 					$ascii_capcha = __getCAPCHA($__salt);
-					echo "<pre style='font-size:6px;'>".$ascii_capcha["image"]."</pre>"
+					echo "<pre style='font-size:7px;'>".$ascii_capcha["image"]."</pre>"
 					?>
 					<INPUT type='text' name='capcha' value=''>
 					<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'> 
