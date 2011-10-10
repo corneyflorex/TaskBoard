@@ -7,7 +7,7 @@
 	$__debug = false; // Dev mode
 	
 	// What Boards to support by default
-	$__defaultTags = array("NorthAmerica", "SouthAmerica", "Antarctica", "Africa", "Asia", "Europe");
+	$__defaultTags = array("NorthAmerica", "SouthAmerica", "MiddleEast", "Africa", "Asia", "Europe", "Oceania");
 
 	// Unique Salt
 	// Please set your own salt

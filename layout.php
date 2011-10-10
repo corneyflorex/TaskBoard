@@ -321,7 +321,7 @@ function startTime(){
 		</div>
 		<!--QR CODE - To help encourage acesses by mobile phone-->
 
-	</div>
+	</div>		
 	</div>
 </body>
 </html>
