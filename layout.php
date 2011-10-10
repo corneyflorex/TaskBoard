@@ -309,7 +309,7 @@ function startTime(){
 		<br />
 		
 		
-		<div class="blackbox">
+		<div style="overflow:auto;" class="blackbox">
 		<?php include("worldmap.html"); ?>
 		</div>
 		
