@@ -62,6 +62,14 @@ switch($uri_parts[0]){
                         exit;
                     }
 					
+					
+					// check if message is up to scratch (is not stupid, and does not have spammy words)
+					if( ! __postGateKeeper($_POST['message']) ){
+                        echo "Your post was rejected by the gatekeeper. Did you make your message too small? 
+						Does it have too many mispelling? Or was it just plain stupid? \n";
+						exit;
+					};
+
 					// Also it must pass the capcha test
                     if(!isset($_POST['capcha'], $_POST['digest']) || empty($_POST['capcha']) || empty($_POST['digest'])){
                         echo "Missing CAPCHA Answer \n";
@@ -72,16 +80,30 @@ switch($uri_parts[0]){
 					if( __checkCAPCHA($answer,$digest,$__salt) ){
 						echo "Capcha Vaid</br>";
 					}else{
-						echo "Capcha Answer Invalid";
+						echo "Capcha Answer Invalid. Did you type it incorrectly? Or did you take too long to answer the CAPCHA?";
+						?>
+							<FORM action='?q=/tasks/submitnew' method='post' >
+						Title*:<BR>		<INPUT type='text' name='title'value='<?php echo $_POST['title'];?>'><BR>	
+						Message*:</BR>	<textarea class='' rows=5 name='message'><?php echo $_POST['message'];?></textarea><BR>			
+						Tags:<BR><INPUT type='text' name='tags' value='<?php echo $_POST['tags'];?>'><BR>
+
+							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
+							<INPUT type='hidden' name='keyfile' />
+                            <INPUT type='hidden' name='password' value="<?php echo $_POST['password'].__getKeyFile();?>" >
+							<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
+							<?php
+							$ascii_capcha = __getCAPCHA($__salt);
+							echo "<pre style='font-size:4px;'>".$ascii_capcha["image"]."</pre>"
+							?>
+							<INPUT type='text' name='capcha' value=''>
+							<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'>
+							</br>
+							<input type="submit" value="Submit" />	
+						</form>
+						<?php	
 						exit;
 					}
-					
-					// check if message is up to scratch (is not stupid, and does not have spammy words)
-					if( ! __postGateKeeper($_POST['message']) ){
-                        echo "Your post was rejected by the gatekeeper. Did you make your message too small? 
-						Does it have too many mispelling? Or was it just plain stupid? \n";
-						exit;
-					};
+
 
                     //Extract tag to array
 					//preg_replace('/[^a-zA-Z0-9\s]/', '', $text) - Removes nonalphanumeric char
@@ -119,6 +141,37 @@ switch($uri_parts[0]){
                         break;
                     }
 					
+					// Also it must pass the capcha test
+                    if(!isset($_POST['capcha'], $_POST['digest']) || empty($_POST['capcha']) || empty($_POST['digest'])){
+                        echo "Missing CAPCHA Answer \n";
+                        exit;
+                    }
+					$answer = $_POST["capcha"];
+					$digest = $_POST["digest"];
+					if( __checkCAPCHA($answer,$digest,$__salt) ){
+						echo "Capcha Vaid</br>";
+					}else{
+						echo "Capcha Answer Invalid. Did you type it incorrectly? Or did you take too long to answer the CAPCHA?";
+						?>
+						<form name="add_comment" action="?q=/tasks/comment/<?php echo $_POST['taskID']; ?>" method="post" >
+							<textarea id="comment" name="comment"><?php echo $_POST['comment'];?></textarea>
+							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
+							<INPUT type='hidden' name='keyfile' />
+                            <INPUT type='hidden' name='password' value="<?php echo $_POST['password'].__getKeyFile();?>" >
+							<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
+							<?php
+							$ascii_capcha = __getCAPCHA($__salt);
+							echo "<pre style='font-size:4px;'>".$ascii_capcha["image"]."</pre>"
+							?>
+							<INPUT type='text' name='capcha' value=''>
+							<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'>
+							</br>
+							<input type="submit" value="Submit" />	
+						</form>
+						<?php	
+						exit;
+					}
+					
 					// check if message is up to scratch (is not stupid, and does not have spammy words)
 					if( ! __postGateKeeper($_POST['comment']) ){
                         echo "Your post was rejected by the gatekeeper. Did you make your post too small? 
@@ -151,17 +204,20 @@ switch($uri_parts[0]){
                 case 'search':
                     // If we're posting a search, redirect to the URL search (helps copy/pasting URLs)
                     if(isset($_POST['tags'])){
-                        $tags = explode(' ', $_POST['tags']);
+						$tags_string = isset($_POST['tags']) ? preg_replace('/[^a-zA-Z0-9\s]/', '', $_POST['tags']) : "";
+                        $tags = explode(' ', $tags_string);
                         header('Location: ?q=/tasks/search/'.implode(',', $tags));
                         //echo 'tags'.implode(',', $tags);
                         exit;
                     }
+					
                     if(isset($uri_parts[2])){
                         $tags = explode(',', $uri_parts[2]);
                         $mode = array('tasksList');
                     } else {
                         $mode = array('tagSearch');
                     }
+										
                     if(!empty($tags)){
                         $tasks = $board->getTasks($tags);
                     } else {
@@ -173,15 +229,20 @@ switch($uri_parts[0]){
                  * Delete a task
                  */
                 case 'delete':
+				
+
+							
 					$pass = $_POST['password'].__getKeyFile();
 					if ($pass == ""){
 						$pass = substr(md5($_SERVER['REMOTE_ADDR']),0,6);
 					}
-					
+
+					if(!is_numeric($_POST['taskID'])){Echo "YOU FAIL";exit;}
                     $s_array[0]=$_POST['taskID'];
-
+					
                     $s_array[1]=__tripCode($pass);
-
+					
+					var_dump($s_array);
                     //print_r($s_array);
                     $command = 'Delete single task with normal password';
                     $board->delTaskBy($command,$s_array);
@@ -198,8 +259,10 @@ switch($uri_parts[0]){
     case 'view':
         $mode = array('tasksView');
 		$taskid =$uri_parts[1];
+		
         if(!is_numeric($uri_parts[1])){Echo "YOU FAIL";exit;}
-        //Retrieve the task and get its comments
+        
+		//Retrieve the task and get its comments
         $tasks = $board->getTaskByID($taskid);
         $comments = $board->getCommentsByTaskId($taskid);
         break;

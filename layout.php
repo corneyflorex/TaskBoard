@@ -9,7 +9,7 @@
 .center
 {
 margin:auto;
-max-width: 450px;
+max-width: 550px;
 }
 
 /* Reset */
@@ -96,6 +96,21 @@ a:active {color: #FFFFFF; text-decoration: underline; }
 a:visited {color: #FFFFFF; text-decoration: underline; }
 a:hover {color: #66FFFF; text-decoration: none; }
 
+
+/*------------------------------------*\
+	IPHONE | ANDROID | ETC
+\*------------------------------------*/
+@media only screen and (max-device-width: 480px){
+	.center
+	{
+	margin:auto;
+	max-width: 450px;
+	}
+	
+	#svgBackground {
+	}
+}
+
 </style>
 
 <script type="text/javascript">
@@ -106,7 +121,7 @@ a:hover {color: #66FFFF; text-decoration: none; }
 	//prev content
 	prev_content = "";
 	//number of tries
-	tries = 20;
+	tries = 0;
 	
 function autoUpdate(){
 	var xmlhttp;
@@ -211,6 +226,7 @@ function startTime(){
 	</svg>
 	<div>
 	<!--END OF THIS IS THE BACKGROUND SVG DO NOT REMOVE-->
+	
 	<div class="contentBox">
 	<div class="center">
 		<?php if($__debug) echo "<div style='width:100%;background-color:darkred;'>This is a development preview of TaskBoard. <br/>
@@ -220,7 +236,7 @@ function startTime(){
 	
 		<div id='header' class='greybox'>
 			<!--Title or logo & Navigation links-->
-			<b><a href="?"><font size="5">TASKBOARD</font></a> </b>| <a href="?q=/tasks/search">Search</a> | <a href="?q=/tasks/new">New task</a>
+			<b><a href="?"><font size="5">TASKBOARD</font></a> </b>| <a href="?q=/tasks/search">Tags Search</a> | <a href="?q=/tasks/new">New task</a>
 			<!--Title or logo-->
 			
 			<!-- Perm Tags Board -->
@@ -264,16 +280,29 @@ function startTime(){
 					</div>
 
 					<div class="greybox" id="add_comment">
-						Add Your Message Here:
+						<b>Add Comment:</b>
 						<form name="add_comment" action="?q=/tasks/comment/<?php echo $task['task_id']; ?>" method="post" enctype='multipart/form-data'>
 							<textarea id="comment" name="comment"></textarea>
 							<input type="hidden" name="taskID" value="<?php echo $task['task_id']; ?>"><br/>
 							</br>
-							Passfile:--- <INPUT type='file' name='keyfile' />
+							Passfile: <INPUT type='file' name='keyfile' />
 							</br>
                             Password: <INPUT type='text' name='password' >
 							</br>
-							<input type="submit" value="Submit" />
+							</br>
+							
+							<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
+							<?php
+							$ascii_capcha = __getCAPCHA($__salt);
+							echo "<pre style='font-size:4px;'>".$ascii_capcha["image"]."</pre>"
+							?>
+							<INPUT type='text' name='capcha' value=''>
+							<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'>
+
+							</br>
+							
+							<input type="submit" value="Submit" />		
+
 						</form>
 					</div>
 					
@@ -351,6 +380,8 @@ function startTime(){
 					<br>
 					
 					<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
+					<input style="size:4px;" type="button" value="Reload" onClick="window.location.reload()">
+					
 					<?php
 					$ascii_capcha = __getCAPCHA($__salt);
 					echo "<pre style='font-size:6px;'>".$ascii_capcha["image"]."</pre>"

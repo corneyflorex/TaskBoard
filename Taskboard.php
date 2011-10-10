@@ -120,14 +120,14 @@ class Taskboard {
             case 'Delete single task with normal password': // $input <-- Task ID, Task Password
                 $s_ID = $input[0];
                 $s_pass = $input[1] ;
-                $sql[] = "DELETE FROM tasks WHERE id = " . $s_ID . " AND tripcode=' " . $s_pass . "'";
+                $sql[] = "DELETE FROM tasks WHERE id = " . $s_ID . " AND tripcode='" . $s_pass . "'";
                 break;
             
             default:
                 echo '\n No action taken as there was an unknown delete option chosen for delTaskBy()\n';
                 break;
         }
-        
+		        
         try {
             foreach($sql as $s) {
                 Database::query($s);
@@ -227,7 +227,10 @@ class Taskboard {
      * @return type 
      */
     public function getTasks($tags=array(), $limit=50){
-        if(!is_array($tags)) $tags = array();
+		// string into tag should be placed into an array instead.
+		if (is_string($tags)) {$tags = array($tags);}
+		// if not array, then make it an array
+        if(!is_array($tags)) {$tags = array();}
 
         $sql_tag_labels = array();
         foreach($tags as $t){

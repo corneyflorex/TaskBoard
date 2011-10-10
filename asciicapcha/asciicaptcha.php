@@ -11,7 +11,7 @@ function __getCAPCHA($salt=""){
 	$data = $captcha->create($text);
 	
 	//Grab latest time token array, and place one token into $timetoken
-	$timetoken_array = __timeToken_CAPCHA(0,0,'hour');
+	$timetoken_array = __timeToken_CAPCHA(0,0,'second');
 	$timetoken = $timetoken_array[0];
 	
 	/* Create hash digest */
@@ -26,8 +26,8 @@ function __getCAPCHA($salt=""){
 }
 
 function __checkCAPCHA($answer,$digest,$salt=""){
-	// Grab the last 30 minutes worth of tokens
-	$timetoken_array = __timeToken_CAPCHA(-3,0,'hour');
+	// Grab the last 30 sec worth of tokens
+	$timetoken_array = __timeToken_CAPCHA(-60,0,'second');
 
 	foreach($timetoken_array as $timetoken){
 		// Try to regenerate hash digest
