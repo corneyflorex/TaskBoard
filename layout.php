@@ -308,13 +308,16 @@ function startTime(){
 		<!--JAVASCRIPT CLOCK-->
 		<br />
 		
-		<button id="stopAutoUpdateButton" onclick="tries=0;">Refresh Now</button>
 		
+		<div class="blackbox">
+		<?php include("worldmap.html"); ?>
+		</div>
 		
 		<!--QR CODE - To help encourage acesses by mobile phone-->
 		<div style="text-align:center;" class="blackbox">
 		<b>SCAN ME </b> <a href="http://qrcode.kaywa.com/img.php?s=8&amp;d=http%3A%2F%2F<?php if(isset($_SERVER["SERVER_NAME"]) AND isset($_SERVER["REQUEST_URI"]) )echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];?>">QR Code Image</a> 
-		| <a href='./anonregkit.php' >AnonRegKit</a>
+		| <a href='./anonregkit.php' >AnonRegKit</a> | <button id="stopAutoUpdateButton" onclick="tries=0;">Refresh Now</button>
+
 		</div>
 		<!--QR CODE - To help encourage acesses by mobile phone-->
 
