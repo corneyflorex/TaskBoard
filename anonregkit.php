@@ -158,34 +158,228 @@
 	useful info http://weblogtoolscollection.com/regex/regex.php
 	*/
 	function __postGateKeeper($text,$minWordCount=0,$goodtext=""){		
+	
+		$minimum_intelligence_level = 40;
+	
 		$wordarray = explode(" ",$text);
 		$wordcount = count($wordarray);
+		$intelligence = 6;
 		$stupidity = 0;
+
 		
-		// Minimum word count enforcement ( 0 is infinite)
+		/*
+			Minimum word count enforcement ( 0 is infinite)
+		*/
 		if ( ($minWordCount != 0) && ($minWordCount > $wordcount ) ){
 			return false;
 		}
 		
-		//enforce minimum word standard (English Only at this stage)
-		$stupidwords = array('lol', 'first post', '8=*d', 'cunt', 'dick', 'nigger', 'fuck', 'tits', 'tit', 'screw', 'gtfo');
+		/*
+			deduct points when bad/stupid words is detected
+		*/
+		//add more to the list
+$__string_normalwords = "about after again air all along also an and another any are around as at away back be because been before below between both but by came can come could day did different do does don't down each end even every few find first for found from get give go good great had has have he help her here him his home house how I if in into is it its just know large last left like line little long look made make man many may me men might more most Mr. must my name never new next no not now number of off old on one only or other our out over own part people place put read right said same saw say see she should show small so some something sound still such take tell than that the them then there these they thing think this those thought three through time to together too two under up us use very want water way we well went were what when where which while who why will with word work world would write year you your was able above across add against ago almost among animal answer became become began behind being better black best body book boy brought call cannot car certain change children city close cold country course cut didn't dog done door draw during early earth eat enough ever example eye face family far father feel feet fire fish five food form four front gave given got green ground group grow half hand hard heard high himself however I'll I'm idea important inside John keep kind knew known land later learn let letter life light live living making mean means money morning mother move Mrs. near night nothing once open order page paper parts perhaps picture play point ready red remember rest room run school sea second seen sentence several short shown since six slide sometime soon space States story sun sure table though today told took top toward tree try turn United until upon using usually white whole wind without yes yet young alone already although am America anything area ball beautiful beginning Bill birds blue boat bottom box bring build building built can't care carefully carried carry center check class coming common complete dark deep distance doing dry easy either else everyone everything fact fall fast felt field finally fine floor follow foot friend full game getting girl glass goes gold gone happened having heart heavy held hold horse hot hour hundred ice Indian instead itself job kept language lay least leave let's list longer low main map matter mind Miss moon mountain moving music needed notice outside past pattern person piece plant poor possible power probably problem question quickly quite rain ran real river road rock round sat scientist shall ship simple size sky slowly snow someone special stand start state stay stood stop stopped strong suddenly summer surface system taken talk tall ten that's themselves third tiny town tried voice walk warm watch weather whether wide wild winter within writing written ";
+		
+$__string_stupidwords = <<<STUPIDWORD
+lol
+omg
+l33t
+leet
+arsehole
+arsehole's
+arseholes
+asshole
+asshole's
+assholes
+bullshit
+bullshit's
+bullshits
+bullshitted
+bullshitter
+bullshitter's
+bullshitters
+bullshitting
+bullshitting's
+chickenshit
+chickenshit's
+chickenshits
+cocksucker
+cocksucker's
+cocksuckers
+cock
+cunt
+cunt's
+cunts
+fuck
+fuck's
+fucked
+fucker
+fucker's
+fuckers
+fuckhead
+fuckhead's
+fuckheads
+fucking
+fuckings
+fucks
+horseshit
+horseshit's
+horseshits
+motherfucker
+motherfucker's
+motherfuckers
+motherfucking
+shit
+shit's
+shite
+shite's
+shites
+shitfaced
+shithead
+shithead's
+shitheads
+shitload
+shits
+shitted
+shittier
+shittiest
+shitting
+shitting's
+shitty
+bugger
+bugger's
+buggers
+crap
+crap's
+craped
+craping
+craps
+dick
+dick's
+dicked
+dickens
+dicker
+dickers
+dicking
+dicks
+fart
+fart's
+farted
+farting
+farts
+piss
+pissed
+pisser
+pisses
+pissing
+nigger
+nigger's
+niggered
+niggering
+niggers
+STUPIDWORD;
+		
+		$stupidwords = preg_split( "/( |\n|\r\n)/", $__string_stupidwords );
+		$normalwords = preg_split( "/( |\n|\r\n)/", $__string_normalwords );
+
+		$prevWord_array=array("","","","");
 		foreach ($wordarray as $word){
+			// this wordhash is case insenstive
+			$word = strtolower($word);
+			// strip contractions like "'s" "ing"
+			$word = preg_replace('/\bo\'|y\'all\b|ain\'t\b|n\'t\b|ing\b|s\b|\'[a-z]{1,2}\b/i','',$word);
+			// strip all non alphanumeric char
+			$word = preg_replace('/[^a-zA-Z0-9]/i','',$word);
+			
+			$foundstupid = false;
+			// checks for word filter matches
 			foreach ($stupidwords as $stupidword){
-				$stupidity += preg_match_all('/'.strtolower($stupidword).'/',strtolower($word),$matches);
-				if (strtoupper($word) == $word){
-					$stupidity+=0.1;
-					}
+		
+				// this wordhash is case insenstive
+				$stupidword = strtolower($stupidword);
+				//strip contractions like "'s" "ing"
+				$stupidword = preg_replace('/\bo\'|y\'all\b|ain\'t\b|n\'t\b|ing\b|s\b|\'[a-z]{1,2}\b/i','',$stupidword);
+				//replace typical 'filter evasion chars'
+				$stupidword = str_replace(	array('!','@','#','$','&','(','|','\/\/'),
+											array('s','a','h','s','a','c','i','w'),
+											$stupidword);
+				//check now
+				if(strtolower($stupidword==strtolower($word))){
+					$stupidity += 2; 
+					break;
+				}
+
 			}
+			//
+			//NORMAL WORDS
+			foreach ($normalwords as $normalword){
+		
+				// this wordhash is case insenstive
+				$normalword = strtolower($normalword);
+				//strip contractions like "'s" "ing"
+				$normalword = preg_replace('/\bo\'|y\'all\b|ain\'t\b|n\'t\b|ing\b|s\b|\'[a-z]{1,2}\b/i','',$normalword);
+				//check now
+				if($normalword==strtolower($word)){
+					$intelligence += 3;
+					break;
+				}
+			}
+			if (strtoupper($word) == $word){
+				$stupidity +=2;
+				$foundstupid = true;
+			}
+			//check for duplicate words (if good words not found yet)
+			if($foundstupid){
+				foreach ($prevWord_array as $prevWord){
+					if ( $word == $prevWord ){
+						$stupidity +=1;
+						$foundstupid = true;
+						break;
+					}
+				}	
+			}
+			//increment prev words monitor
+			array_push($prevWord_array, $word);
+			unset($prevWord_array[0]);
+			$prevWord_array = array_values($prevWord_array);
+			
+			if(!$foundstupid){$intelligence +=1;}
 		} 
 		
-		if ($wordcount == 0 ){$wordcount = 1;}
-		echo " ratio:".($stupidity / pow($wordcount,2) ) ;
+		/*
+			now... what is a sign of intelligent posting? for now its just wordcount
+		*/
+		
+		/*
+			Dictionary word system
+		*/
+		try {
+			include("./dictionary/gatekeeper_dictionary.php");
+		} catch (Exception $e) {
+			//echo ('<br/>Note: Gatekeeper Dictionary files are not present' . $e->getMessage()."<br/>");
+		}
 
+		// prevents 'divide by zero' problem
+		if ($wordcount == 0 ){$wordcount = 1;} 
 		
-		if( ($stupidity / pow($wordcount,2) ) > 0.1 ) 
-			{ return false;}
+		/*
+		Intelligence Ratio calculations
+		*/
+		// Basically the stink of stupidity is exponental, while intelligence is gradual.
+		// Makes sense I hope?
+		$intelligenceRatio = ( ( pow($intelligence*(count($wordarray)/2),2) - pow($stupidity*count($wordarray),3) )  )/count($wordarray);
 		
-		
+		//Print out the ratio so people know how well they did
+		echo "<br/> intel rank:".$intelligenceRatio." <br/>" ;
+
+		/*
+			This parts sets minimum intelligences level to pass.
+			It will fail you, if you are below the minimum intelligence rank
+		*/
+		if( $intelligenceRatio < $minimum_intelligence_level ) { return false;}
+		/*
+			Pass the post if no problem is detected by the gatekeeper.
+		*/
 		return true;
 	}
 	
@@ -255,5 +449,8 @@
 		}
 
 	}
+
 	
+		
+
 ?>
