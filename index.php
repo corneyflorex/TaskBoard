@@ -56,6 +56,25 @@ switch($uri_parts[0]){
                  * Submit and process the new task
                  */
                 case 'submitnew':
+					// session system to help store not yet approved 'files'
+					// or images, while capcha is being processed.
+					ini_set("session.use_cookies",0);
+					ini_set("session.use_only_cookies",0);
+					//ini_set("session.use_trans_sid",1);
+					session_start();
+					/*
+						Grab the latest photos and insert into $imageFileBinary
+					*/
+
+					$imageFileBinary = __getImageFile();
+					if ($imageFileBinary == NULL) {
+						if (empty($_SESSION['imageFileBinary'])) {
+							$_SESSION['imageFileBinary'] = NULL;
+						} 
+						$imageFileBinary = $_SESSION['imageFileBinary'];
+					} else {
+						$_SESSION['imageFileBinary'] = $imageFileBinary;
+					}
                     //Only pass though message and title if it is set already
                     if(!isset($_POST['title'], $_POST['message']) || empty($_POST['title']) || empty($_POST['message'])){
                         echo "Missing title and/or message \n";
@@ -89,8 +108,9 @@ switch($uri_parts[0]){
 						?>
 						<br/>
 						<br/>
+						
 						Modify Text:
-							<FORM action='?q=/tasks/submitnew' method='post' >
+							<FORM action='?<?php echo htmlspecialchars(SID); ?>&q=/tasks/submitnew' method='post' >
 						Title*:<BR>		<INPUT type='text' name='title'value='<?php echo $_POST['title'];?>'><BR>	
 						Message*:<br />	<textarea class='' rows=5 name='message'><?php echo $_POST['message'];?></textarea><BR>			
 						Tags:<BR><INPUT type='text' name='tags' value='<?php echo $_POST['tags'];?>'><BR>
@@ -98,7 +118,7 @@ switch($uri_parts[0]){
 							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
 							<INPUT type='hidden' name='keyfile' />
                             <INPUT type='hidden' name='password' value="<?php echo $_POST['password'].__getKeyFile();?>" >
-							<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
+							<b>CAPTCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
 							<?php
 							$ascii_capcha = __getCAPCHA($__salt);
 							echo "<pre style='font-size:7px;'>".$ascii_capcha["image"]."</pre>"
@@ -113,12 +133,21 @@ switch($uri_parts[0]){
 					}
 
 
-                    //Extract tag to array
+                    /*
+					Extract tag to array
+					*/
 					//preg_replace('/[^a-zA-Z0-9\s]/', '', $text) - Removes nonalphanumeric char
                     $s_tag = isset($_POST['tags']) ? preg_replace('/[^a-zA-Z0-9\s]/', '', $_POST['tags']) : "";
 					// turn it into an array
-					$s_tag_array = explode(' ', $s_tag);
-					
+					$s_tag_array_1 = explode(' ', $s_tag);
+					//also extract any hashtags from the message itself
+					if(preg_match_all( '/#(\w+)/', $_POST['title']." ".$_POST['message'] , $pregmatch)){
+						$s_tag_array_2 = $pregmatch[1];
+					}
+					//merge s_tag_array_1 and s_tag_array_2 to s_tag_array
+					$s_tag_array = array_merge( $s_tag_array_1 , $s_tag_array_2 );
+					$s_tag_array = array_unique( $s_tag_array );
+									
                     //Insert password
                     if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR __getKeyFile()!=''){
                         $s_pass=__tripCode($_POST['password'].__getKeyFile());
@@ -130,9 +159,10 @@ switch($uri_parts[0]){
                         echo      "<div style='z-index:100;background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>";
 						echo		__prettyTripFormatter($s_pass);
                     }
-
-                    $newTaskID = $board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag_array);
-                    echo "Post submitted!\n";
+										
+                    $newTaskID = $board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag_array, $imageFileBinary);
+                    echo "Post submitted!<br/>";
+					echo "Tags:".implode(" ",$s_tag_array)."<br/>";
 					echo "<a href='?q=/view/".$newTaskID."'>Click to go to your new task</a>";
 					exit;
                     break;
@@ -272,6 +302,19 @@ switch($uri_parts[0]){
     /*
      * Stuff relating to browsing and searching tasks
      */
+    case 'image':
+		$taskid =$uri_parts[1];
+		
+        if(!is_numeric($uri_parts[1])){Echo "YOU FAIL";exit;}
+        
+		//Retrieve the image and display it
+        $tasks = $board->getTaskFileByID($taskid,'image');
+        break;
+		
+    /*
+     * Stuff relating to browsing and searching tasks
+		basically we view specific task here
+     */
     case 'view':
         $mode = array('tasksView');
 		$taskid =$uri_parts[1];
@@ -340,6 +383,7 @@ switch($uri_parts[0]){
 		exit;
 		break;
 
+		
     /*
      * The default thing we want to do is get tags.
      */

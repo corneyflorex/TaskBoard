@@ -50,6 +50,82 @@
 	}
 	//NOTES FOR IMPROVEMENT: http://crackstation.net/hashing-security.html
 	
+	/*
+		Image MIME type detector (using magic number)
+	*/
+	//Source: http://stackoverflow.com/questions/2207095/get-image-mimetype-from-resource-in-php-gd
+	function __image_file_type_from_binary($binary) {
+		if (
+			!preg_match(
+				'/\A(?:(\xff\xd8\xff)|(GIF8[79]a)|(\x89PNG\x0d\x0a)|(BM)|(\x49\x49(\x2a\x00|\x00\x4a))|(FORM.{4}ILBM))/',
+				$binary, $hits
+			)
+		) {
+			//return 'application/octet-stream';
+			return NULL; // Defaults to this if no matching file is detected.
+			//It was chosen as sometimes people don't choose to upload an image.
+		}
+		static $type = array (
+			1 => 'image/jpeg',
+			2 => 'image/gif',
+			3 => 'image/png',
+			4 => 'image/x-windows-bmp',
+			5 => 'image/tiff',
+			6 => 'image/x-ilbm',
+		);
+		return $type[count($hits) - 1];
+	}
+	
+	//When you want to get the uploaded file for insertation into database as a 'blob'
+	//Source: http://www.sum-it.nl/en200319.php3
+	function __getImageFile($fileSizeLimit=500){
+		if(!empty($_FILES['image']['tmp_name'])){
+			
+			$sPhotoFileName = $_FILES['image']['name']; // get client side file name
+			if ($sPhotoFileName) // file uploaded
+			{	$aFileNameParts = explode(".", $sPhotoFileName);
+				$sFileExtension = end($aFileNameParts); // part behind last dot
+				/*
+				if ($sFileExtension != "jpg"
+					&& $sFileExtension != "JPEG"
+					&& $sFileExtension != "JPG")
+				{	die ("Choose a JPG for the image");
+				}
+				*/
+				$nPhotoSize = $_FILES['image']['size']; // size of uploaded file
+				if ($nPhotoSize == 0)
+				{	die ("Sorry. The upload of $sPhotoFileName has failed.
+			Search a image smaller than 100K, using the button.");
+				}
+				if ($nPhotoSize > $fileSizeLimit*1024)
+				{	die ("Sorry.
+			The file $sPhotoFileName is larger than $fileSizeLimit kb.
+			Advice: reduce the photo using a drawing tool.");
+				}
+
+				// read image
+				$sTempFileName = $_FILES['image']['tmp_name']; // temporary file at server side
+				$oTempFile = fopen($sTempFileName, "r");
+				$sBinaryImage = fread($oTempFile, fileSize($sTempFileName));
+
+				// Try to read image
+				$nOldErrorReporting = error_reporting(E_ALL & ~(E_WARNING)); // ingore warnings
+				$oSourceImage = imagecreatefromstring($sBinaryImage); // try to create image
+				error_reporting($nOldErrorReporting);
+
+				if (!$oSourceImage) // error, image is not a valid jpg
+				{ echo "Sorry.
+			It was not possible to read image $sPhotoFileName.
+			Choose another photo in JPG format.";
+					return NULL;
+				}else{
+					return $sBinaryImage;
+				}
+			}
+		}else{return NULL;}
+	}
+
+	
 	//Try using crypt() instead lol
 	// Usage __getHaser($username.$userpassword.__getKeyFile(),$salt)
 	function __getHasher($password,$salt='Add Your Site Specific Hash Here'){
@@ -148,7 +224,8 @@
 		$text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r< ]*)#", "\\1<a rel=\"nofollow\" href=\"http://\\2\" target=\"_blank\">\\2</a>", $text);
 		$text = preg_replace("/@(\w+)/", "<a rel=\"nofollow\" href=\"http://www.twitter.com/\\1\" target=\"_blank\">@\\1</a>", $text);
 		$text = preg_replace("/#(\w+)/", "<a rel=\"nofollow\" href=\"?q=/tags/\\1\" target=\"_blank\">#\\1</a>", $text);
-
+		$text = preg_replace("/&gt;&gt;([0-9]+)\b/i", "<a rel=\"nofollow\" href=\"#\\1\" >>>\\1</a>", $text);
+		$text = preg_replace("/\/\/(\w+)/", "<span style='color:green;font-style:bold;'>//\\1</span>", $text);
 		return $text; 
 	} 
 	

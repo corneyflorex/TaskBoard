@@ -35,7 +35,7 @@ class Taskboard {
      * @param type $tags The tags this task contains
      * @return type The task id
      */
-    public function createTask($tripcode, $title, $message, $tags){
+    public function createTask($tripcode, $title, $message, $tags, $imageBinary = NULL, $fileBinary = NULL){
         //Create the array we will store in the database
         $data = array(
             'created' => time(),
@@ -43,7 +43,10 @@ class Taskboard {
             'title' => $title,
             'message' => $message,
             'tripcode' => $tripcode,
-            'status' => $this::TASK_OPEN
+            'status' => $this::TASK_OPEN,
+            'image' => $imageBinary,
+			'imagetype' => __image_file_type_from_binary($imageBinary),
+            'file' => $fileBinary
         );
 
         //Data types to put into the database
@@ -53,7 +56,10 @@ class Taskboard {
             'STR',
             'STR',
             'STR',
-            'INT'
+            'INT',
+			'LARGEOBJECT',
+			'STR',
+			'LARGEOBJECT'
         );
 
         //Insert the data
@@ -229,7 +235,7 @@ class Taskboard {
      * @return type 
      */
     public function getTaskByID($id=''){
-        $sql = "SELECT DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title, tasks.message FROM tasks WHERE tasks.id = $id LIMIT 1";
+        $sql = "SELECT DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title, tasks.message, tasks.imagetype FROM tasks WHERE tasks.id = $id LIMIT 1";
 
         try {
             $rs = Database::query($sql);
@@ -241,6 +247,67 @@ class Taskboard {
         if(!$rs) return array();
         return $rs;
     }
+	
+    /**
+     * Either display an image or show a file from a task id.
+     * 
+     * @param type $id
+     * @return type 
+     */
+    public function getTaskFileByID($id='',$mode='image'){
+		switch($mode){
+			case "image":
+				$sql = "SELECT DISTINCT tasks.image, tasks.imagetype FROM tasks WHERE tasks.id = $id LIMIT 1";
+				break;
+			case "file":
+				$sql = "SELECT DISTINCT tasks.image FROM tasks WHERE tasks.id = $id LIMIT 1";
+				break;
+		}
+
+		//Input value
+		$data = array(
+			'id' => $id,
+		);
+		//Data types of query input
+		$dataType = array(
+			'INT',
+		);
+		
+        try {
+            $rs = Database::query($sql);
+        } catch (Eception $e){
+            echo "SQL ERROR! Something in the database has borked up..."; exit;
+        }
+
+        // If something failed.. return no tasks
+        if(!$rs) {echo "SQL ERROR! Does the file actually exist?";exit;}
+		
+		$file_assoc_array = $rs[0];
+		
+		switch($mode){
+			case "image":
+				$binary = $file_assoc_array['image'];
+				$mimetype = $file_assoc_array['imagetype'];
+				// Set headers
+				header("Cache-Control: public");
+				header("Content-Type: $mimetype");
+				echo $binary;
+				break;
+			case "file":
+				$binary = $file_assoc_array['file'];
+				$filename = $file_assoc_array['filename'];
+				// Set headers
+				header("Cache-Control: public");
+				header("Content-Description: File Transfer");
+				header("Content-Disposition: attachment; filename=$filename");
+				header("Content-Type: application/octet-stream");
+				header("Content-Transfer-Encoding: binary");
+				echo $binary;
+				break;
+		}
+		
+		exit;
+		}
 
     /**
      * Get a list of tasks (optional tag search)
@@ -341,6 +408,10 @@ created INTEGER ,
 bumped INTEGER ,
 title VARCHAR(100),
 message VARCHAR(2000),
+image BLOB,
+imagetype VARCHAR(100),
+file BLOB,
+filename VARCHAR(100),
 PRIMARY KEY (id)
 );
 SQL;
@@ -382,10 +453,14 @@ intinfo INTEGER,
 created INTEGER
 );";
 				break;
-			/*SQLite END*/
+			/*
+				SQLite END
+			*/
 		    
 			
-			/*MYSQL VERSION*/
+			/*
+				MYSQL VERSION
+			*/
 			default:
 			case "mysql":
 				$sql[] = <<<SQL
@@ -397,6 +472,10 @@ created INT ,
 bumped INT ,
 title VARCHAR(100),
 message VARCHAR(2000),
+image BLOB,
+imagetype VARCHAR(100),
+file BLOB,
+filename VARCHAR(100),
 PRIMARY KEY (id)
 );
 SQL;

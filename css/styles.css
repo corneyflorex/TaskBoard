@@ -17,12 +17,12 @@ body { font-family: Arial, "Sans-Serif", "Sans Serif"; font-size:14px; backgroun
 button{border-radius: 10px; background-color: rgb(13, 72, 90); border-color: rgb(104, 128, 210);}
 
 /*Standard Black Box for any non list content*/
-.blackbox { margin-top:2px; padding:10px; border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
-.greybox {  margin-top:2px; padding:10px; border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #505050}
-.timebox {  margin-top:2px; padding:10px; border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #505050}
+.blackbox {box-shadow: 0px 0px 5px #888; margin-top:2px; padding:10px; border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
+.greybox {box-shadow: 0px 0px 5px #888; margin-top:2px; padding:10px; border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #505050}
+.timebox {box-shadow: 0px 0px 5px #888; margin-top:2px; padding:10px; border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #505050}
 
 /*Header*/
-#header {  margin-top:10px; background-color:#7d7d7d; color: #C6C6C6}
+#header {box-shadow: 0px 0px 5px #888; margin-top:10px; background-color:#7d7d7d; color: #C6C6C6}
 
 /*SVG BG*/
 #svgBackground {
@@ -50,7 +50,8 @@ button{border-radius: 10px; background-color: rgb(13, 72, 90); border-color: rgb
 	margin-top:2px;
 	border-bottom: 1px solid gray;
 	border-radius: 10px;
-	background-color:#ababab;
+	box-shadow: 0px 0px 5px #888; 
+	/*background-color:#ababab;*/
 }
 /*Task 1*/
 .tasklist .task0{
@@ -60,6 +61,7 @@ button{border-radius: 10px; background-color: rgb(13, 72, 90); border-color: rgb
 	color: #515151;
 	background-color:#ababab;
 	border-radius: 10px;
+	box-shadow: 0px 0px 5px #888; 
 	/*border-bottom:2px;*/
 }
 .tasklist .task0 .title { display:block; font-weight:bold; }

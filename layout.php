@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title> TaskBoard</title>
-<link rel="stylesheet" media="screen and (min-width: 480px)" href="css/styles.css" type="text/css" />
-<link rel="stylesheet" media="screen and (max-width: 480px)" href="css/mobile.css" type="text/css" />
+<link rel="stylesheet" media="screen and (min-width: 600px)" href="css/styles.css" type="text/css" />
+<link rel="stylesheet" media="screen and (max-width: 600px)" href="css/mobile.css" type="text/css" />
 
 <script type="text/javascript" >
 
@@ -165,7 +165,18 @@ function startTime(){
 		<?php if (in_array("tasksView", $mode)) { ?>
 		<div class="tasklist">
 			<?php foreach($tasks as $task){ ?>
-					<div class="task1">
+			
+					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="blackbox">
+						<a style="color:grey;" href="#OP">View Authors Message</a>
+					</div>
+					
+					<?php if($task['imagetype'] != NULL){ ?>
+					<div style="text-align:center;" class="blackbox">
+						<a href="?q=/image/<?php echo $task['task_id']; ?>"><img border="0" src="?q=/image/<?php echo $task['task_id']; ?>" alt="Pulpit rock" width="100%" /></a>
+					</div>
+					<?php } ?>
+					
+					<div id="OP" class="task1">
 						<?php echo __prettyTripFormatter($task['tripcode']);?>
 						<span class="title"><?php echo htmlentities(stripslashes($task['title'])); ?> </span>
 						<span><?php echo date('F j, Y, g:i a', $task['created']);?></span>
@@ -175,6 +186,14 @@ function startTime(){
 					</div>
 					<div class="task1">
 						<a href="http://tinychat.com/<?php echo md5($task['message']);?>" target="_blank">Conference via TinyChat - click here</a>
+					</div>
+					
+					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="blackbox">
+						<a style="color:grey;" href="#add_comment">Post Comment</a>
+					</div>
+					
+					<div id="commentDIV" >
+						<?php echo __commentDisplay($comments);?>
 					</div>
 
 					<div class="greybox" id="add_comment">
@@ -206,11 +225,6 @@ function startTime(){
 						</form>
 					</div>
 					
-					<div id="commentDIV" >
-						<?php echo __commentDisplay($comments);?>
-					</div>
-
-					
 					<br />
 					<div class="greybox">
 						Task Administration
@@ -237,8 +251,6 @@ function startTime(){
 					<a href="?q=/tasks/new">Post new task here</a>
 				<?php }?>
 			</div>
-			
-			
 			
 			<div id="taskDIV" class="tasklist">
 				<?php echo __taskDisplay($tasks);?>
@@ -272,9 +284,12 @@ function startTime(){
 			<br />
 			<FORM action='?q=/tasks/submitnew' method='post' enctype='multipart/form-data'>
 				<P>
-					Title*:<br />		<INPUT type='text' name='title'value=''><br />	
-					Message*:<br />	<textarea class='' rows=5 name='message'></textarea><br />			
+					Title*:<br /> <INPUT type='text' name='title'value=''><br />	
+					Message*:<br />	<textarea class='' rows=10 name='message'></textarea><br />			
 					Tags:<BR><INPUT type='text' name='tags' value='<?php if(isset($_GET['tag'])){echo $_GET['tag'];}?>'><br />
+					<label for='file'>Image:</label><br /> <input type='file' name='image' />
+					<br />
+					<br /> Authentication (No Registration Required):
 					<br /> <label for='file'>KeyFile:</label><br /> <input type='file' name='keyfile' />
 					<br /> <label>Password:</label><br /> <INPUT type='text' name='password'value=''><br />
 					<br />

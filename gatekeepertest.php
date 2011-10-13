@@ -10,6 +10,9 @@ if ( isset($_POST["text"]) ){
 		}else{
 		echo "epic fail";
 		}
+	if(preg_match_all( '/#(\w+)/', $_POST["text"] , $pregmatch)){
+		var_dump($pregmatch[1]);
+	}
 }
 
 ?>

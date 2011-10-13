@@ -38,10 +38,6 @@ class Database {
 		self::$db = self::$pool[$mode];
 	}
 	
-	
-	
-	
-
 
 	static function query($sql, $data=array(),$type=array()){
 		$cmd = strtoupper(strtok($sql, ' '));
@@ -77,6 +73,9 @@ class Database {
 							break;
 						case 'BOOL':
 							$valueType=PDO::PARAM_BOOL;
+							break;
+						case 'LARGEOBJECT':
+							$valueType=PDO::PARAM_LOB;
 							break;
 						default:
 						case 'STR':
@@ -158,6 +157,9 @@ class Database {
 							break;
 						case 'BOOL':
 							$valueType=PDO::PARAM_BOOL;
+							break;						
+						case 'LARGEOBJECT':
+							$valueType=PDO::PARAM_LOB;
 							break;
 						default:
 						case 'STR':
