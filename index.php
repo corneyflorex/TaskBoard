@@ -141,8 +141,11 @@ switch($uri_parts[0]){
 					// turn it into an array
 					$s_tag_array_1 = explode(' ', $s_tag);
 					//also extract any hashtags from the message itself
-					if(preg_match_all( '/#(\w+)/', $_POST['title']." ".$_POST['message'] , $pregmatch)){
-						$s_tag_array_2 = $pregmatch[1];
+					$hashtagmatch = preg_match_all( '/#(\w+)/', $_POST['title']." ".$_POST['message'] , $pregmatch);
+					if($hashtagmatch){
+						 $s_tag_array_2 = $pregmatch[1];
+					}else{
+						$s_tag_array_2 = array();
 					}
 					//merge s_tag_array_1 and s_tag_array_2 to s_tag_array
 					$s_tag_array = array_merge( $s_tag_array_1 , $s_tag_array_2 );
