@@ -14,9 +14,7 @@
 		header("Content-Type: text/plain; charset=utf-8");
 		$break=Explode('/',$_SERVER["SCRIPT_NAME"]);
 		$pfile=$break[count($break)-1];
-		$fh=fopen($pfile,"rb");
-		echo fread($fh,1000000);
-		fclose($fh);
+		readfile($pfile);
 		exit();
 	}
 	//95CHAR############################################################################95CHAR

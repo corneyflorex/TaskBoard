@@ -290,6 +290,7 @@ class Taskboard {
 				$mimetype = $file_assoc_array['imagetype'];
 				// Set headers
 				header("Cache-Control: public");
+				header("Expires: " . date(DATE_RFC822,strtotime(" 1 day")));
 				header("Content-Type: $mimetype");
 				echo $binary;
 				break;
