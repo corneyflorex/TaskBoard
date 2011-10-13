@@ -367,7 +367,7 @@ STUPIDWORD;
 		*/
 		// Basically the stink of stupidity is exponental, while intelligence is gradual.
 		// Makes sense I hope?
-		$intelligenceRatio = ( ( pow($intelligence*(count($wordarray)/2),2) - pow($stupidity*count($wordarray),3) )  )/count($wordarray);
+		$intelligenceRatio = ( ( pow($intelligence*(count($wordarray)/2),2) - $stupidity*count($wordarray) )  )/count($wordarray);
 		
 		//Print out the ratio so people know how well they did
 		echo "<br/> intel rank:".$intelligenceRatio." <br/>" ;

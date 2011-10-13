@@ -71,17 +71,25 @@ switch($uri_parts[0]){
 					};
 
 					// Also it must pass the capcha test
+					$firstuse=false;
                     if(!isset($_POST['capcha'], $_POST['digest']) || empty($_POST['capcha']) || empty($_POST['digest'])){
-                        echo "Missing CAPCHA Answer \n";
-                        exit;
+                        echo "Answer the capcha challege <br/>";
+						$firstuse = true;
                     }
 					$answer = $_POST["capcha"];
 					$digest = $_POST["digest"];
 					if( __checkCAPCHA($answer,$digest,$__salt) ){
-						echo "Capcha Vaid<br />";
+						echo "Capcha Vaid <br/>";
 					}else{
-						echo "Capcha Answer Invalid. Did you type it incorrectly? Or did you take too long to answer the CAPCHA?";
+						if($firstuse){
+						echo "Please Enter The Captcha Code:";
+						}else{
+						echo "Last Captcha code was either invalid. Or you took too long to answer. try again!";
+						}
 						?>
+						<br/>
+						<br/>
+						Modify Text:
 							<FORM action='?q=/tasks/submitnew' method='post' >
 						Title*:<BR>		<INPUT type='text' name='title'value='<?php echo $_POST['title'];?>'><BR>	
 						Message*:<br />	<textarea class='' rows=5 name='message'><?php echo $_POST['message'];?></textarea><BR>			
@@ -142,17 +150,25 @@ switch($uri_parts[0]){
                     }
 					
 					// Also it must pass the capcha test
+					$firstuse=false;
                     if(!isset($_POST['capcha'], $_POST['digest']) || empty($_POST['capcha']) || empty($_POST['digest'])){
-                        echo "Missing CAPCHA Answer \n";
-                        exit;
+                        echo "Answer the capcha challege <br/>";
+						$firstuse = true;
                     }
 					$answer = $_POST["capcha"];
 					$digest = $_POST["digest"];
 					if( __checkCAPCHA($answer,$digest,$__salt) ){
-						echo "Capcha Vaid<br />";
+						echo "Capcha Vaid <br/>";
 					}else{
-						echo "Capcha Answer Invalid. Did you type it incorrectly? Or did you take too long to answer the CAPCHA?";
+						if($firstuse){
+						echo "Please Enter The Captcha Code:";
+						}else{
+						echo "Last Captcha code was either invalid. Or you took too long to answer. try again!";
+						}
 						?>
+						<br/>
+						<br/>
+						Modify Text:
 						<form name="add_comment" action="?q=/tasks/comment/<?php echo $_POST['taskID']; ?>" method="post" >
 							<textarea id="comment" name="comment"><?php echo $_POST['comment'];?></textarea>
 							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
@@ -290,6 +306,36 @@ switch($uri_parts[0]){
         $tasks = $board->getTasks($tags);
 		
 		echo __taskDisplay($tasks);
+		
+		exit;
+		break;
+		
+	case 'tasksembed':
+		
+		if (isset($_GET['tags'])){
+		$tags = explode(',', $_GET['tags']);
+		}else{
+		$tags = array();
+		}
+		
+        //Retrieve latest comment
+        $tasks = $board->getTasks($tags);
+		
+		?>
+		<!DOCTYPE html>
+		<html>
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="css/styles.css" type="text/css" />
+		</head>
+		<body>
+		<div id="taskDIV" class="tasklist">
+		<?php
+		echo __taskDisplay($tasks);
+		?>
+		</div>
+		</body>
+		<?php
 		
 		exit;
 		break;

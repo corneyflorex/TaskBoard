@@ -100,7 +100,7 @@
 					<span style='float:right;'>".date('M j, Y', $task['created'])."</span>
 					<span style='float:right;clear:right;'>"."<b>".__humanTiming ($task['bumped'])." ago</b>"."</span>
 					<span class='title'>
-						<a href='?q=/view/".$task['task_id']."' >".substr(htmlentities(stripslashes($task['title'])),0,40)."</a>
+						<a target='_top' href='?q=/view/".$task['task_id']."' >".substr(htmlentities(stripslashes($task['title'])),0,40)."</a>
 					</span>
 					<span class='message'>".__cut_text( htmlentities(stripslashes($task['message'])) , 100 )."</span>
 				</div>";

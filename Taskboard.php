@@ -109,28 +109,51 @@ class Taskboard {
         switch($delType){
             case 'Delete a post':    // $input <-- post ID
                 $s_id = $input[0];
-                $sql[] = "DELETE FROM tasks WHERE id = " . $s_id;
+                $sql[] = "DELETE FROM tasks WHERE id = ?";
+				$data[] = array( $s_id );
+                $sql_data[] = array(
+                    'id' => $s_id,
+                );
+                $sql_type[] = array(
+                    'INT'
+                );
+				
                 break;
 
             case 'Delete all post by trip':    // $input <-- Tripcode name ##DANGER## This will delete everything done by a poster
                 $s_pass = $input[0];
-                $sql[] = "DELETE FROM tasks WHERE tripcode =  " . $s_pass;
+                $sql[] = "DELETE FROM tasks WHERE tripcode =  ?";
+				$sql_data[] = array(
+                    'tripcode' => $s_pass,
+                );
+                $sql_type[] = array(
+                    'STR'
+                );
                 break;
 
             case 'Delete single task with normal password': // $input <-- Task ID, Task Password
                 $s_ID = $input[0];
                 $s_pass = $input[1] ;
-                $sql[] = "DELETE FROM tasks WHERE id = " . $s_ID . " AND tripcode='" . $s_pass . "'";
+                $sql[] = "DELETE FROM tasks WHERE id = ? AND tripcode= ?";
+				$sql_data[] = array(
+                    'id' => $s_ID,
+                    'tripcode' => $s_pass,
+                );
+                $sql_type[] = array(
+                    'INT',
+                    'STR'
+                );
                 break;
             
             default:
                 echo '\n No action taken as there was an unknown delete option chosen for delTaskBy()\n';
                 break;
         }
-		        
+		     
+			 
         try {
-            foreach($sql as $s) {
-                Database::query($s);
+            foreach($sql as  $row_num => $s) {
+                Database::query($s,$sql_data[$row_num],$sql_type[$row_num]);
                 echo 'Delete command sent';
             }
         } catch(PDOException $e) {
@@ -424,5 +447,12 @@ created INT
         foreach($sql as $s) {
             Database::query($s);
         }
+		
+		/*
+		// hmmm... should i use prepare statements for making tables?
+		foreach($sql as $s => $row_num){
+			query($s, $data[$row_num],$type=array());
+		}
+		*/
     }
 }
