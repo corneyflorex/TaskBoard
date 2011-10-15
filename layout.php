@@ -130,11 +130,11 @@ function startTime(){
 		<?php if($__debug) echo "<div style='width:100%;background-color:darkred;'>This is a development preview of TaskBoard. <br/>
 		Please help out with making it better by contributing to <a href='https://github.com/corneyflorex/TaskBoard'>here</a> </div>"?>
 		
-		<?php if (in_array("tasksList", $mode)) {echo __tagPageMessage($mode,$tags,$__tagPageArray); }?>
+
 	
 		<div id='header' class='greybox'>
 			<!--Title or logo & Navigation links-->
-			<b><a style="font-size:2em;text-decoration:none" href="?">TASKBOARD</a> </b>| <a href="?q=/tasks/search">Search</a> | <a href="?q=/tasks/new">New task</a>
+			<b><a style="font-size:2em;text-decoration:none" href="?">TASKBOARD</a>
 			<!--Title or logo-->
 			
 			<!-- Perm Tags Board -->
@@ -160,6 +160,28 @@ function startTime(){
 			</div>
 			<!--Most commonly accessed tags this week-->
 		</div>
+		
+		<!--Admin message-->
+		<?php if (in_array("tasksList", $mode)) {echo __tagPageMessage($mode,$tags,$__tagPageArray); }?>
+		
+		<!--Navigation-->
+		<div style="text-align:center" class="greybox">
+			|
+			<a href="?q=/tasks/new">New task</a>
+			| 
+			<a href="?q=/tasks/search">Search</a>
+			|											
+			<?php if (in_array("tasksList", $mode)) { ?>
+					<?php if (!empty($tags)){?>
+						<a href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
+					<?php } else {?>
+						<a href="?q=/tasks/new">Post new task here</a>
+					<?php }?>
+			|
+			<?php } ?>
+			<a href="?q=/rss">Search</a>
+			|
+		</div>		
 		
 		<!--TaskView-->
 		<?php if (in_array("tasksView", $mode)) { ?>
@@ -188,7 +210,7 @@ function startTime(){
 						<a href="http://tinychat.com/<?php echo md5($task['message']);?>" target="_blank">Conference via TinyChat - click here</a>
 					</div>
 					
-					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="blackbox">
+					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="greybox">
 						<a style="color:grey;" href="#add_comment">Post Comment</a>
 					</div>
 					
@@ -243,14 +265,6 @@ function startTime(){
 		
 		<!--List of task-->
 		<?php if (in_array("tasksList", $mode)) { ?>
-		
-			<div style="text-align:center" class="greybox">
-				<?php if (!empty($tags)){?>
-					<a href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
-				<?php } else {?>
-					<a href="?q=/tasks/new">Post new task here</a>
-				<?php }?>
-			</div>
 			
 			<div id="taskDIV" class="tasklist">
 				<?php echo __taskDisplay($tasks);?>
