@@ -1,4 +1,16 @@
 <?php
+
+// Deals with the annoying problem of 'get_magic_quotes_gpc' in some shared hosting
+// Source: http://stackoverflow.com/questions/517008/how-to-turn-off-magic-quotes-on-shared-hosting
+if (get_magic_quotes_gpc() === 1)
+{
+    $_GET = json_decode(stripslashes(json_encode($_GET, JSON_HEX_APOS)), true);
+    $_POST = json_decode(stripslashes(json_encode($_POST, JSON_HEX_APOS)), true);
+    $_COOKIE = json_decode(stripslashes(json_encode($_COOKIE, JSON_HEX_APOS)), true);
+    $_REQUEST = json_decode(stripslashes(json_encode($_REQUEST, JSON_HEX_APOS)), true);
+}
+
+
 //Initialize required files
 require("settings.php");
 require("LayoutEngine.php");
@@ -6,6 +18,7 @@ require("Database.php");
 require("Taskboard.php");
 require("anonregkit.php");
 require("./asciicapcha/asciicaptcha.php");
+
 
 //Open up the database connection
 Database::openDatabase('rw', $config['database']['dsn'], $config['database']['username'], $config['database']['password']);
