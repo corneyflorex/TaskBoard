@@ -134,7 +134,7 @@ function startTime(){
 	
 		<div id='header' class='greybox'>
 			<!--Title or logo & Navigation links-->
-			<b><a style="font-size:2em;text-decoration:none" href="?">TASKBOARD</a>
+			<a style="font-size:2em;text-decoration:none" href="?">TASKBOARD</a>
 			<!--Title or logo-->
 			
 			<!-- Perm Tags Board -->
