@@ -179,7 +179,7 @@ function startTime(){
 					<?php }?>
 			|
 			<?php } ?>
-			<a href="?q=/rss">Search</a>
+			<a href="?q=/rss">RSS</a>
 			|
 		</div>		
 		
