@@ -303,7 +303,7 @@ switch($uri_parts[0]){
         break;
 
     /*
-     * Stuff relating to browsing and searching tasks
+     * Get Image from a task and print it out to user.
      */
     case 'image':
 		$taskid =$uri_parts[1];
@@ -386,6 +386,68 @@ switch($uri_parts[0]){
 		exit;
 		break;
 
+	case 'rss':
+		
+		if (isset($_GET['tags'])){
+		$tags = explode(',', $_GET['tags']);
+		}else{
+		$tags = array();
+		}
+		
+		//XML headers
+		$rssfeed = '<?xml version="1.0" encoding="ISO-8859-1"?>';
+		$rssfeed .= "\n";
+		$rssfeed .= '<rss version="2.0">';
+		$rssfeed .= "\n";
+		$rssfeed .= '<channel>';
+		$rssfeed .= "\n";
+		$rssfeed .= '<title>Anon TaskBoard</title>';
+		$rssfeed .= "\n";
+		$rssfeed .= '<link>http://nero.secondsource.info/taskboard</link>';
+		$rssfeed .= "\n";
+		$rssfeed .= '<description>This is the RSS feed for our Anon TaskBoard</description>';
+		$rssfeed .= "\n";
+		$rssfeed .= '<language>en-us</language>';
+		$rssfeed .= "\n";
+		$rssfeed .= '<copyright>Anons 4 Anons</copyright>';
+		$rssfeed .= "\n\n\n";
+
+		
+        //Retrieve latest comment
+        $tasks = $board->getTasks($tags);
+
+		foreach($tasks as $rowtask) {	
+			// link dir detector
+			$url = $_SERVER['REQUEST_URI']; //returns the current URL
+			$parts = explode('/',$url);
+			$linkdir = $_SERVER['SERVER_NAME'];
+			for ($i = 0; $i < count($parts) - 2; $i++) {
+			 $linkdir .= $parts[$i] . "/";
+			}
+			//RSS entry
+			$rssfeed .= '<item>';
+					$rssfeed .= "\n";
+			$rssfeed .= '<title>(Trip:' . preg_replace('/[^a-zA-Z0-9\s]/', '', $rowtask['tripcode']).") - ".preg_replace('/[^a-zA-Z0-9\s]/', '', $rowtask['title'] ). '</title>';
+					$rssfeed .= "\n";
+			$rssfeed .= '<description>'.preg_replace('/[^a-zA-Z0-9\s]/', '',str_replace(array("\r\n", "\r", "\n", "\t"), ' ', htmlentities(stripslashes($rowtask['message']))) ). '</description>';
+					$rssfeed .= "\n";
+			if(isset($_SERVER["SERVER_NAME"])){
+				$rssfeed .= '<link>http://'.$linkdir.'?q=/view/'.$rowtask['task_id'].'</link>';
+					$rssfeed .= "\n";
+			}
+			$rssfeed .= '<pubDate>' . date("D, d M Y H:i:s O", strtotime($rowtask['created'])) . '</pubDate>';
+					$rssfeed .= "\n";
+			$rssfeed .= '</item>';
+					$rssfeed .= "\n\n";
+		}
+	 
+		$rssfeed .= '</channel>';
+		$rssfeed .= '</rss>';
+	 
+		echo $rssfeed;		
+
+		exit;
+		break;
 		
     /*
      * The default thing we want to do is get tags.
