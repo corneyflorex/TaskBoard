@@ -34,7 +34,21 @@ button{ background-color: rgb(13, 72, 90); border-color: rgb(104, 128, 210);}
 .tagcloud { font-size: 85%; }
 
 /*Header*/
-#header { background-color:#3d3d3d; color: #D6D6D6; padding: 10px; text-align: center; border-bottom: 1px solid #333;}
+#header { background-color:#3d3d3d; color: #D6D6D6; padding: 10px; text-align: center; border-bottom: 1px solid #333;
+background-image: linear-gradient(bottom, rgb(107,107,107) 0%, rgb(71,71,71) 67%);
+background-image: -o-linear-gradient(bottom, rgb(107,107,107) 0%, rgb(71,71,71) 67%);
+background-image: -moz-linear-gradient(bottom, rgb(107,107,107) 0%, rgb(71,71,71) 67%);
+background-image: -webkit-linear-gradient(bottom, rgb(107,107,107) 0%, rgb(71,71,71) 67%);
+background-image: -ms-linear-gradient(bottom, rgb(107,107,107) 0%, rgb(71,71,71) 67%);
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(107,107,107)),
+	color-stop(0.67, rgb(71,71,71))
+)
+}
 
 /* Elements */
 .tasklist .task{
