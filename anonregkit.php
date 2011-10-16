@@ -223,7 +223,7 @@
 		$text = preg_replace("/@(\w+)/", "<a rel=\"nofollow\" href=\"http://www.twitter.com/\\1\" target=\"_blank\">@\\1</a>", $text);
 		$text = preg_replace("/#(\w+)/", "<a rel=\"nofollow\" href=\"?q=/tags/\\1\" target=\"_blank\">#\\1</a>", $text);
 		$text = preg_replace("/&gt;&gt;([0-9]+)\b/i", "<a rel=\"nofollow\" href=\"#\\1\" >>>\\1</a>", $text);
-		$text = preg_replace("/\/\/(\w+)/", "<span style='color:green;font-style:bold;'>//\\1</span>", $text);
+		//$text = preg_replace("/\/\/(\w+)/", "<span style='color:green;font-style:bold;'>//\\1</span>", $text);
 		return $text; 
 	} 
 	
