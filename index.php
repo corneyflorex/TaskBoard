@@ -23,7 +23,7 @@ require("LayoutEngine.php");
 require("Database.php");
 require("Taskboard.php");
 require("anonregkit.php");
-require("./asciicaptcha/asciicaptcha.php");
+//require("./asciicaptcha/asciicaptcha.php");
 
 
 //Open up the database connection
@@ -203,7 +203,6 @@ switch($uri_parts[0]){
 						$_SESSION['security_code'] = "";
 						$first = true;
 					}
-					
 				   if( $_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ) ) {
 						echo 'Your captcha code was valid.';
 						unset($_SESSION['security_code']);
@@ -218,7 +217,7 @@ switch($uri_parts[0]){
 						<br/>
 						<br/>
 						Modify Text:
-						<form name="add_comment" action="?q=/tasks/comment/<?php echo $_POST['taskID']; ?>" method="post" >
+						<form name="add_comment" action="?<?php echo htmlspecialchars(SID); ?>&q=/tasks/comment/<?php echo $_POST['taskID']; ?>" method="post" >
 							<textarea id="comment" name="comment"><?php echo $_POST['comment'];?></textarea>
 							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
 							<INPUT type='hidden' name='keyfile' />

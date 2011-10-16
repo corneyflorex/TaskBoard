@@ -229,14 +229,6 @@ function startTime(){
                             Password: <INPUT type='text' name='password' >
 							<br />
 							<br />
-							<!--
-							<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
-							<?php
-							$ascii_capcha = __getCAPCHA($__salt);
-							echo "<pre style='font-size:6px;'>".$ascii_capcha["image"]."</pre>"
-							?>
-							<INPUT type='text' name='capcha' value=''>
-							-->
 							<INPUT type='hidden' name='capcha' value=''>
 							<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'>
 
@@ -307,17 +299,6 @@ function startTime(){
 					<br /> <label for='file'>KeyFile:</label><br /> <input type='file' name='keyfile' />
 					<br /> <label>Password:</label><br /> <INPUT type='text' name='password'value=''><br />
 					<br />
-					<!--
-					<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
-					<?php
-					$ascii_capcha = __getCAPCHA($__salt);
-					echo "<pre style='font-size:7px;'>".$ascii_capcha["image"]."</pre>"
-					?>
-					<INPUT type='text' name='capcha' value=''>
-					-->
-					<INPUT type='hidden' name='capcha' value=''>
-					<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'> 
-					
 					<br />
 					'*' = Must be filled in
 					<br /><INPUT type='submit' value='Send'> <INPUT type='reset'>
