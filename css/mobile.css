@@ -12,7 +12,9 @@ ul li { margin-left:3em; }
 
 
 /* Styling */
-body { font-family: Arial, "Sans-Serif", "Sans Serif"; font-size:14px; background-color:black; color:#F5F5F5; }
+body { font-family: Arial, "Sans-Serif", "Sans Serif"; font-size:14px; background-color:black; color:#F5F5F5; 
+}
+
 
 button{ background-color: rgb(13, 72, 90); border-color: rgb(104, 128, 210);}
 
@@ -28,26 +30,6 @@ button{ background-color: rgb(13, 72, 90); border-color: rgb(104, 128, 210);}
 
 /*Header*/
 #header { background-color:#3d3d3d; color: #D6D6D6; padding: 10px; text-align: center; border-bottom: 1px solid #333;}
-
-/*SVG BG*/
-#svgBackground {
-	position: absolute;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
-	overflow: hidden;
-	z-index: 1
-}
-.contentBox{
-	position: absolute;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
-	overflow: auto;
-	z-index: 2
-}
 
 /* Elements */
 .tasklist .task{

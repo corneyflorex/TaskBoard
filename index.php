@@ -341,6 +341,7 @@ switch($uri_parts[0]){
 					if (array_key_exists($s_array[1],$__superModeratorByTrip)){
 						$command = 'Delete a post';
 						$board->delTaskBy($command,$s_array);
+						break;
 					}
 					
 					/*
