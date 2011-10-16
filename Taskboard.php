@@ -289,8 +289,9 @@ class Taskboard {
 				$binary = $file_assoc_array['image'];
 				$mimetype = $file_assoc_array['imagetype'];
 				// Set headers
-				$maxage = 60*60*12*3; //one day
-				header("Cache-Control: max-age=".$maxage." ");
+				header("Cache-Control: private, max-age=10800, pre-check=10800");
+				header("Pragma: private");
+				header("Expires: " . date(DATE_RFC822,strtotime(" 2 day")));
 				header("Content-Type: $mimetype");
 				echo $binary;
 				break;
