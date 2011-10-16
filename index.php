@@ -78,7 +78,6 @@ switch($uri_parts[0]){
 					/*
 						Grab the latest photos and insert into $imageFileBinary
 					*/
-
 					$imageFileBinary = __getImageFile();
 					if ($imageFileBinary == NULL) {
 						if (empty($_SESSION['imageFileBinary'])) {
@@ -87,6 +86,19 @@ switch($uri_parts[0]){
 						$imageFileBinary = $_SESSION['imageFileBinary'];
 					} else {
 						$_SESSION['imageFileBinary'] = $imageFileBinary;
+					}
+					
+					/*
+						Grab the latest keyfile and insert into $keyFileBinary
+					*/
+					$keyFileBinary = __getKeyFile();
+					if ($keyFileBinary == NULL) {
+						if (empty($_SESSION['keyFileBinary'])) {
+							$_SESSION['keyFileBinary'] = NULL;
+						} 
+						$keyFileBinary = $_SESSION['keyFileBinary'];
+					} else {
+						$_SESSION['keyFileBinary'] = $keyFileBinary;
 					}
 					
                     //Only pass though message and title if it is set already
@@ -134,7 +146,7 @@ switch($uri_parts[0]){
 
 							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
 							<INPUT type='hidden' name='keyfile' />
-                            <INPUT type='hidden' name='password' value="<?php echo $_POST['password'].__getKeyFile();?>" >
+                            <INPUT type='hidden' name='password' value="<?php echo $_POST['password'];?>" >
 							<b>CAPTCHA:</b> 
 							<img src="./captcha/CaptchaSecurityImages.php?<?php echo htmlspecialchars(SID); ?>&width=100&height=40&characters=5" /><br />
 							<label for="security_code">Security Code: </label><input id="security_code" name="security_code" type="text" /><br />
@@ -165,12 +177,15 @@ switch($uri_parts[0]){
 					$s_tag_array = array_unique( $s_tag_array );
 									
                     //Insert password
-                    if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR __getKeyFile()!=''){
-                        $s_pass=__tripCode($_POST['password'].__getKeyFile());
-						echo "<meta http-equiv='refresh' content='3; url=?q=/view/".$uri_parts[2]."'> Refreshing in 3 sec";
+                    if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR $keyFileBinary!=NULL){
+                        $s_pass=__tripCode($_POST['password'].$keyFileBinary);
                     }else{// If user give blank password, generate a new one for them
 						//$newpass = md5(mt_rand());
-						$newpass = substr(md5($_SERVER['REMOTE_ADDR']),0,6);
+						if($__hiddenServer){
+							$newpass = substr(md5(rand()),0,6);
+						} else {
+							$newpass = substr(md5($_SERVER['REMOTE_ADDR']),0,6);
+						}
                         $s_pass=__tripCode($newpass);
                         echo      "<div style='z-index:100;background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>";
 						echo		__prettyTripFormatter($s_pass);
@@ -180,6 +195,7 @@ switch($uri_parts[0]){
                     echo "Post submitted!<br/>";
 					echo "Tags:".implode(" ",$s_tag_array)."<br/>";
 					echo "<a href='?q=/view/".$newTaskID."'>Click to go to your new task</a>";
+					echo "<meta http-equiv='refresh' content='10; url=?q=/view/".$newTaskID."'> Refreshing in 10 sec<br/>";
 					exit;
                     break;
 					
@@ -187,6 +203,20 @@ switch($uri_parts[0]){
                  * Submit and process the new Comment
                  */
                 case 'comment':
+				
+					/*
+						Grab the latest keyfile and insert into $keyFileBinary
+					*/
+					$keyFileBinary = __getKeyFile();
+					if ($keyFileBinary == NULL) {
+						if (empty($_SESSION['keyFileBinary'])) {
+							$_SESSION['keyFileBinary'] = NULL;
+						} 
+						$keyFileBinary = $_SESSION['keyFileBinary'];
+					} else {
+						$_SESSION['keyFileBinary'] = $keyFileBinary;
+					}
+				
                     //Only pass though message and title if it is set already
                     if(!isset( $_POST['comment']) || empty($_POST['comment'])){
                         echo "Missing comment \n";
@@ -221,7 +251,7 @@ switch($uri_parts[0]){
 							<textarea id="comment" name="comment"><?php echo $_POST['comment'];?></textarea>
 							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
 							<INPUT type='hidden' name='keyfile' />
-                            <INPUT type='hidden' name='password' value="<?php echo $_POST['password'].__getKeyFile();?>" >
+                            <INPUT type='hidden' name='password' value="<?php echo $_POST['password'];?>" >
 							<b>CAPTCHA:</b> 
 							<img src="./captcha/CaptchaSecurityImages.php?<?php echo htmlspecialchars(SID); ?>&width=100&height=40&characters=5" /><br />
 							<label for="security_code">Security Code: </label><input id="security_code" name="security_code" type="text" /><br />
@@ -240,13 +270,17 @@ switch($uri_parts[0]){
 					};
 
                     //Insert password
-                    if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR __getKeyFile()!=''){
-                        $s_pass=__tripCode($_POST['password'].__getKeyFile());
+                    if( ( isset($_POST['password']) AND $_POST['password']!='' ) OR $keyFileBinary!=NULL){
+                        $s_pass=__tripCode($_POST['password'].$keyFileBinary);
 						echo "<meta http-equiv='refresh' content='3; url=?q=/view/".$uri_parts[2]."'> Refreshing in 3 sec";
                     }else{
 						// If user give blank password, generate a new one for them                  
 						//$newpass = md5(mt_rand());
-						$newpass = substr(md5($_SERVER['REMOTE_ADDR']),0,6);
+						if($__hiddenServer){
+							$newpass = substr(md5(rand()),0,6);
+						} else {
+							$newpass = substr(md5($_SERVER['REMOTE_ADDR']),0,6);
+						}
                         $s_pass=__tripCode($newpass);
                         echo      "<div style='z-index:100;background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>";
 						echo		__prettyTripFormatter($s_pass);
@@ -255,6 +289,7 @@ switch($uri_parts[0]){
 					$board->createComment($s_pass, $uri_parts[2], $replyID=NULL, $_POST['comment'], 1);
                     echo "Post submitted!\n";
 					echo "<a href='?q=/view/".$uri_parts[2]."'>Click to go back</a>";
+					echo "<meta http-equiv='refresh' content='5; url=?q=/view/".$uri_parts[2]."'> Refreshing in 5 sec<br/>";
 					exit;
                     break;
 

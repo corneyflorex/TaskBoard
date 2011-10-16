@@ -5,6 +5,7 @@
 	// General configuration
 	$__initEnable = true; // Disable After Install (set to 'false' rather than 'true')
 	$__debug = false; // Dev mode
+	$__hiddenServer = false; // Hidden server should not use IP tracking as users all appear local (e.g. in tor)
 	
 	// What Boards to support by default
 	$__defaultTags = array("NorthAmerica", "SouthAmerica", "MiddleEast", "Africa", "Asia", "Europe", "Oceania");
