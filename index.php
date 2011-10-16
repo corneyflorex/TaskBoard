@@ -10,6 +10,12 @@ if (get_magic_quotes_gpc() === 1)
     $_REQUEST = json_decode(stripslashes(json_encode($_REQUEST, JSON_HEX_APOS)), true);
 }
 
+// session system to help store not yet approved 'files'
+// or images, while capcha is being processed.
+ini_set("session.use_cookies",0);
+ini_set("session.use_only_cookies",0);
+//ini_set("session.use_trans_sid",1);
+session_start();
 
 //Initialize required files
 require("settings.php");
@@ -17,7 +23,7 @@ require("LayoutEngine.php");
 require("Database.php");
 require("Taskboard.php");
 require("anonregkit.php");
-require("./asciicapcha/asciicaptcha.php");
+require("./asciicaptcha/asciicaptcha.php");
 
 
 //Open up the database connection
@@ -69,12 +75,6 @@ switch($uri_parts[0]){
                  * Submit and process the new task
                  */
                 case 'submitnew':
-					// session system to help store not yet approved 'files'
-					// or images, while capcha is being processed.
-					ini_set("session.use_cookies",0);
-					ini_set("session.use_only_cookies",0);
-					//ini_set("session.use_trans_sid",1);
-					session_start();
 					/*
 						Grab the latest photos and insert into $imageFileBinary
 					*/
@@ -88,6 +88,7 @@ switch($uri_parts[0]){
 					} else {
 						$_SESSION['imageFileBinary'] = $imageFileBinary;
 					}
+					
                     //Only pass though message and title if it is set already
                     if(!isset($_POST['title'], $_POST['message']) || empty($_POST['title']) || empty($_POST['message'])){
                         echo "Missing title and/or message \n";
@@ -103,21 +104,24 @@ switch($uri_parts[0]){
 					};
 
 					// Also it must pass the capcha test
-					$firstuse=false;
-                    if(!isset($_POST['capcha'], $_POST['digest']) || empty($_POST['capcha']) || empty($_POST['digest'])){
-                        echo "Answer the capcha challege <br/>";
-						$firstuse = true;
-                    }
-					$answer = $_POST["capcha"];
-					$digest = $_POST["digest"];
-					if( __checkCAPCHA($answer,$digest,$__salt) ){
-						echo "Capcha Vaid <br/>";
-					}else{
-						if($firstuse){
-						echo "Please Enter The Captcha Code:";
+					if( isset($_POST['security_code'])) {
+						$first = false;
+					} else {
+						$_POST['security_code'] = "";
+						$_SESSION['security_code'] = "";
+						$first = true;
+					}
+					
+				   if( $_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ) ) {
+						echo 'Your captcha code was valid.';
+						unset($_SESSION['security_code']);
+				   } else {
+						if ($first){
+							echo 'Please enter the captcha code to confirm your human status';
 						}else{
-						echo "Last Captcha code was either invalid. Or you took too long to answer. try again!";
+							echo 'Sorry, you have provided an invalid security code';
 						}
+
 						?>
 						<br/>
 						<br/>
@@ -131,13 +135,9 @@ switch($uri_parts[0]){
 							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
 							<INPUT type='hidden' name='keyfile' />
                             <INPUT type='hidden' name='password' value="<?php echo $_POST['password'].__getKeyFile();?>" >
-							<b>CAPTCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
-							<?php
-							$ascii_capcha = __getCAPCHA($__salt);
-							echo "<pre style='font-size:7px;'>".$ascii_capcha["image"]."</pre>"
-							?>
-							<INPUT type='text' name='capcha' value=''>
-							<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'>
+							<b>CAPTCHA:</b> 
+							<img src="./captcha/CaptchaSecurityImages.php?<?php echo htmlspecialchars(SID); ?>&width=100&height=40&characters=5" /><br />
+							<label for="security_code">Security Code: </label><input id="security_code" name="security_code" type="text" /><br />
 							<br />
 							<input type="submit" value="Submit" />	
 						</form>
@@ -196,21 +196,24 @@ switch($uri_parts[0]){
                     }
 					
 					// Also it must pass the capcha test
-					$firstuse=false;
-                    if(!isset($_POST['capcha'], $_POST['digest']) || empty($_POST['capcha']) || empty($_POST['digest'])){
-                        echo "Answer the capcha challege <br/>";
-						$firstuse = true;
-                    }
-					$answer = $_POST["capcha"];
-					$digest = $_POST["digest"];
-					if( __checkCAPCHA($answer,$digest,$__salt) ){
-						echo "Capcha Vaid <br/>";
-					}else{
-						if($firstuse){
-						echo "Please Enter The Captcha Code:";
+					if( isset($_POST['security_code'])) {
+						$first = false;
+					} else {
+						$_POST['security_code'] = "";
+						$_SESSION['security_code'] = "";
+						$first = true;
+					}
+					
+				   if( $_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ) ) {
+						echo 'Your captcha code was valid.';
+						unset($_SESSION['security_code']);
+				   } else {
+						if ($first){
+							echo 'Please enter the captcha code to confirm your human status';
 						}else{
-						echo "Last Captcha code was either invalid. Or you took too long to answer. try again!";
+							echo 'Sorry, you have provided an invalid security code';
 						}
+
 						?>
 						<br/>
 						<br/>
@@ -220,13 +223,9 @@ switch($uri_parts[0]){
 							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
 							<INPUT type='hidden' name='keyfile' />
                             <INPUT type='hidden' name='password' value="<?php echo $_POST['password'].__getKeyFile();?>" >
-							<b>CAPCHA(<a style="color:grey;" href="./asciicapcha/asciicaptcha.php">source</a>):</b> 
-							<?php
-							$ascii_capcha = __getCAPCHA($__salt);
-							echo "<pre style='font-size:7px;'>".$ascii_capcha["image"]."</pre>"
-							?>
-							<INPUT type='text' name='capcha' value=''>
-							<INPUT type='hidden' name='digest' value='<?php echo $ascii_capcha["digest"]; ?>'>
+							<b>CAPTCHA:</b> 
+							<img src="./captcha/CaptchaSecurityImages.php?<?php echo htmlspecialchars(SID); ?>&width=100&height=40&characters=5" /><br />
+							<label for="security_code">Security Code: </label><input id="security_code" name="security_code" type="text" /><br />
 							<br />
 							<input type="submit" value="Submit" />	
 						</form>
