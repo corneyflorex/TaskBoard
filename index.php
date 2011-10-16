@@ -412,7 +412,7 @@ switch($uri_parts[0]){
 		exit;
 		break;
 		
-	case 'tasksembed':
+	case 'embed':
 		
 		if (isset($_GET['tags'])){
 		$tags = explode(',', $_GET['tags']);

@@ -153,7 +153,7 @@ function startTime(){
 		<?php if (in_array("tasksList", $mode)) {echo __tagPageMessage($mode,$tags,$__tagPageArray); }?>
 		
 		<!--Navigation-->
-		<div style="text-align:center" class="greybox">
+		<div id="nav" style="text-align:center" class="greybox">
 			|
 			<a href="?q=/tasks/new">New task</a>
 			| 
@@ -317,7 +317,8 @@ function startTime(){
 		<!--QR CODE - To help encourage acesses by mobile phone-->
 		<div style="text-align:center;" class="blackbox">
 		<b>SCAN ME </b> <a href="http://qrcode.kaywa.com/img.php?s=8&amp;d=http%3A%2F%2F<?php if(isset($_SERVER["SERVER_NAME"]) AND isset($_SERVER["REQUEST_URI"]) )echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];?>">QR Code Image</a> 
-		| <a href='./anonregkit.php' >AnonRegKit</a> | <button id="stopAutoUpdateButton" onclick="tries=0;">Refresh Now</button>
+		| <a href='./anonregkit.php' >AnonRegKit</a> | <button id="stopAutoUpdateButton" onclick="tries=0;">Refresh Now</button> |
+		<a href="./embedme.php?url=http%3A%2F%2F<?php if(isset($_SERVER["SERVER_NAME"]) AND isset($_SERVER["REQUEST_URI"]) )echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];?>">Embed Me</a> 
 
 		</div>
 		<!--QR CODE - To help encourage acesses by mobile phone-->
