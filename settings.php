@@ -10,6 +10,12 @@
 	// What Boards to support by default
 	$__defaultTags = array("NorthAmerica", "SouthAmerica", "MiddleEast", "Africa", "Asia", "Europe", "Oceania");
 
+	// SuperTrip moderators (temporary moderation system... until we actually have a proper system going
+	// If not using it, make it an empty array then by typing array() instead
+	$__superModeratorByTrip = array(
+									'VtCZ.WGmDw' => 'admin'
+									);
+	
 	// Unique Salt
 	// Please set your own salt
 	// $__salt = "PUT RANDOM LETTERS HERE"

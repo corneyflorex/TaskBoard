@@ -324,9 +324,7 @@ switch($uri_parts[0]){
                  * Delete a task
                  */
                 case 'delete':
-				
-
-							
+					
 					$pass = $_POST['password'].__getKeyFile();
 					if ($pass == ""){
 						$pass = substr(md5($_SERVER['REMOTE_ADDR']),0,6);
@@ -337,6 +335,17 @@ switch($uri_parts[0]){
 					
                     $s_array[1]=__tripCode($pass);
 					
+					/*
+						Moderator delete
+					*/
+					if (array_key_exists($s_array[1],$__superModeratorByTrip)){
+						$command = 'Delete a post';
+						$board->delTaskBy($command,$s_array);
+					}
+					
+					/*
+					//normal password delete
+					*/
 					var_dump($s_array);
                     //print_r($s_array);
                     $command = 'Delete single task with normal password';
