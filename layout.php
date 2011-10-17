@@ -13,7 +13,9 @@
 <script type="text/javascript" >
 
 
-// Autoupdate
+/* 
+	Autoupdate Sequence (via ajax)
+*/
 	// Global Tracker Vars
 	//prev content
 	prev_content = "";
@@ -88,7 +90,9 @@ function autoUpdate(){
 }
 
 
-// Time and date in local and UTC
+/*
+	Time and date in local and UTC
+*/
 function startTime(){
 	dateObject=new Date();
 
@@ -109,16 +113,97 @@ function startTime(){
 													"<b>CUR TIME: </b>"+localtime.toLocaleTimeString();
 	t=setTimeout('startTime()',500);
 }
+
+
+
+		<!--COUNTDOWN SYSTEM (DETECTION FORMAT EXAMPLE: 2012-09-01 12:35 UTC+13 )-->
+<?php
+if (in_array("tasksView", $mode)) {
+	$task = $tasks[0];
+	
+	//var_dump($tasks[0]);
+	if( preg_match ( "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $countdown_matches ) ){
+		$year_countdown			= $countdown_matches[1];
+		$month_countdown		= $countdown_matches[2];
+		$day_countdown			= $countdown_matches[3];
+		$hour_countdown			= $countdown_matches[4];
+		$minutes_countdown		= $countdown_matches[5];
+		$timezone_countdown		= $countdown_matches[6];
+		$countdown 				= "countdown($year_countdown,$month_countdown,$day_countdown,$hour_countdown,$minutes_countdown,$timezone_countdown)";
+		echo $countdown;
+	}else{
+		$countdown = "";
+	}
+
+?>
+	/*
+		Countdown System JAVASCRIPT FUNCTION
+	*/
+	function countdown(yr,m,d,hr,min,tz){
+		var montharray = Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+		theyear=yr;themonth=m;theday=d;thehour=hr;theminute=min;thetimezone=tz;
+			
+		var today=new Date();
+		var todayy=today.getYear();
+		if (todayy < 1000) {todayy+=1900;}
+		var todaym=today.getMonth();
+		var todayd=today.getDate();
+		var todayh=today.getHours();
+		var todaymin=today.getMinutes();
+		var todaysec=today.getSeconds();
+		var todaystring1=montharray[todaym]+" "+todayd+", "+todayy+" "+todayh+":"+todaymin+":"+todaysec;
+		var todaystring=Date.parse(todaystring1)+(tz*1000*60*60);
+		var futurestring1=(montharray[m-1]+" "+d+", "+yr+" "+hr+":"+min);
+		var futurestring=Date.parse(futurestring1)-(today.getTimezoneOffset()*(1000*60));
+		var dd=futurestring-todaystring;
+		var dday=Math.floor(dd/(60*60*1000*24)*1);
+		var dhour=Math.floor((dd%(60*60*1000*24))/(60*60*1000)*1);
+		var dmin=Math.floor(((dd%(60*60*1000*24))%(60*60*1000))/(60*1000)*1);
+		var dsec=Math.floor((((dd%(60*60*1000*24))%(60*60*1000))%(60*1000))/1000*1);
+		if(dday<=0&&dhour<=0&&dmin<=0&&dsec<=0){
+			document.getElementById('count2').innerHTML="CountDown Completed";
+			document.getElementById('count2').style.display="inline";
+			document.getElementById('count2').style.width="390px";
+			document.getElementById('dday').style.display="none";
+			document.getElementById('dhour').style.display="none";
+			document.getElementById('dmin').style.display="none";
+			document.getElementById('dsec').style.display="none";
+			document.getElementById('days').style.display="none";
+			document.getElementById('hours').style.display="none";
+			document.getElementById('minutes').style.display="none";
+			document.getElementById('seconds').style.display="none";
+			document.getElementById('spacer1').style.display="none";
+			document.getElementById('spacer2').style.display="none";
+			return;
+		} else {
+			document.getElementById('count2').innerHTML="Countdown to "+futurestring1+" UTC\+"+tz+"";
+			document.getElementById('count2').style.display="inline";
+			document.getElementById('count2').style.width="400px"; 
+			<!--document.getElementById('count2').style.display="none";-->
+			document.getElementById('dday').innerHTML=dday;
+			document.getElementById('dhour').innerHTML=dhour;
+			document.getElementById('dmin').innerHTML=dmin;
+			document.getElementById('dsec').innerHTML=dsec;
+        setTimeout("countdown(theyear,themonth,theday,thehour,theminute,thetimezone)",1000);
+		}
+	}
+<?php
+}else{
+		$countdown = ""; // Disable the countdown system
+}
+?>
+		<!--COUNTDOWN SYSTEM-->
+
 </script>
 
 </head>
 
-<body onload="startTime();autoUpdate();">
+
+
+<body onload="startTime();autoUpdate();<?php echo $countdown ?>">
 	<div class="center">
 		<?php if($__debug) echo "<div style='width:100%;background-color:darkred;'>This is a development preview of TaskBoard. <br/>
 		Please help out with making it better by contributing to <a href='https://github.com/corneyflorex/TaskBoard'>here</a> </div>"?>
-		
-
 	
 		<div id='header' class='greybox'>
 			<!--Title or logo & Navigation links-->
@@ -169,16 +254,47 @@ function startTime(){
 			<?php } ?>
 			<a href="?q=/rss">RSS</a>
 			|
+			<a href="help.html">Help</a>
+			|
 		</div>		
 		
 		<!--TaskView-->
 		<?php if (in_array("tasksView", $mode)) { ?>
 		<div class="tasklist">
-			<?php foreach($tasks as $task){ ?>
+			<?php $task = $tasks[0]; ?>
 			
 					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="blackbox">
 						<a style="color:grey;" href="#OP">View Authors Message</a>
 					</div>
+					
+					<!--COUNTDOWN SYSTEM-->
+					<?php if($countdown != ""){ ?>
+					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="blackbox">
+						<table id="table" style="margin: 0px auto;" border="0">
+							<tr>
+								<td align="center" colspan="6"><div class="numbers" id="count2" style="padding: 5px 0 0 0; "></div></td>
+							</tr>
+							<tr id="spacer1">
+								<td align="center" ><div class="numbers" ></div></td>
+								<td align="center" ><div class="numbers" id="dday"></div></td>
+								<td align="center" ><div class="numbers" id="dhour"></div></td>
+								<td align="center" ><div class="numbers" id="dmin"></div></td>
+								<td align="center" ><div class="numbers" id="dsec"></div></td>
+								<td align="center" ><div class="numbers" ></div></td>
+							</tr>
+							<tr id="spacer2">
+								<td align="center" ><div class="title" ></div></td>
+								<td align="center" ><div class="title" id="days">Days</div></td>
+								<td align="center" ><div class="title" id="hours">Hours</div></td>
+								<td align="center" ><div class="title" id="minutes">Minutes</div></td>
+								<td align="center" ><div class="title" id="seconds">Seconds</div></td>
+								<td align="center" ><div class="title" ></div></td>
+							</tr>
+						</table>
+					</div>
+					<?php } ?>
+					<!--COUNTDOWN SYSTEM-->
+
 					
 					<?php if($task['imagetype'] != NULL){ ?>
 					<div style="text-align:center;" class="blackbox">
@@ -238,7 +354,6 @@ function startTime(){
 							<INPUT type='submit' value='delete task'> 
 						</FORM>
 					</div>
-			<?php } ?>
 		</div>
 		<?php } ?>
 		<!--TaskView-->
