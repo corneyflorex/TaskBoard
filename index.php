@@ -2,6 +2,9 @@
 
 // Deals with the annoying problem of 'get_magic_quotes_gpc' in some shared hosting
 // Source: http://stackoverflow.com/questions/517008/how-to-turn-off-magic-quotes-on-shared-hosting
+/*
+// This appeared to not escape _POST properly (e.g. it also escape \r\n. where /r/n is how linux/UNIX sees it... 
+// this means magicquote won't touch \r\n as its not "/", but strip slash would. Which is a recipe for trouble) 
 if (get_magic_quotes_gpc() === 1)
 {
     $_GET = json_decode(stripslashes(json_encode($_GET, JSON_HEX_APOS)), true);
@@ -9,6 +12,15 @@ if (get_magic_quotes_gpc() === 1)
     $_COOKIE = json_decode(stripslashes(json_encode($_COOKIE, JSON_HEX_APOS)), true);
     $_REQUEST = json_decode(stripslashes(json_encode($_REQUEST, JSON_HEX_APOS)), true);
 }
+*/
+// This one appears to be workable? (Honestly... just disable magic_quotes_gpc )
+if ( in_array( strtolower( ini_get( 'magic_quotes_gpc' ) ), array( '1', 'on' ) ) )
+{
+    $_POST = array_map( 'stripslashes', $_POST );
+    $_GET = array_map( 'stripslashes', $_GET );
+    $_COOKIE = array_map( 'stripslashes', $_COOKIE );
+}
+
 
 // session system to help store not yet approved 'files'
 // or images, while capcha is being processed.
