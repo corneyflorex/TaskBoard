@@ -116,22 +116,56 @@ function startTime(){
 
 
 
-		<!--COUNTDOWN SYSTEM (DETECTION FORMAT EXAMPLE: 2012-09-01 12:35 UTC+13 )-->
+<!--COUNTDOWN SYSTEM (DETECTION FORMAT EXAMPLE: 2012-09-01 12:35 UTC+13 )-->
 <?php
 if (in_array("tasksView", $mode)) {
 	$task = $tasks[0];
-	
-	//var_dump($tasks[0]);
-	if( preg_match ( "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $countdown_matches ) ){
-		$year_countdown			= $countdown_matches[1];
-		$month_countdown		= $countdown_matches[2];
-		$day_countdown			= $countdown_matches[3];
-		$hour_countdown			= $countdown_matches[4];
-		$minutes_countdown		= $countdown_matches[5];
-		$timezone_countdown		= $countdown_matches[6];
-		$countdown 				= "countdown($year_countdown,$month_countdown,$day_countdown,$hour_countdown,$minutes_countdown,$timezone_countdown)";
-		echo $countdown;
-	}else{
+	//FORMAT: $countdown = "countdown($year_c_d,$month_c_d,$day_c_d,$hours_c_d,$minutes_c_d,$seconds_c_d,$timezone_c_d)";
+	/*
+		check for date and time	
+	*/
+
+		// for 2012-09-01T12:35:23Z+13
+	if( preg_match ( "/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})([-+ ]\d{1,2})/" , $task['message'], $cdmatches ) ){
+		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],$cdmatches[6],$cdmatches[7])";
+			
+		// for 2012-09-01T12:35:23Z
+	} else if( preg_match ( "/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})Z/" , $task['message'], $cdmatches ) ){
+		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],$cdmatches[5],00 )";
+			
+		// for 2012-09-01T12:35Z+13
+	} else if( preg_match ( "/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})([-+ ]\d{1,2})/" , $task['message'], $cdmatches ) ){
+		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],00,$cdmatches[6])";
+			
+		// for 2012-09-01T12:35Z
+	} else if( preg_match ( "/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})Z/" , $task['message'], $cdmatches ) ){
+		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],00,00)";
+			
+		// for 2012-09-01 12:35:23 UTC+13
+	} else if( preg_match ( "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches ) ){
+		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],$cdmatches[6],$cdmatches[7])";
+		
+		// for 2012-09-01 12:35 UTC+13
+	} else if (preg_match ( "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
+		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],00,$cdmatches[6])";
+		
+		// for 2012-09-01 UTC+13
+	} else if (preg_match ( "/(\d{4})-(\d{2})-(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
+		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],00,00,00,$cdmatches[4])";
+
+		// for 01-09-2012 12:35:23 UTC+13
+	} else if (preg_match ( "/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
+		$countdown = "countdown($cdmatches[3],$cdmatches[2],$cdmatches[1],$cdmatches[4],$cdmatches[5],$cdmatches[6],$cdmatches[7])";
+				
+		// for 01-09-2012 12:35 UTC+13
+	} else if (preg_match ( "/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
+		$countdown = "countdown($cdmatches[3],$cdmatches[2],$cdmatches[1],$cdmatches[4],$cdmatches[5],00,$cdmatches[6])";
+		
+		// for 01-09-2012 UTC+13
+	} else if (preg_match ( "/(\d{2})-(\d{2})-(\d{4}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
+		$countdown = "countdown($cdmatches[3],$cdmatches[2],$cdmatches[1],00,00,00,$cdmatches[4])";
+		
+	} else{
 		$countdown = "";
 	}
 
@@ -139,9 +173,9 @@ if (in_array("tasksView", $mode)) {
 	/*
 		Countdown System JAVASCRIPT FUNCTION
 	*/
-	function countdown(yr,m,d,hr,min,tz){
+	function countdown(yr,m,d,hr,min,sec,tz){
 		var montharray = Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
-		theyear=yr;themonth=m;theday=d;thehour=hr;theminute=min;thetimezone=tz;
+		theyear=yr;themonth=m;theday=d;thehour=hr;theminute=min;thesecond=sec;thetimezone=tz;
 			
 		var today=new Date();
 		var todayy=today.getYear();
@@ -153,7 +187,7 @@ if (in_array("tasksView", $mode)) {
 		var todaysec=today.getSeconds();
 		var todaystring1=montharray[todaym]+" "+todayd+", "+todayy+" "+todayh+":"+todaymin+":"+todaysec;
 		var todaystring=Date.parse(todaystring1)+(tz*1000*60*60);
-		var futurestring1=(montharray[m-1]+" "+d+", "+yr+" "+hr+":"+min);
+		var futurestring1=(montharray[m-1]+" "+d+", "+yr+" "+hr+":"+min+":"+sec);
 		var futurestring=Date.parse(futurestring1)-(today.getTimezoneOffset()*(1000*60));
 		var dd=futurestring-todaystring;
 		var dday=Math.floor(dd/(60*60*1000*24)*1);
@@ -161,7 +195,7 @@ if (in_array("tasksView", $mode)) {
 		var dmin=Math.floor(((dd%(60*60*1000*24))%(60*60*1000))/(60*1000)*1);
 		var dsec=Math.floor((((dd%(60*60*1000*24))%(60*60*1000))%(60*1000))/1000*1);
 		if(dday<=0&&dhour<=0&&dmin<=0&&dsec<=0){
-			document.getElementById('count2').innerHTML="CountDown Completed";
+			document.getElementById('count2').innerHTML="Countdown Completed at "+futurestring1+" UTC\+"+tz+"";
 			document.getElementById('count2').style.display="inline";
 			document.getElementById('count2').style.width="390px";
 			document.getElementById('dday').style.display="none";
@@ -184,7 +218,7 @@ if (in_array("tasksView", $mode)) {
 			document.getElementById('dhour').innerHTML=dhour;
 			document.getElementById('dmin').innerHTML=dmin;
 			document.getElementById('dsec').innerHTML=dsec;
-        setTimeout("countdown(theyear,themonth,theday,thehour,theminute,thetimezone)",1000);
+        setTimeout("countdown(theyear,themonth,theday,thehour,theminute,thesecond,thetimezone)",1000);
 		}
 	}
 <?php
