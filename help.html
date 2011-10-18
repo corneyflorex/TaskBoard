@@ -6,7 +6,26 @@ You don't have to enter your password by typing it in. You can use the keyfile p
 
 <hr>
 
-for as task, placing a countdown date will initiate a countdown timer (in javascript), it take the format of "YYYY-MM-DD HH:MM UTC TZ" (e.g. 2012-09-01 12:35 UTC+00) 
+for as task, placing a countdown date will initiate a countdown timer (in javascript), it take the ISO time standard of date plus hours, minutes and seconds:
+      YYYY-MM-DDThh:mm:ssTZD (eg 1997-07-16T19:20:30+01:00)
+<br>
+<b>Examples of formatting accepted by taskboard:</b>
+<br>
+2012-09-01T12:35:23Z 
+OR 
+2012-09-01 12:35:23Z UTC 
+OR 
+2012-09-01T12:35+13 
+OR 
+2012-09-01 12:35 UTC+13 
+OR 
+2012-09-01T12:35Z 
+OR 
+2012-09-01 12:35 UTC 
+OR 2
+012-09-01 OR 01-09-2012 
+<br>
+More info on timecode standards: http://www.w3.org/TR/NOTE-datetime
 
 <hr>
 

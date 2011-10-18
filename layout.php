@@ -125,45 +125,29 @@ if (in_array("tasksView", $mode)) {
 		check for date and time	
 	*/
 
-		// for 2012-09-01T12:35:23Z+13
-	if( preg_match ( "/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})([-+ ]\d{1,2})/" , $task['message'], $cdmatches ) ){
+		// for 2012-09-01T12:35:23+13 OR 2012-09-01 12:35:23 UTC+13
+	if( preg_match ( "/(\d{4})[-\/](\d{2})[-\/](\d{2})[T ](\d{2}):(\d{2}):(\d{2})(?:Z| UTC| GMT)?([-+ ]\d{1,2})/i" , $task['message'], $cdmatches ) ){
 		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],$cdmatches[6],$cdmatches[7])";
 			
-		// for 2012-09-01T12:35:23Z
-	} else if( preg_match ( "/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})Z/" , $task['message'], $cdmatches ) ){
+		// for 2012-09-01T12:35:23Z OR 2012-09-01 12:35:23Z UTC
+	} else if( preg_match ( "/(\d{4})[-\/](\d{2})[-\/](\d{2})[T ](\d{2}):(\d{2}):(\d{2})(?:Z| UTC| GMT)/i" , $task['message'], $cdmatches ) ){
 		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],$cdmatches[5],00 )";
 			
-		// for 2012-09-01T12:35Z+13
-	} else if( preg_match ( "/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})([-+ ]\d{1,2})/" , $task['message'], $cdmatches ) ){
+		// for 2012-09-01T12:35+13 OR 2012-09-01 12:35 UTC+13
+	} else if( preg_match ( "/(\d{4})[-\/](\d{2})[-\/](\d{2})[T ](\d{2}):(\d{2})(?:Z| UTC| GMT)?([-+ ]\d{1,2})/i" , $task['message'], $cdmatches ) ){
 		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],00,$cdmatches[6])";
 			
-		// for 2012-09-01T12:35Z
-	} else if( preg_match ( "/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})Z/" , $task['message'], $cdmatches ) ){
+		// for 2012-09-01T12:35Z or 2012-09-01 12:35 UTC
+	} else if( preg_match ( "/(\d{4})[-\/](\d{2})[-\/](\d{2})[T ](\d{2}):(\d{2})(?:Z| UTC| GMT)/i" , $task['message'], $cdmatches ) ){
 		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],00,00)";
-			
-		// for 2012-09-01 12:35:23 UTC+13
-	} else if( preg_match ( "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches ) ){
-		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],$cdmatches[6],$cdmatches[7])";
 		
-		// for 2012-09-01 12:35 UTC+13
-	} else if (preg_match ( "/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
-		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],$cdmatches[4],$cdmatches[5],00,$cdmatches[6])";
+		// for 2012-09-01 // zulu notation is assumed as at this level of detail, timezone is not required
+	} else if( preg_match ( "/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/i" , $task['message'], $cdmatches ) ){
+		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],00,00,00,00)";
 		
-		// for 2012-09-01 UTC+13
-	} else if (preg_match ( "/(\d{4})-(\d{2})-(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
-		$countdown = "countdown($cdmatches[1],$cdmatches[2],$cdmatches[3],00,00,00,$cdmatches[4])";
-
-		// for 01-09-2012 12:35:23 UTC+13
-	} else if (preg_match ( "/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
-		$countdown = "countdown($cdmatches[3],$cdmatches[2],$cdmatches[1],$cdmatches[4],$cdmatches[5],$cdmatches[6],$cdmatches[7])";
-				
-		// for 01-09-2012 12:35 UTC+13
-	} else if (preg_match ( "/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
-		$countdown = "countdown($cdmatches[3],$cdmatches[2],$cdmatches[1],$cdmatches[4],$cdmatches[5],00,$cdmatches[6])";
-		
-		// for 01-09-2012 UTC+13
-	} else if (preg_match ( "/(\d{2})-(\d{2})-(\d{4}) UTC([-+ ]\d{1,2})/" , $task['message'], $cdmatches )) {
-		$countdown = "countdown($cdmatches[3],$cdmatches[2],$cdmatches[1],00,00,00,$cdmatches[4])";
+		// for 01-09-2012 // zulu notation is assumed as at this level of detail, timezone is not required
+	} else if( preg_match ( "/(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/i" , $task['message'], $cdmatches ) ){
+		$countdown = "countdown($cdmatches[3],$cdmatches[2],$cdmatches[1],00,00,00,00)";
 		
 	} else{
 		$countdown = "";
