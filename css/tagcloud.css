@@ -1,13 +1,14 @@
 .tagcloud {
 	color:#CFE3FF;
     padding: 10px;
+	/*
     border: 1px solid #559DFF;
     text-align:center;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
 	
-	/*
+
 	line-height:2em;	
 	*/
 }

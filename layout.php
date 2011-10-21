@@ -258,12 +258,15 @@ if (in_array("tasksView", $mode)) {
 		<?php if (in_array("tasksList", $mode)) {echo __tagPageMessage($mode,$tags,$__tagPageArray); }?>
 		
 		<!--Navigation-->
-		<div id="nav" style="text-align:center" class="greybox">
+		<div id="nav" style="" class="greybox">
+
 			|
 			<a href="?q=/tasks/new">New task</a>
 			| 
+			<!-- THERE IS SOME PROBLEM WITH SEARCH AT THE MOMENT
 			<a href="?q=/tasks/search">Search</a>
-			|											
+			|	
+			-->
 			<?php if (in_array("tasksList", $mode)) { ?>
 					<?php if (!empty($tags)){?>
 						<a href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
@@ -276,6 +279,11 @@ if (in_array("tasksView", $mode)) {
 			|
 			<a href="help.html">Help</a>
 			|
+
+			<FORM style="float:right;" action='?q=/tags/' method='post'>
+				<INPUT style="background:grey; color:white; border-width:1px; border-style:solid; border-color:grey;" type='text' name='tags' size='10' > 
+				<INPUT style="background:grey; color:white; border-width:1px; border-color:grey;" type='submit' value='Access Board'> 
+			</FORM>
 		</div>		
 		
 		<!--TaskView-->
@@ -405,11 +413,6 @@ if (in_array("tasksView", $mode)) {
 					</a>
 				<?php } ?>
 				</div>
-				<h4>Create/Access A Board</h4>
-				<FORM action='?q=/tags/' method='post'>
-					<INPUT style="background:black; color:white; border-width:1px; border-style:solid; border-color:grey;" type='text' name='tags' value=''> 
-					<INPUT style="background:black; color:white; border-width:1px; border-color:grey;" type='submit' value='Go'> 
-				</FORM>
 			</div>
 			
 			<div style="text-align:center;" class="greybox">
