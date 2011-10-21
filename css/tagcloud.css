@@ -7,7 +7,9 @@
     -webkit-border-radius: 4px;
     border-radius: 4px;
 	
-	line-height:110%;	
+	/*
+	line-height:2em;	
+	*/
 }
  
 .tagcloud a:link, .tagcloud a:visited {

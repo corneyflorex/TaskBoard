@@ -393,13 +393,12 @@ if (in_array("tasksView", $mode)) {
 					}
 				}
 				foreach($tagClouds as $tag){ 
-					$starting_font_size = 1;
-					$scalefactor = 50;
-					$weight = round( (stripslashes($tag['count']) / $maxcount)*$scalefactor ); 
-					$font_size = $starting_font_size + $weight.'px';
+					$min_font_size = 0.01;$max_font_size = 4;
+					$scalefactor = 1;
+					$weight = round( $min_font_size+($max_font_size - $min_font_size)*(stripslashes($tag['count']) / $maxcount) ); 
+					$font_size = $scalefactor*$weight .'em';
 				?>
 					<a style="
-						position:relative; top: <?php echo -10+$weight/4 ?>px;
 						font-size: <?php echo $font_size ;?>;" href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>
 						" >
 							<?php echo substr( htmlentities(stripslashes(htmlentities($tag['label']))) ,0,10) ; ?>
