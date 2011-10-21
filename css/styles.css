@@ -65,7 +65,7 @@ background-image: -webkit-gradient(
 /* Elements */
 .tasklist .task{
 	margin-top:2px;
-	border-bottom: 1px solid #666;
+	/*border-bottom: 1px solid #666;*/
 	/*background-color:#ababab;*/
 }
 /*Task 1*/
@@ -73,11 +73,15 @@ background-image: -webkit-gradient(
 	/*border-bottom: 2px solid gray;*/
 	/*margin-top:2px;*/
 	padding:10px;
+	padding-top:6px;
+	padding-bottom:6px;
+	
 	color: #313131;
 	background-color:#FFF;
 	
-			border-bottom: 1px solid #666 !important;
+			/*border-bottom: 1px solid #666 !important;*/
 
+	border: 0;
 
 	/*border-radius: 10px;*/
 	/*box-shadow: 0px 0px 5px #888; */
@@ -90,11 +94,14 @@ background-image: -webkit-gradient(
 	/*border-bottom: 2px solid gray;*/
 	/*margin-top:2px;*/
 	padding:10px;
+	padding-top:6px;
+	padding-bottom:6px;
+	
 	color: #313131;
 	background-color:#DDD;
 	/*border-radius: 10px;*/
 
-		border-bottom: 1px solid #222 !important;
+		/*border-bottom: 1px solid #222 !important; */
 
 	
 	border: 0;
