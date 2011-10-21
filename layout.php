@@ -393,7 +393,7 @@ if (in_array("tasksView", $mode)) {
 					}
 				}
 				foreach($tagClouds as $tag){ 
-					$min_font_size = 0.01;$max_font_size = 4;
+					$min_font_size = 0.5;$max_font_size = 3;
 					$scalefactor = 1;
 					$weight = round( $min_font_size+($max_font_size - $min_font_size)*(stripslashes($tag['count']) / $maxcount) ); 
 					$font_size = $scalefactor*$weight .'em';
