@@ -425,15 +425,6 @@ STUPIDWORD;
 			now... what is a sign of intelligent posting? for now its just wordcount
 		*/
 		
-		/*
-			Dictionary word system
-		*/
-		try {
-			include("./dictionary/gatekeeper_dictionary.php");
-		} catch (Exception $e) {
-			//echo ('<br/>Note: Gatekeeper Dictionary files are not present' . $e->getMessage()."<br/>");
-		}
-
 		// prevents 'divide by zero' problem
 		if ($wordcount == 0 ){$wordcount = 1;} 
 		

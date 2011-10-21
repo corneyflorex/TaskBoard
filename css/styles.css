@@ -27,11 +27,23 @@ button{ background-color: rgb(13, 72, 90); border-color: rgb(104, 128, 210);}
 .blackbox { padding:10px; border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
 .greybox { padding:8px; border-top: 1px solid #111; border-bottom: 1px solid #111; background-color:#999; color: #222}
 .timebox { padding:10px; border: 1px solid gray; background-color:#ababab; border-radius: 3px; color: #505050}
-
+.cloudbox {
+    /*background:#CFE3FF;
+    color:#0066FF;*/
+	background-color:rgba(0,0,0,0.5);
+	color:#CFE3FF;
+    padding: 20px;
+    border: 1px solid #559DFF;
+    text-align:center;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+	
+}
 .greybox a { color: #FFF !important; font-size: 110%; }
 
 
-.tagcloud { font-size: 85%; }
+.taglist { font-size: 85%; }
 
 /*Header*/
 #header { background-color:#3d3d3d; color: #D6D6D6; padding: 10px; text-align: center; border-bottom: 1px solid #333;

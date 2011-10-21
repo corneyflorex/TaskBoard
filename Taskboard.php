@@ -377,6 +377,28 @@ class Taskboard {
         $rs = Database::query($sql, array($limit),array("INT"));
         return $rs;
     }
+	
+    /**
+     * Returns an array of tags ordered in alphabetical order. For tagclouds applications
+     * 
+     * @param type $limit
+     * @return type Array
+     */
+    public function tagsWeight($limit=100){
+        $sql = "SELECT label, count
+			FROM
+			(SELECT label, COUNT(*) AS count
+            FROM tags 
+            GROUP BY label 
+            ORDER BY count DESC 
+            LIMIT ?)
+            ORDER BY label DESC 
+			";
+        //$rs = Database::query($sql, array($limit));
+        //$rs = Database::query("SELECT label, COUNT(*) as count FROM tags GROUP BY label ORDER BY count DESC LIMIT ?", array($limit) , array("INT"));
+        $rs = Database::query($sql, array($limit),array("INT"));
+        return $rs;
+    }
 
     /**
      * Initializes the database.

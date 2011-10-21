@@ -503,7 +503,7 @@ switch($uri_parts[0]){
 				$rssfeed .= '<link>http://'.$linkdir.'?q=/view/'.$rowtask['task_id'].'</link>';
 					$rssfeed .= "\n";
 			}
-			$rssfeed .= '<pubDate>' . date("D, d M Y H:i:s O", strtotime($rowtask['created'])) . '</pubDate>';
+			$rssfeed .= '<pubDate>' . date("D, d M Y H:i:s O", $rowtask['created']) . '</pubDate>';
 					$rssfeed .= "\n";
 			$rssfeed .= '</item>';
 					$rssfeed .= "\n\n";
@@ -536,6 +536,11 @@ switch($uri_parts[0]){
         } else {
             $tags = array();                            
         }
+		
+		//for tagclouds
+		if(empty($tags)){
+			$tagClouds = $board->tagsWeight(500);
+		}
 		
 		$tagslist = implode(",",$tags);
 

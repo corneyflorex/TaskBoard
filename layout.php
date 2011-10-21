@@ -9,9 +9,11 @@
 
 <link rel="stylesheet" media="screen and (min-width: 480px)" href="css/styles.css" type="text/css" />
 <link rel="stylesheet" media="screen and (max-width: 480px)" href="css/mobile.css" type="text/css" />
+<link rel="stylesheet" href="css/tagcloud.css" type="text/css" />
+
+
 
 <script type="text/javascript" >
-
 
 /* 
 	Autoupdate Sequence (via ajax)
@@ -229,7 +231,7 @@ if (in_array("tasksView", $mode)) {
 			<!--Title or logo-->
 			
 			<!-- Perm Tags Board -->
-			<div class="tagcloud">
+			<div class="taglist">
 				Boards: 
 				<?php 
 				if(!empty($__defaultTags) and isset($__defaultTags)){
@@ -243,7 +245,7 @@ if (in_array("tasksView", $mode)) {
 			<!---->
 			
 			<!--Most commonly accessed tags this week-->
-			<div class="tagcloud">
+			<div class="taglist">
 				Top Tags: 
 				<?php foreach($top_tags as $tag){ ?>
 							<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>" title="Count: <?php echo htmlentities(stripslashes($tag['count'])); ?>"><?php echo substr( htmlentities(stripslashes(htmlentities($tag['label']))) ,0,10) ; ?></a>
@@ -378,10 +380,49 @@ if (in_array("tasksView", $mode)) {
 		
 		<!--List of task-->
 		<?php if (in_array("tasksList", $mode)) { ?>
+		
+			<!-- TagCanvus (ACTIVATES ONLY ON FRONTPAGE)-->
+			<?php if(isset($tagClouds)){ ?>
+			<div class="cloudbox">
+				<div class="tagcloud">
+				<?php 
+				$maxcount = 1;
+				foreach($tagClouds as $tag){ 
+					if($maxcount<$tag['count']){
+					$maxcount = $tag['count'];
+					}
+				}
+				foreach($tagClouds as $tag){ 
+					$starting_font_size = 1;
+					$scalefactor = 50;
+					$weight = round( (stripslashes($tag['count']) / $maxcount)*$scalefactor ); 
+					$font_size = $starting_font_size + $weight.'px';
+				?>
+					<a style="
+						position:relative; top: <?php echo -10+$weight/4 ?>px;
+						font-size: <?php echo $font_size ;?>;" href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>
+						" >
+							<?php echo substr( htmlentities(stripslashes(htmlentities($tag['label']))) ,0,10) ; ?>
+					</a>
+				<?php } ?>
+				</div>
+				<h4>Create/Access A Board</h4>
+				<FORM action='?q=/tasks/search' method='post'>
+					<INPUT style="background:black; color:white; border-width:1px; border-style:solid; border-color:grey;" type='text' name='tags' value=''> 
+					<INPUT style="background:black; color:white; border-width:1px; border-color:grey;" type='submit' value='Go'> 
+				</FORM>
+			</div>
 			
+			<div style="text-align:center;" class="greybox">
+			<h4>Recent Updates Below</h4>
+			</div>
+			<?php } ?>
+			<!-- TagCanvus -->		
+
 			<div id="taskDIV" class="tasklist">
 				<?php echo __taskDisplay($tasks);?>
 			</div>
+			
 		<?php } ?>
 		<!--List of task-->
 
@@ -444,7 +485,7 @@ if (in_array("tasksView", $mode)) {
 		
 		<div style="overflow:auto; text-align:center; colour:grey" class="blackbox">
 		<a name="WorldMap" href="#WorldMap">WorldMap</a><br /> click map to view posts from each region<br /> 
-		<?php include("worldmap.html"); ?>
+		<?php include("./worldmap/worldmap.html"); ?>
 		</div>
 		
 		<!--QR CODE - To help encourage acesses by mobile phone-->
