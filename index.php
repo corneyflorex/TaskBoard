@@ -526,13 +526,16 @@ switch($uri_parts[0]){
      * Get tags
      */
     case 'tags':
+	
         // Browsing/searching the tasks
         $mode = array('tasksList');
         
         if (isset($uri_parts[1])) {
             $tags = explode(',', $uri_parts[1]);        
         } else if(isset($_POST['tags'])) {
-            $tags = explode(' ', $_POST['tags']);        
+            $tags = explode(' ', $_POST['tags']);    
+        } else if(isset($_GET['tags'])) {
+            $tags = explode(' ', $_POST['tags']);   			
         } else {
             $tags = array();                            
         }

@@ -406,7 +406,7 @@ if (in_array("tasksView", $mode)) {
 				<?php } ?>
 				</div>
 				<h4>Create/Access A Board</h4>
-				<FORM action='?q=/tasks/search' method='post'>
+				<FORM action='?q=/tags/' method='post'>
 					<INPUT style="background:black; color:white; border-width:1px; border-style:solid; border-color:grey;" type='text' name='tags' value=''> 
 					<INPUT style="background:black; color:white; border-width:1px; border-color:grey;" type='submit' value='Go'> 
 				</FORM>
