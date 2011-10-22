@@ -22,7 +22,7 @@
 	//prev content
 	prev_content = "";
 	//number of tries
-	tries = 0;
+	waittime = 0;
 	
 function autoUpdate(){
 	var xmlhttp;
@@ -54,19 +54,12 @@ function autoUpdate(){
 						// save new content to track it
 						prev_content = xmlhttp.responseText;
 						// track more often
-						t=setTimeout('autoUpdate()',1000*5);
 						tries = 0;
 					} else {
 						tries ++;
-						document.getElementById("stopAutoUpdateButton").innerHTML = "Refresh Now - tries:"+tries;
-						if (tries>60){
-							t=setTimeout('autoUpdate()',1000*60*5);
-						} else if (tries>30) {
-							t=setTimeout('autoUpdate()',1000*30);
-						} else {							
-							t=setTimeout('autoUpdate()',1000*10);
-						}
 					}
+					document.getElementById("stopAutoUpdateButton").innerHTML = "Refresh Now - tries:"+tries;
+					t=setTimeout('autoUpdate()',1000*10+1000*Math.pow(2,tries));
 			}
 		}
 		
