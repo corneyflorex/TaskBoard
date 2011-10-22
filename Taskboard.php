@@ -333,7 +333,7 @@ class Taskboard {
 				// Output
 				echo $binary;
 				/*
-					STATUS, this thumbnail directive doesn't work.
+					STATUS, this thumbnail directive doesn't work. But this imageboard don't really need it.
 				*/
 
 				break;
