@@ -479,15 +479,15 @@ switch($uri_parts[0]){
 		$rssfeed .= "\n";
 		$rssfeed .= '<channel>';
 		$rssfeed .= "\n";
-		$rssfeed .= '<title>Anon TaskBoard</title>';
+		$rssfeed .= '<title>TaskBoard</title>';
+		//$rssfeed .= "\n";
+		//$rssfeed .= '<link></link>';
 		$rssfeed .= "\n";
-		$rssfeed .= '<link>http://nero.secondsource.info/taskboard</link>';
-		$rssfeed .= "\n";
-		$rssfeed .= '<description>This is the RSS feed for our Anon TaskBoard</description>';
+		$rssfeed .= '<description>This is the RSS feed for TaskBoard</description>';
 		$rssfeed .= "\n";
 		$rssfeed .= '<language>en-us</language>';
-		$rssfeed .= "\n";
-		$rssfeed .= '<copyright>Anons 4 Anons</copyright>';
+		//$rssfeed .= "\n";
+		//$rssfeed .= '<copyright></copyright>';
 		$rssfeed .= "\n\n\n";
 
 		
@@ -513,6 +513,8 @@ switch($uri_parts[0]){
 				$rssfeed .= '<link>http://'.$linkdir.'?q=/view/'.$rowtask['task_id'].'</link>';
 					$rssfeed .= "\n";
 			}
+			$rssfeed .= '<guid>' . md5($rowtask['message']) . '</guid>';
+					$rssfeed .= "\n";
 			$rssfeed .= '<pubDate>' . date("D, d M Y H:i:s O", $rowtask['created']) . '</pubDate>';
 					$rssfeed .= "\n";
 			$rssfeed .= '</item>';
