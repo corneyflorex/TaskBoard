@@ -82,7 +82,8 @@ class Taskboard {
 
                 $sql_tagsType = array(
                     'INT',
-                    'STR'
+                    'STR',
+					'INT'
                 );
 
                 // TODO: These values should really be in 1 insert query
@@ -202,7 +203,7 @@ class Taskboard {
             SET
 			bumped = ?
 			WHERE id == ?
-";
+			";
 
         try {
             $rs = Database::query($sql, array(time(),$taskID) , array("INT","INT") );
@@ -325,13 +326,17 @@ class Taskboard {
         if(!is_array($tags)) {$tags = array();}
 
         $sql_tag_labels = array();
+		// Filter tags
         foreach($tags as $t){
-            $tmp = preg_replace("/[^a-zA-Z0-9_\- ]/i", "", $t);
-            if(!empty($tmp)) $sql_tag_labels[] = $tmp;
+            $tmp = preg_replace("/[^a-zA-Z0-9_\- ]/i", "", $t); //alphanumeric only
+			
+			//$tmp = strtolower ($tmp); // convert to lower case
+			
+            if(!empty($tmp)) {$sql_tag_labels[] = $tmp;} // do not put empty array into a var
         }
 
         if(!empty($sql_tag_labels)){
-            $sql_where_tags = "AND tags.label IN ('".implode("','", $sql_tag_labels)."')";
+            $sql_where_tags = "AND tags.label COLLATE NOCASE IN ('".implode("','", $sql_tag_labels)."') COLLATE NOCASE"; // trying COLLATE NOCASE to force case insensitive search
         } else {
             $sql_where_tags = '';
         }

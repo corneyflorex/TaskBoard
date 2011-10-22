@@ -1,0 +1,91 @@
+/* Reset */
+* { margin:0px; padding:0px; }
+html, body { height:100%; }
+p { margin:0.5em; }
+ul li { margin-left:3em; }
+
+/* Styling */
+body { font-family: Arial, "Sans-Serif", "Sans Serif"; font-size:14px; background-color:black; color:#F5F5F5; }
+
+/* Styling */
+button{ background-color: rgb(13, 72, 90); border-color: rgb(104, 128, 210);}
+
+/*Standard Black Box for any non list content*/
+.blackbox { padding:10px; border: 1px solid gray; background-color:#000000; border-radius: 3px; color:#F5F5F5;}
+.greybox { padding:8px; border-top: 1px solid #111; border-bottom: 1px solid #111; background-color:#999; color: #222}
+.cloudbox {
+    /*background:#CFE3FF;
+    color:#0066FF;*/
+	background-color:rgba(0,0,0,0.5);
+	color:#CFE3FF;
+    padding: 20px;
+    border: 1px solid #559DFF;
+    text-align:center;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+.greybox a { color: #FFF !important; font-size: 110%; }
+
+.taglist { font-size: 85%; }
+
+/* Elements */
+.tasklist .task{
+	margin-top:2px;
+	/*border-bottom: 1px solid #666;*/
+	/*background-color:#ababab;*/
+}
+/*Task 1*/
+.tasklist .task0{
+	/*border-bottom: 2px solid gray;*/
+	/*margin-top:2px;*/
+	padding:10px;
+	padding-top:6px;
+	padding-bottom:6px;
+	
+	color: #313131;
+	background-color:#FFF;
+	
+			/*border-bottom: 1px solid #666 !important;*/
+
+	border: 0;
+
+	/*border-radius: 10px;*/
+	/*box-shadow: 0px 0px 5px #888; */
+	/*border-bottom:2px;*/
+}
+.tasklist .task0 .title { display:block; font-weight:bold; }
+.tasklist .task0 .message { font-size:0.9em; }
+/*Task 2*/
+.tasklist .task1{
+	/*border-bottom: 2px solid gray;*/
+	/*margin-top:2px;*/
+	padding:10px;
+	padding-top:6px;
+	padding-bottom:6px;
+	
+	color: #313131;
+	background-color:#DDD;
+	/*border-radius: 10px;*/
+
+		/*border-bottom: 1px solid #222 !important; */
+
+	
+	border: 0;
+	
+	/*border-bottom:2px;*/
+}
+
+.tasklist .task1 .title { display:block; font-weight:bold; }
+.tasklist .task1 .message { font-size:0.9em; }
+
+.task0 a:link,.task1 a:link {color: #222; text-decoration: underline; }
+.task0 a:active,.task1 a:active {color: #222; text-decoration: underline; }
+.task0 a:visited,.task1 a:visited {color: #1E589A; text-decoration: underline; }
+.task0 a:hover,.task1 a:hover {color: #000; text-decoration: none; }
+
+/* LINKS */
+a:link {color: #FFFFFF; text-decoration: underline; }
+a:active {color: #FFFFFF; text-decoration: underline; }
+a:visited {color: #FFFFFF; text-decoration: underline; }
+a:hover {color: #66FFFF; text-decoration: none; }

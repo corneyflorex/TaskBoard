@@ -454,9 +454,19 @@ if (in_array("tasksView", $mode)) {
 			<br />
 			<FORM action='?q=/tasks/submitnew' method='post' enctype='multipart/form-data'>
 				<P>
-					Title*:<br /> <INPUT type='text' name='title'value=''><br />	
+					<?php 
+							if(isset($_GET['tag'])){
+								$tagpreset = $_GET['tag'];
+								$tagpresetmessage="HashTag: #".implode(" #",explode(" ",$tagpreset));
+							}else{
+								$tagpreset ="";
+								$tagpresetmessage="";
+							} 
+					?>
+					Title*:<br /> <INPUT type='text' name='title'value=''><br />
 					Message*:<br />	<textarea class='' rows=10 name='message'></textarea><br />			
-					Tags:<BR><INPUT type='text' name='tags' value='<?php if(isset($_GET['tag'])){echo $_GET['tag'];}?>'><br />
+					<?php echo $tagpresetmessage;?><br/>
+					Tags:<BR><INPUT type='text' name='tags' value='<?php echo $tagpreset;?>'><br />
 					<label for='file'>Image:</label><br /> <input type='file' name='image' />
 					<br />
 					<br /> Authentication (No Registration Required):
@@ -470,7 +480,9 @@ if (in_array("tasksView", $mode)) {
 				</P>
 			</FORM>
 			<br />
-			Note: Tags are seperated by spaces e.g."cat hat cake"
+			Note: tags in tag fields are seperated by spaces e.g."cat hat cake". Hashtags in message fields are determined by "#" e.g. #hashtags
+			<br />
+			Useful Tips: Typing a datetime in ISO_8601 format will show a countdown to that date in javascript ( Formatting guide here: http://en.wikipedia.org/wiki/ISO_8601 )
 		</div>
 		<?php } ?>
 		<!--Submit field-->

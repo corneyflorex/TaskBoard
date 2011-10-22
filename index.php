@@ -431,7 +431,10 @@ switch($uri_parts[0]){
 		}else{
 		$tags = array();
 		}
-		
+		if (isset($uri_parts[1])){
+		$tags = array_merge( explode(',', $uri_parts[1]) , $tags);
+		}
+
         //Retrieve latest comment
         $tasks = $board->getTasks($tags);
 		
@@ -440,9 +443,16 @@ switch($uri_parts[0]){
 		<html>
 		<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" href="css/styles.css" type="text/css" />
+		<link rel="stylesheet" href="css/embed.css" type="text/css" />
 		</head>
 		<body>
+		<div id="newTask" class="greybox">
+			<?php if (!empty($tags)){?>
+				<a target="_blank" href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Post New</a>
+			<?php } else {?>
+				<a target="_blank" href="?q=/tasks/new">Post New</a>
+			<?php }?>
+		</div>
 		<div id="taskDIV" class="tasklist">
 		<?php
 		echo __taskDisplay($tasks);
