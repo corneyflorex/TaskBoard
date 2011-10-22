@@ -291,7 +291,7 @@ if (in_array("tasksView", $mode)) {
 		<!--TaskView-->
 		<?php if (in_array("tasksView", $mode)) { ?>
 		<div class="tasklist">
-			<?php $task = $tasks[0]; ?>
+			<?php //$task = $tasks[0]; //donno why this is here ?>
 			
 					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="blackbox">
 						<a style="color:grey;" href="#OP">View Authors Message</a>

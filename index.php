@@ -377,7 +377,15 @@ switch($uri_parts[0]){
 		$taskid =$uri_parts[1];
 		
         if(!is_numeric($uri_parts[1])){Echo "YOU FAIL";exit;}
-        
+		
+		// support thumbnails
+        if(isset($_GET['mode'])){
+			if($_GET['mode']== 'thumbnail'){
+				$tasks = $board->getTaskFileByID($taskid,'thumbnail');
+			}
+		}
+		
+		
 		//Retrieve the image and display it
         $tasks = $board->getTaskFileByID($taskid,'image');
         break;

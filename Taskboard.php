@@ -258,8 +258,10 @@ class Taskboard {
     public function getTaskFileByID($id='',$mode='image'){
 		switch($mode){
 			case "image":
+			case "thumbnail":
 				$sql = "SELECT DISTINCT tasks.image, tasks.imagetype FROM tasks WHERE tasks.id = $id LIMIT 1";
 				break;
+				
 			case "file":
 				$sql = "SELECT DISTINCT tasks.image FROM tasks WHERE tasks.id = $id LIMIT 1";
 				break;
@@ -296,6 +298,46 @@ class Taskboard {
 				header("Content-Type: $mimetype");
 				echo $binary;
 				break;
+				
+			case "thumbnail":
+				$binary = $file_assoc_array['image'];
+				$mimetype = $file_assoc_array['imagetype'];
+				
+				// Get new sizes
+				$im = imagecreatefromstring($binary);
+
+				$width = imagesx($im);
+				$height = imagesy($im);
+				
+				$newwidth = 100;
+				$newheight = 100;
+
+				// Load
+				$thumb = imagecreatetruecolor($newwidth, $newheight);
+				$source = imagecreate($width, $height);
+				
+				// Resize
+				imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+				// Content type
+				header("Cache-Control: private, max-age=10800, pre-check=10800");
+				header("Pragma: private");
+				header("Expires: " . date(DATE_RFC822,strtotime(" 2 day")));
+				header("Content-Type: $mimetype");
+				
+				// turn image into binary SOURCE: http://bytes.com/topic/php/answers/480856-binary-content-image-resource
+				ob_start(); // start a new output buffer
+				imagejpeg( $thumb, NULL, 100 );
+				$binarythumb = ob_get_contents();
+				ob_end_clean; // stop this output buffer
+				
+				// Output
+				echo $binary;
+				/*
+					STATUS, this thumbnail directive doesn't work.
+				*/
+
+				break;
+				
 			case "file":
 				$binary = $file_assoc_array['file'];
 				$filename = $file_assoc_array['filename'];
