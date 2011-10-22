@@ -456,8 +456,8 @@ if (in_array("tasksView", $mode)) {
 								$tagpresetmessage="";
 							} 
 					?>
-					Title*:<br /> <INPUT type='text' name='title'value=''><br />
-					Message*:<br />	<textarea class='' rows=10 name='message'></textarea><br />			
+					Title:<br /> <INPUT type='text' size=50 name='title'value=''><br />
+					Message*:<br />	<textarea class='' rows=10 cols=50 name='message'></textarea><br />			
 					<?php echo $tagpresetmessage;?><br/>
 					Tags:<BR><INPUT type='text' name='tags' value='<?php echo $tagpreset;?>'><br />
 					<label for='file'>Image:</label><br /> <input type='file' name='image' />
