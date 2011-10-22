@@ -430,7 +430,7 @@ class Taskboard {
 			case "sqlite":
 				$sql[] = <<<SQL
 CREATE TABLE IF NOT EXISTS tasks ( 
-id INTEGER NOT NULL,
+id INTEGER PRIMARY KEY AUTOINCREMENT,
 tripcode VARCHAR(25),
 status INTEGER ,
 created INTEGER ,
@@ -440,8 +440,7 @@ message VARCHAR(2000),
 image BLOB,
 imagetype VARCHAR(100),
 file BLOB,
-filename VARCHAR(100),
-PRIMARY KEY (id)
+filename VARCHAR(100)
 );
 SQL;
 
@@ -456,14 +455,13 @@ SQL;
 
 				//Create comments table
 				$sql[] = "CREATE TABLE IF NOT EXISTS comments (
-id INTEGER NOT NULL,
+id INTEGER PRIMARY KEY AUTOINCREMENT ,
 task_id INTEGER NOT NULL,
 tripcode VARCHAR(25),
 reply_comment_id INTEGER,
 created INTEGER,
 message TEXT,
-vote INTEGER,
-PRIMARY KEY (id)
+vote INTEGER
 );";
 
 				//Uniqueness check (for enforcing originality
