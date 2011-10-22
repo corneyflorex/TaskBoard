@@ -15,6 +15,22 @@
 
 <script type="text/javascript" >
 
+/*
+	General XmlHttpRequest Object
+*/
+//Gets the browser specific XmlHttpRequest Object
+function getXmlHttpRequestObject() {
+	if (window.XMLHttpRequest) {
+		return new XMLHttpRequest();
+	} else if(window.ActiveXObject) {
+		return new ActiveXObject("Microsoft.XMLHTTP");
+	} else {
+		document.getElementById('p_status').innerHTML = 
+		'Status: Cound not create XmlHttpRequest Object.' +
+		'Consider upgrading your browser.';
+	}
+}
+
 /* 
 	Autoupdate Sequence (via ajax)
 */
@@ -23,15 +39,9 @@
 	prev_content = "";
 	//number of tries
 	waittime = 0;
-	
 function autoUpdate(){
 	var xmlhttp;
-	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp=new XMLHttpRequest();
-	} else {// code for IE6, IE5
-	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	
+	  xmlhttp = getXmlHttpRequestObject();
 
 	
 	<?php 
@@ -45,7 +55,6 @@ function autoUpdate(){
 	
 	?>
 		
-	
 		// Function to run on receive.
 		xmlhttp.onreadystatechange=function() {
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
@@ -59,7 +68,7 @@ function autoUpdate(){
 						tries ++;
 					}
 					document.getElementById("stopAutoUpdateButton").innerHTML = "Refresh Now - tries:"+tries;
-					t=setTimeout('autoUpdate()',1000*10+1000*Math.pow(2,tries));
+					t=setTimeout('autoUpdate()',1000*4+1000*Math.pow(2,tries));
 			}
 		}
 		
