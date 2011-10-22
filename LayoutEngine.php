@@ -94,7 +94,7 @@
 			$taskDisplayContent = $taskDisplayContent."
 				<div style='$style' class='task".($i%2)."'>
 					<span style='float:right;'>".date('M j, Y', $task['created'])."</span>
-					<span style='float:right;clear:right;'>"."<b>".__humanTiming ($task['bumped'])." ago</b>"."</span>
+					<span style='float:right;clear:right;'><b>".__humanTiming ($task['bumped'])." ago</b></span>
 					<span class='title'>
 						<a target='_top' href='?q=/view/".$task['task_id']."' >".substr(htmlentities(stripslashes($task['title'])),0,40)."</a>
 					</span>
