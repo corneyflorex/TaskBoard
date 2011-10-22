@@ -156,7 +156,7 @@
 	// FUNCTION: PRETTY TRIP DISPLAY
 	// Usage: just place  echo __prettyTripFormatter($tripcode); to your desired location.
 	// e.g. echo __prettyTripFormatter($task['tripcode']);
-	function __prettyTripFormatter($tripcode='Anonymous',$link=NULL,$displayLimit=0,$width=80,$align='right'){
+	function __prettyTripFormatter($tripcode='Anonymous',$link=NULL,$displayLimit=0,$width=100,$align='right'){
 	
 	// colour hashing
 	$hash = md5($tripcode);
