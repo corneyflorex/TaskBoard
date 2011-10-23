@@ -14,6 +14,8 @@ class Database {
 		// Is this a correct mode? (read/write)
 		if(!in_array($mode, array('r', 'w', 'rw', 'wr'))) return false;
 		
+		
+		// array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8") - contains the command to PDO to use UNICODE MODE
 		try {
 			$tmp = new PDO($dsn, $username, $password);
 			

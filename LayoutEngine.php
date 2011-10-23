@@ -68,7 +68,7 @@
 				" | ".
 				__humanTiming ($comment['created']). " ago</i></span>"	.
 				"<br />".
-				nl2br(__encodeTextStyle(htmlentities(stripslashes($comment['message'])))) 	. 
+				nl2br(__encodeTextStyle(htmlentities(stripslashes($comment['message']),null, 'utf-8'))) 	. 
 				"<br /><br />".
 			"</div>";
 		};
@@ -96,9 +96,9 @@
 					<span style='float:right;'>".date('M j, Y', $task['created'])."</span>
 					<span style='float:right;clear:right;'><b>".__humanTiming ($task['bumped'])." ago</b></span>
 					<span class='title'>
-						<a target='_top' href='?q=/view/".$task['task_id']."' >".substr(htmlentities(stripslashes($task['title'])),0,40)."</a>
+						<a target='_top' href='?q=/view/".$task['task_id']."' >".substr(htmlentities(stripslashes($task['title']),null, 'utf-8'),0,40)."</a>
 					</span>
-					<span class='message'>".__cut_text( htmlentities(stripslashes($task['message'])) , 100 )."</span>
+					<span class='message'>".__cut_text( htmlentities(stripslashes($task['message']),null, 'utf-8') , 100 )."</span>
 				</div>";
 			$i++;
 		};
@@ -106,4 +106,4 @@
 	}
 	
 	
-
+?>

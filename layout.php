@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+<meta charset="UTF-8"/>
+
 <title> TaskBoard</title>
 
 <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -10,7 +12,6 @@
 <link rel="stylesheet" media="screen and (min-width: 480px)" href="css/styles.css" type="text/css" />
 <link rel="stylesheet" media="screen and (max-width: 480px)" href="css/mobile.css" type="text/css" />
 <link rel="stylesheet" href="css/tagcloud.css" type="text/css" />
-
 
 
 <script type="text/javascript" >
@@ -239,7 +240,7 @@ if (in_array("tasksView", $mode)) {
 				if(!empty($__defaultTags) and isset($__defaultTags)){
 					foreach($__defaultTags as $tag){ 
 				?>
-						<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag)); ?>"><?php echo $tag ; ?></a>
+						<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag),null, 'utf-8'); ?>"><?php echo $tag ; ?></a>
 				<?php 
 					}
 				}?>
@@ -250,7 +251,7 @@ if (in_array("tasksView", $mode)) {
 			<div class="taglist">
 				Top Tags: 
 				<?php foreach($top_tags as $tag){ ?>
-							<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>" title="Count: <?php echo htmlentities(stripslashes($tag['count'])); ?>"><?php echo substr( htmlentities(stripslashes(htmlentities($tag['label']))) ,0,10) ; ?></a>
+							<a href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>" title="Count: <?php echo htmlentities(stripslashes($tag['count'])); ?>"><?php echo substr( htmlentities(stripslashes(htmlentities($tag['label'])),null, 'utf-8') ,0,10) ; ?></a>
 				<?php } ?>
 			</div>
 			<!--Most commonly accessed tags this week-->
@@ -334,11 +335,11 @@ if (in_array("tasksView", $mode)) {
 					
 					<div id="OP" class="task1">
 						<?php echo __prettyTripFormatter($task['tripcode']);?>
-						<span class="title"><?php echo htmlentities(stripslashes($task['title'])); ?> </span>
+						<span class="title"><?php echo htmlentities(stripslashes($task['title']),null, 'utf-8'); ?> </span>
 						<span><?php echo date('F j, Y, g:i a', $task['created']);?></span>
 						<span style='font-size:0.6em;' ><i><div id='OPGUID' >MD5 Global ID:<?php echo md5($task['message']); ?></div></i></span>
 						<br />
-						<span class="message"><?php echo nl2br(__encodeTextStyle(htmlentities(stripslashes($task['message'])))); ?></span>
+						<span class="message"><?php echo nl2br(__encodeTextStyle(htmlentities(stripslashes($task['message']),null, 'utf-8'))); ?></span>
 					</div>
 					<div class="task1">
 						<a href="http://tinychat.com/<?php echo md5($task['message']);?>" target="_blank">Conference via TinyChat - click here</a>
@@ -409,7 +410,7 @@ if (in_array("tasksView", $mode)) {
 					$font_size = $scalefactor*$weight .'em';
 				?>
 					<a style="
-						font-size: <?php echo $font_size ;?>;" href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label'])); ?>
+						font-size: <?php echo $font_size ;?>;" href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label']),null, 'utf-8'); ?>
 						" >
 							<?php echo substr( htmlentities(stripslashes(htmlentities($tag['label']))) ,0,10) ; ?>
 					</a>
