@@ -402,6 +402,7 @@ switch($uri_parts[0]){
         
 		//Retrieve the task and get its comments
         $tasks = $board->getTaskByID($taskid);
+        $tagsused = $board->tagsByID($taskid);
         $comments = $board->getCommentsByTaskId($taskid);
         break;
 		

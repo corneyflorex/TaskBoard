@@ -150,6 +150,14 @@ class Taskboard {
                     'INT',
                     'STR'
                 );
+				
+                $sql[] = "DELETE FROM tags WHERE task_id = ? ";
+				$sql_data[] = array(
+                    'id' => $s_ID
+                );
+                $sql_type[] = array(
+                    'INT'
+                );
                 break;
             
             default:
@@ -444,6 +452,28 @@ class Taskboard {
         //$rs = Database::query($sql, array($limit));
         //$rs = Database::query("SELECT label, COUNT(*) as count FROM tags GROUP BY label ORDER BY count DESC LIMIT ?", array($limit) , array("INT"));
         $rs = Database::query($sql, array($limit),array("INT"));
+        return $rs;
+    }
+	
+    /**
+     * Returns an array of tags that a post has.
+     * 
+     * @param type $ID
+     * @param type $limit
+     * @return type Array
+     */
+    public function tagsByID($ID,$limit=10){
+        $sql = "SELECT label, count
+			FROM
+			(SELECT label, COUNT(*) AS count
+            FROM tags 
+			WHERE task_id = ?
+            GROUP BY label 
+            ORDER BY count DESC 
+            LIMIT ?)
+            ORDER BY label DESC 
+			";
+        $rs = Database::query($sql, array($ID,$limit),array("INT","INT"));
         return $rs;
     }
 

@@ -263,21 +263,28 @@ if (in_array("tasksView", $mode)) {
 		<!--Navigation-->
 		<div id="nav" style="" class="greybox">
 
-			|
-			<a href="?q=/tasks/new">New task</a>
-			| 
+			<?php if (in_array("tasksList", $mode)) { ?>
+					<?php if (!empty($tags)){?>
+						<a style="font-weight:bold;" href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
+					<?php } else {?>
+						<a style="font-weight:bold;" href="?q=/tasks/new">Post new task here</a>
+					<?php }?>
+					
+			<?php } else {
+						if(isset($_SERVER['HTTP_REFERER'])){
+							$url = htmlspecialchars($_SERVER['HTTP_REFERER']);
+							echo "<a style='font-weight:bold;' href='$url'>Back</a>";
+						} else {
+							echo "<a style='font-weight:bold;' href='?'>Home</a>";
+						}
+				  }
+			?>
 			<!-- THERE IS SOME PROBLEM WITH SEARCH AT THE MOMENT
 			<a href="?q=/tasks/search">Search</a>
 			|	
 			-->
-			<?php if (in_array("tasksList", $mode)) { ?>
-					<?php if (!empty($tags)){?>
-						<a href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
-					<?php } else {?>
-						<a href="?q=/tasks/new">Post new task here</a>
-					<?php }?>
 			|
-			<?php } ?>
+
 			<a href="?q=/rss">RSS</a>
 			|
 			<a href="help.html">Help</a>
@@ -333,13 +340,25 @@ if (in_array("tasksView", $mode)) {
 					</div>
 					<?php } ?>
 					
+					<?php	// This is to show the users, what tags a post is tagged as.
+							if(isset($tagsused) && !empty($tagsused)){//tagsused
+								$tagstring = "";
+								foreach( $tagsused as $row){
+									$tagstring .= " #".$row['label'];
+								}
+								$tagmessage="\n \n \n \n HashTag(s):".$tagstring;
+							}else{
+								$tagmessage="";
+							} 
+					?>
+					
 					<div id="OP" class="task1">
 						<?php echo __prettyTripFormatter($task['tripcode']);?>
 						<span class="title"><?php echo htmlentities(stripslashes($task['title']),null, 'utf-8'); ?> </span>
 						<span><?php echo date('F j, Y, g:i a', $task['created']);?></span>
 						<span style='font-size:0.6em;' ><i><div id='OPGUID' >MD5 Global ID:<?php echo md5($task['message']); ?></div></i></span>
 						<br />
-						<span class="message"><?php echo nl2br(__encodeTextStyle(htmlentities(stripslashes($task['message']),null, 'utf-8'))); ?></span>
+						<span class="message"><?php echo nl2br(__encodeTextStyle(htmlentities(stripslashes($task['message'].$tagmessage),null, 'utf-8'))); ?></span>
 					</div>
 					<div class="task1">
 						<a href="http://tinychat.com/<?php echo md5($task['message']);?>" target="_blank">Conference via TinyChat - click here</a>
