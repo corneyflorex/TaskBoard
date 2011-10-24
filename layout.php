@@ -428,10 +428,12 @@ if (in_array("tasksView", $mode)) {
 					$weight = round( $min_font_size+($max_font_size - $min_font_size)*(stripslashes($tag['count']) / $maxcount) ); 
 					$font_size = $scalefactor*$weight .'em';
 				?>
-					<a style="
-						font-size: <?php echo $font_size ;?>;" href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label']),null, 'utf-8'); ?>
-						" >
-							<?php echo substr( htmlentities(stripslashes(htmlentities($tag['label']))) ,0,10) ; ?>
+					<a 
+					style="font-size: <?php echo $font_size ;?>;" 
+					href="?q=/tags/<?php echo htmlentities(stripslashes($tag['label']),null, 'utf-8'); ?>" 
+					title="Count: <?php echo htmlentities(stripslashes($tag['count'])); ?>"
+					>
+							<?php echo substr( htmlentities(stripslashes(htmlentities($tag['label']))) ,0,20) ; ?>
 					</a>
 				<?php } ?>
 				</div>
