@@ -312,38 +312,21 @@ class Taskboard {
 				$mimetype = $file_assoc_array['imagetype'];
 				
 				// Get new sizes
+
+				$desired_width = 500;
+				$desired_height = 500;
+				 
 				$im = imagecreatefromstring($binary);
+				$new = imagecreatetruecolor($desired_width, $desired_height);
 
-				$width = imagesx($im);
-				$height = imagesy($im);
-				
-				$newwidth = 100;
-				$newheight = 100;
+				$x = imagesx($im);
+				$y = imagesy($im);
 
-				// Load
-				$thumb = imagecreatetruecolor($newwidth, $newheight);
-				$source = imagecreate($width, $height);
-				
-				// Resize
-				imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-				// Content type
-				header("Cache-Control: private, max-age=10800, pre-check=10800");
-				header("Pragma: private");
-				header("Expires: " . date(DATE_RFC822,strtotime(" 2 day")));
-				header("Content-Type: $mimetype");
-				
-				// turn image into binary SOURCE: http://bytes.com/topic/php/answers/480856-binary-content-image-resource
-				ob_start(); // start a new output buffer
-				imagejpeg( $thumb, NULL, 100 );
-				$binarythumb = ob_get_contents();
-				ob_end_clean; // stop this output buffer
-				
-				// Output
-				echo $binary;
-				/*
-					STATUS, this thumbnail directive doesn't work. But this imageboard don't really need it.
-				*/
+				imagecopyresampled($new, $im, 0, 0, 0, 0, $desired_width, $desired_height, $x, $y);
+				imagedestroy($im);
 
+				header('Content-type: <span class="posthilit">image</span>/jpeg');
+				imagejpeg($new, null, 85);
 				break;
 				
 			case "file":

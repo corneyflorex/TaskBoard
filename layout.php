@@ -302,7 +302,8 @@ if (in_array("tasksView", $mode)) {
 			<?php //$task = $tasks[0]; //donno why this is here ?>
 			
 					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="blackbox">
-						<a style="color:grey;" href="#OP">View Authors Message</a>
+						<a style="color:grey;" href="#OP">View Author's Message</a>
+						( <a style="color:grey;" href="?q=/printview/<?php echo $taskid?>">Print</a> )
 					</div>
 					
 					<!--COUNTDOWN SYSTEM-->

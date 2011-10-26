@@ -30,11 +30,15 @@ ini_set("session.use_only_cookies",0);
 session_start();
 
 //Initialize required files
-require("settings.php");
-require("LayoutEngine.php");
-require("Database.php");
-require("Taskboard.php");
-require("anonregkit.php");
+require_once("settings.php");
+require_once("LayoutEngine.php");
+require_once("Database.php");
+require_once("Taskboard.php");
+require_once("anonregkit.php");
+
+// For Rendering documents
+require_once("./phpmarkdown/markdown.php");
+require_once("./htmlpurifier/library/HTMLPurifier.auto.php");
 //require("./asciicaptcha/asciicaptcha.php");
 
 
@@ -404,6 +408,24 @@ switch($uri_parts[0]){
         $tasks = $board->getTaskByID($taskid);
         $tagsused = $board->tagsByID($taskid);
         $comments = $board->getCommentsByTaskId($taskid);
+        break;
+
+    /*
+     * Stuff relating to displaying the 'task' as an A4 printable page.
+		basically we view specific task here
+     */
+    case 'printview':
+        $mode = array('tasksView');
+		$taskid =$uri_parts[1];
+		
+        if(!is_numeric($uri_parts[1])){Echo "YOU FAIL";exit;}
+        
+		//Retrieve the task and get its comments
+        $tasks = $board->getTaskByID($taskid);
+
+		//Load the layout
+		require("printlayout.php");
+		exit;
         break;
 		
 	case 'ajaxcomments':
