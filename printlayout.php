@@ -19,7 +19,7 @@
 			border: 0;
 			margin: 0 5%;
 			padding: 0;
-			margin-top: 3em;
+			margin-top: 5em;
 			float: none !important;
 		}
 		#metainfo{
@@ -35,6 +35,10 @@
 			border-width:1px;
 			width: 210mm; min-height: 297mm;
 			background-color: white;
+		}
+		#wrapper, #content {
+			margin: 0 10%;
+			margin-top: 5em;
 		}
 	</style>
 	<style media="print" type="text/css">
@@ -59,8 +63,8 @@
 
 	<div id="pageborder">
 	<div id="metainfo">
-		<span style='font-size:0.6em;' ><i><div id='OPGUID' >Created:     <?php echo substr( date('F j, Y, g:i a', $task['created']) ,0,-9);?></div></i></span>
-		<span style='font-size:0.6em;' ><i><div id='DOCID' >DOC ID(md5): <?php echo md5($task['message']); ?> </div></i></span>
+		<span style='font-size:0.6em;' ><i><div id='OPGUID' >Created On: <?php echo substr( date('F j, Y, g:i a', $task['created']) ,0,-9);?></div></i></span>
+		<span style='font-size:0.6em;' ><i><div id='DOCID'  >DocID(md5): <?php echo md5($task['message']); ?> </div></i></span>
 	</div>
 	<div id="content">
 		
