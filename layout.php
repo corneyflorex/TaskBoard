@@ -357,7 +357,7 @@ if (in_array("tasksView", $mode)) {
 						<?php echo __prettyTripFormatter($task['tripcode']);?>
 						<span class="title"><?php echo htmlentities(stripslashes($task['title']),null, 'utf-8'); ?> </span>
 						<span><?php echo date('F j, Y, g:i a', $task['created']);?></span>
-						<span style='font-size:0.6em;' ><i><div id='OPGUID' >MD5 Global ID:<?php echo md5($task['message']); ?></div></i></span>
+						<span style='font-size:0.6em;' ><i><div id='OPGUID' >MD5 Global ID: <?php echo md5($task['message']); ?></div></i></span>
 						<br />
 						<span class="message"><?php echo nl2br(__encodeTextStyle(htmlentities(stripslashes($task['message'].$tagmessage),null, 'utf-8'))); ?></span>
 					</div>
