@@ -74,7 +74,7 @@
 		if($task['imagetype'] != NULL){ 
 		?>
 			<div style="text-align:center;margin-bottom:3em;margin-top:3em">
-				<img border="0" src="?q=/image/<?php echo $task['task_id']; ?>" alt="Pulpit rock"/>
+				<img border="0" style="max-width:100%" src="?q=/image/<?php echo $task['task_id']; ?>" alt="Pulpit rock"/>
 			</div>	
 		<?php 
 		}
