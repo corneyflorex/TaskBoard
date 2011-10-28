@@ -262,28 +262,30 @@ if (in_array("tasksView", $mode)) {
 		
 		<!--Navigation-->
 		<div id="nav" style="" class="greybox">
-
+			<?php
+			if(isset($_SERVER['HTTP_REFERER'])){
+				$url = htmlspecialchars($_SERVER['HTTP_REFERER']);
+				echo "<a style='font-weight:bold;' href='$url'>Back</a>";
+			} else {
+				echo "<a style='font-weight:bold;' href='?'>Home</a>";
+			}
+			?>
+			|
 			<?php if (in_array("tasksList", $mode)) { ?>
 					<?php if (!empty($tags)){?>
 						<a style="font-weight:bold;" href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
 					<?php } else {?>
 						<a style="font-weight:bold;" href="?q=/tasks/new">Post new task here</a>
 					<?php }?>
-					
+			|		
 			<?php } else {
-						if(isset($_SERVER['HTTP_REFERER'])){
-							$url = htmlspecialchars($_SERVER['HTTP_REFERER']);
-							echo "<a style='font-weight:bold;' href='$url'>Back</a>";
-						} else {
-							echo "<a style='font-weight:bold;' href='?'>Home</a>";
-						}
+
 				  }
 			?>
 			<!-- THERE IS SOME PROBLEM WITH SEARCH AT THE MOMENT
 			<a href="?q=/tasks/search">Search</a>
 			|	
 			-->
-			|
 
 			<a href="?q=/rss">RSS</a>
 			|
@@ -304,6 +306,11 @@ if (in_array("tasksView", $mode)) {
 					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="blackbox">
 						<a style="color:grey;" href="#OP">View Author's Message</a>
 						( <a style="color:grey;" href="?q=/printview/<?php echo $taskid?>">Print</a> )
+						<?php if ( isset($_GET['referral_tag']) ) {?>
+							<a style="color:grey;" href="?q=/tasks/new&tag=<?php echo $_GET['referral_tag'];?>&respondtaskid=<?php echo $taskid;?>">Create New Version Of This Task</a>
+						<?php } else if( isset($taskid) ) {?>
+							<a style="color:grey;" href="?q=/tasks/new&respondtaskid=<?php echo $taskid;?>">Create New Version Of This Task</a>
+						<?php }?>
 					</div>
 					
 					<!--COUNTDOWN SYSTEM-->
@@ -445,9 +452,18 @@ if (in_array("tasksView", $mode)) {
 			</div>
 			<?php } ?>
 			<!-- TagCanvus -->		
+			
+			<?php 
+						//referral tag for the 'clone' task feature
+						if (!empty($tags)){
+							$referraltag = $tags[0];
+						} else {
+							$referraltag = "";
+						}
+			?>
 
 			<div id="taskDIV" class="tasklist">
-				<?php echo __taskDisplay($tasks);?>
+				<?php echo __taskDisplay($tasks,$referraltag);?>
 			</div>
 			
 		<?php } ?>
@@ -480,6 +496,7 @@ if (in_array("tasksView", $mode)) {
 			<FORM action='?q=/tasks/submitnew' method='post' enctype='multipart/form-data'>
 				<P>
 					<?php 
+							// if tag is suggested.
 							if(isset($_GET['tag'])){
 								$tagpreset = $_GET['tag'];
 								$tagpresetmessage="HashTag: #".implode(" #",explode(" ",$tagpreset));
@@ -487,16 +504,20 @@ if (in_array("tasksView", $mode)) {
 								$tagpreset ="";
 								$tagpresetmessage="";
 							} 
+							// There is no xss protection for 'respond' field, as it is assumed that people won't try to 'copy' post that has obvious xss scripts.
+							
 					?>
-					Title:<br /> <INPUT type='text' size=50 name='title'value=''><br />
-					Message*:<br />	<textarea class='' rows=10 cols=50 name='message'></textarea><br />			
+					Title*:<br /> <INPUT type='text' size=50 name='title'value='<?php if(isset($responding_to_task)){echo "(Response To): ".htmlentities($responding_to_task['title'],null, 'utf-8');}?>'><br />
+					Message*:<br />	<textarea class='' rows=10 cols=50 name='message'><?php if(isset($responding_to_task)){echo htmlentities($responding_to_task['message'],null, 'utf-8');}?></textarea><br />			
 					<?php echo $tagpresetmessage;?><br/>
 					Tags:<BR><INPUT type='text' name='tags' value='<?php echo $tagpreset;?>'><br />
+					<INPUT type='hidden' name='respondid' value='<?php echo $responding_taskid;?>'><br />
 					<label for='file'>Image:</label><br /> <input type='file' name='image' />
+					<br />
 					<br />
 					<br /> Authentication (No Registration Required):
 					<br /> <label for='file'>KeyFile:</label><br /> <input type='file' name='keyfile' />
-					<br /> <label>Password:</label><br /> <INPUT type='text' name='password'value=''><br />
+					<br /> <label>Password:</label><br /> <INPUT type='text' name='password' value=''><br />
 					<br />
 					<br />
 					'*' = Must be filled in

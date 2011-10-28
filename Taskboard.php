@@ -375,9 +375,15 @@ class Taskboard {
         }
 
         /*Would use this except sqlite doesnt support it... : OUTER JOIN tags ON tasks.id = tags.task_id */
-        $sql = "SELECT DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title AS title, tasks.message AS message
-            FROM tasks
-            LEFT OUTER JOIN tags ON tasks.id = tags.task_id 
+        $sql = "SELECT DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title AS title, tasks.message AS message, CASE WHEN commentcounter.commentcount > 0 THEN commentcounter.commentcount ELSE 0 END AS commentcount
+            FROM tasks LEFT OUTER JOIN tags ON tasks.id = tags.task_id 
+				LEFT OUTER JOIN 
+								(
+								SELECT task_id, COUNT(*) AS commentcount
+								FROM comments 
+								GROUP BY task_id 
+								) AS commentcounter
+													ON tasks.id = commentcounter.task_id
             WHERE
             tasks.status = ?
             $sql_where_tags
@@ -490,6 +496,7 @@ tripcode VARCHAR(25),
 status INTEGER ,
 created INTEGER ,
 bumped INTEGER ,
+responding_to_task_id INTEGER,
 title VARCHAR(100),
 message VARCHAR(2000),
 image BLOB,
@@ -553,6 +560,7 @@ tripcode VARCHAR(25),
 status INT ,
 created INT ,
 bumped INT ,
+responding_to_task_id INT,
 title VARCHAR(100),
 message VARCHAR(2000),
 image BLOB,

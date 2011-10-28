@@ -19,7 +19,7 @@
 			border: 0;
 			margin: 0 5%;
 			padding: 0;
-			margin-top: 5em;
+			margin-top: 3em;
 			float: none !important;
 		}
 		#metainfo{
@@ -73,8 +73,8 @@
 		// Grab latest image if it exist
 		if($task['imagetype'] != NULL){ 
 		?>
-			<div style="text-align:center;margin-bottom:3em;margin-top:3em">
-				<img border="0" style="max-width:100%" src="?q=/image/<?php echo $task['task_id']; ?>" alt="Pulpit rock"/>
+			<div style="text-align:center;margin-bottom:3em;">
+				<img border="0" style="max-width:100% ; max-height:60%" src="?q=/image/<?php echo $task['task_id']; ?>" alt="Pulpit rock"/>
 			</div>	
 		<?php 
 		}

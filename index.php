@@ -85,6 +85,26 @@ switch($uri_parts[0]){
                  */
                 case 'new':
                     $mode = array('submitForm');
+					
+					/*
+						Response to, or clone of a post.
+					*/
+						if( isset($_POST['respondtaskid']) ) {
+							$responding_taskid =$_POST['respondtaskid'];
+						}else if ( isset($_GET['respondtaskid']) ) {
+							$responding_taskid = $_GET['respondtaskid'];
+						}else{
+							$responding_taskid = "";
+						}
+						if( $responding_taskid != "" ){
+							if(!is_numeric($responding_taskid)){Echo "YOU FAIL";exit;}
+							//Retrieve the task and get its comments
+							$responding_to_task = $board->getTaskByID($responding_taskid);
+							$responding_to_task = $responding_to_task[0];
+						} else {
+							$responding_to_task = null;
+						}
+						
                     break;
 
                 /*
@@ -450,7 +470,14 @@ switch($uri_parts[0]){
         //Retrieve latest comment
         $tasks = $board->getTasks($tags);
 		
-		echo __taskDisplay($tasks);
+		//referral tag for the 'clone' task feature
+		if (!empty($tags)){
+			$referraltag = $tags[0];
+		} else {
+			$referraltag = "";
+		}
+		
+		echo __taskDisplay($tasks,$referraltag);
 		
 		exit;
 		break;

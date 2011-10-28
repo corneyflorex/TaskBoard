@@ -75,7 +75,7 @@
 		return $commentContent;
 	}
 	
-	function __taskDisplay($tasks){
+	function __taskDisplay($tasks,$referral_tag=""){
 		$taskDisplayContent ="";				
 		$i=1;
 		foreach($tasks as $task){
@@ -96,9 +96,9 @@
 					<span style='float:right;'>".date('M j, Y', $task['created'])."</span>
 					<span style='float:right;clear:right;'><b>".__humanTiming ($task['bumped'])." ago</b></span>
 					<span class='title'>
-						<a target='_top' href='?q=/view/".$task['task_id']."' >".substr(htmlentities(stripslashes($task['title']),null, 'utf-8'),0,40)."</a>
+						<a target='_top' href='?q=/view/".$task['task_id']."&referral_tag=".$referral_tag."' >".substr(htmlentities(stripslashes($task['title']),null, 'utf-8'),0,40)."</a>
 					</span>
-					<span class='message'>".__cut_text( htmlentities(stripslashes($task['message']),null, 'utf-8') , 100 )."</span>
+					<span class='message'>".__cut_text( htmlentities(stripslashes($task['message']),null, 'utf-8') , 100 )." - ".$task['commentcount']." replies </span>
 				</div>";
 			$i++;
 		};
