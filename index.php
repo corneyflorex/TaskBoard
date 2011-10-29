@@ -140,9 +140,11 @@ switch($uri_parts[0]){
 					
                     //Only pass though message and title if it is set already
                     if(!isset($_POST['title'], $_POST['message']) || empty($_POST['title']) || empty($_POST['message'])){
-                        echo "Missing title and/or message \n";
-                        exit;
-                    }
+                        echo "<b>Missing title and/or message </b> \n";
+						$missingfield = true;
+                    } else {
+						$missingfield = false;
+					}
 					
 					
 					// check if message is up to scratch (is not stupid, and does not have spammy words)
@@ -161,7 +163,7 @@ switch($uri_parts[0]){
 						$first = true;
 					}
 					
-				   if( $_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ) ) {
+				   if( ($missingfield = false) && ($_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ))  ) {
 						echo 'Your captcha code was valid.';
 						unset($_SESSION['security_code']);
 				   } else {

@@ -98,6 +98,13 @@
 				$thumbnailHTML = "";
 			}
 			
+			//referral tag
+			if( isset($referral_tag) ){
+				$referaltagURL = "&referral_tag=".$referral_tag;
+			} else {
+				$referaltagURL = "";
+			}
+			
 			$taskDisplayContent = $taskDisplayContent."
 				<div style='$style' class='task".($i%2)."'>
 					<div style='float:right;'>
@@ -109,7 +116,7 @@
 					<div style='display: inline-block;' >$thumbnailHTML</div>
 					
 					<span style='display: inline-block;' class='title'>
-						<a target='_top' href='?q=/view/".$task['task_id']."&referral_tag=".$referral_tag."' >".substr(htmlentities(stripslashes($task['title']),null, 'utf-8'),0,40)."</a>
+						<a target='_top' href='?q=/view/".$task['task_id'].$referaltagURL."' >".substr(htmlentities(stripslashes($task['title']),null, 'utf-8'),0,40)."</a>
 						<br/>
 						<span class='message'>".__cut_text( htmlentities(stripslashes($task['message']),null, 'utf-8') , 100 )." - ".$task['commentcount']." replies </span>
 					</span>

@@ -42,8 +42,8 @@ class Taskboard {
 			if($imageBinary != NULL){
 				
 				// Get new sizes
-				$desired_width = 100;
-				$desired_height = 100;
+				$desired_width = 50;
+				$desired_height = 50;
 				 
 				$im = imagecreatefromstring($imageBinary);
 				$new = imagecreatetruecolor($desired_width, $desired_height);
@@ -55,7 +55,7 @@ class Taskboard {
 				imagedestroy($im);
 				
 				ob_start(); // Start capturing stdout. 
-					imagejpeg($new, null, 50);
+					imagejpeg($new, null, 75);
 					$sBinaryThumbnail = ob_get_contents(); // the raw jpeg image data. 
 				ob_end_clean(); // Dump the stdout so it does not screw other output.
 				

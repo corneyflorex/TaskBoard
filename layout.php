@@ -311,8 +311,8 @@ if (in_array("tasksView", $mode)) {
 						<?php }?>
 					</div>
 					
-					<?php if(isset($task['responding_to_task_id'])){?>
-						<div class="task1">
+					<?php if(isset($task['responding_to_task_id']) && ($task['responding_to_task_id'] != "") ){?>
+						<div class="blackbox">
 							>> This Task is a reponse to this <a href="?q=/view/<?php echo $task['responding_to_task_id'] ?>" target="_blank">Parent Task</a>
 						</div>	
 					<?php } ?>
