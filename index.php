@@ -111,7 +111,6 @@ switch($uri_parts[0]){
                  * Submit and process the new task
                  */
                 case 'submitnew':
-								var_dump($_POST);
 
 					/*
 						Grab the latest photos and insert into $imageFileBinary

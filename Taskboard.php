@@ -36,7 +36,32 @@ class Taskboard {
      * @return type The task id
      */
     public function createTask($tripcode, $title, $message, $tags, $respondid=NULL, $imageBinary = NULL, $fileBinary = NULL){
-        //Create the array we will store in the database
+        
+		// Setup and create thumbnail version of imagebinary as well as the normal image
+			$imagemimetype = __image_file_type_from_binary($imageBinary);
+			if($imageBinary != NULL){
+				
+				// Get new sizes
+				$desired_width = 100;
+				$desired_height = 100;
+				 
+				$im = imagecreatefromstring($imageBinary);
+				$new = imagecreatetruecolor($desired_width, $desired_height);
+
+				$x = imagesx($im);
+				$y = imagesy($im);
+
+				imagecopyresampled($new, $im, 0, 0, 0, 0, $desired_width, $desired_height, $x, $y);
+				imagedestroy($im);
+				
+				ob_start(); // Start capturing stdout. 
+					imagejpeg($new, null, 50);
+					$sBinaryThumbnail = ob_get_contents(); // the raw jpeg image data. 
+				ob_end_clean(); // Dump the stdout so it does not screw other output.
+				
+				//imagedestroy($new); //?? do we really need to?
+			}
+		//Create the array we will store in the database
         $data = array(
 			'md5id' => md5($message),
 			'responding_to_task_id' => $respondid,
@@ -47,7 +72,8 @@ class Taskboard {
             'tripcode' => $tripcode,
             'status' => $this::TASK_OPEN,
             'image' => $imageBinary,
-			'imagetype' => __image_file_type_from_binary($imageBinary),
+            'thumbnail' => $sBinaryThumbnail,
+			'imagetype' => $imagemimetype,
             'file' => $fileBinary
         );
 
@@ -62,6 +88,7 @@ class Taskboard {
             'tripcode' => 'STR',
             'status' => 'INT',
 			'image' => 'LARGEOBJECT',
+			'thumbnail' => 'LARGEOBJECT',
 			'imagetype' => 'STR',
 			'file' => 'LARGEOBJECT'
         );
@@ -270,8 +297,10 @@ class Taskboard {
     public function getTaskFileByID($id='',$mode='image'){
 		switch($mode){
 			case "image":
-			case "thumbnail":
 				$sql = "SELECT DISTINCT tasks.image, tasks.imagetype FROM tasks WHERE tasks.id = $id LIMIT 1";
+				break;
+			case "thumbnail":
+				$sql = "SELECT DISTINCT tasks.thumbnail, tasks.imagetype FROM tasks WHERE tasks.id = $id LIMIT 1";
 				break;
 				
 			case "file":
@@ -312,13 +341,19 @@ class Taskboard {
 				break;
 				
 			case "thumbnail":
-				$binary = $file_assoc_array['image'];
-				$mimetype = $file_assoc_array['imagetype'];
+				$binary = $file_assoc_array['thumbnail'];
+				// Set headers (thumbnails are always png)
+				header("Cache-Control: private, max-age=10800, pre-check=10800");
+				header("Pragma: private");
+				header("Expires: " . date(DATE_RFC822,strtotime(" 2 day")));
+				header("Content-Type: image/jpeg");
+				echo $binary;
 				
+				/*
 				// Get new sizes
 
-				$desired_width = 500;
-				$desired_height = 500;
+				$desired_width = 50;
+				$desired_height = 50;
 				 
 				$im = imagecreatefromstring($binary);
 				$new = imagecreatetruecolor($desired_width, $desired_height);
@@ -331,6 +366,8 @@ class Taskboard {
 
 				header('Content-type: <span class="posthilit">image</span>/jpeg');
 				imagejpeg($new, null, 85);
+				*/
+				
 				break;
 				
 			case "file":
@@ -340,6 +377,7 @@ class Taskboard {
 				header("Cache-Control: public");
 				header("Content-Description: File Transfer");
 				header("Content-Disposition: attachment; filename=$filename");
+				//header("Content-Disposition: attachment; filename=\"$file\"\n"); 
 				header("Content-Type: application/octet-stream");
 				header("Content-Transfer-Encoding: binary");
 				echo $binary;
@@ -379,7 +417,7 @@ class Taskboard {
         }
 
         /*Would use this except sqlite doesnt support it... : OUTER JOIN tags ON tasks.id = tags.task_id */
-        $sql = "SELECT DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title AS title, tasks.message AS message, CASE WHEN commentcounter.commentcount > 0 THEN commentcounter.commentcount ELSE 0 END AS commentcount
+        $sql = "SELECT DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title AS title, tasks.message AS message, tasks.imagetype, CASE WHEN commentcounter.commentcount > 0 THEN commentcounter.commentcount ELSE 0 END AS commentcount
             FROM tasks LEFT OUTER JOIN tags ON tasks.id = tags.task_id 
 				LEFT OUTER JOIN 
 								(

@@ -90,15 +90,30 @@
 			}else {
 				$style = "border:1px;border-style:solid;border-color:black;";
 			}
-		
+			
+			//thumbnail routines
+			if($task['imagetype'] != NULL){
+				$thumbnailHTML = "<a href='?q=/image/".$task['task_id']."'><img border='0' src='?q=/image/".$task['task_id']."&mode=thumbnail' /></a>";
+			} else {
+				$thumbnailHTML = "";
+			}
+			
 			$taskDisplayContent = $taskDisplayContent."
 				<div style='$style' class='task".($i%2)."'>
-					<span style='float:right;'>".date('M j, Y', $task['created'])."</span>
-					<span style='float:right;clear:right;'><b>".__humanTiming ($task['bumped'])." ago</b></span>
-					<span class='title'>
+					<div style='float:right;'>
+						".date('M j, Y', $task['created'])."
+						<br>
+						<b>".__humanTiming ($task['bumped'])." ago</b>
+					</div>
+					
+					<div style='display: inline-block;' >$thumbnailHTML</div>
+					
+					<span style='display: inline-block;' class='title'>
 						<a target='_top' href='?q=/view/".$task['task_id']."&referral_tag=".$referral_tag."' >".substr(htmlentities(stripslashes($task['title']),null, 'utf-8'),0,40)."</a>
+						<br/>
+						<span class='message'>".__cut_text( htmlentities(stripslashes($task['message']),null, 'utf-8') , 100 )." - ".$task['commentcount']." replies </span>
 					</span>
-					<span class='message'>".__cut_text( htmlentities(stripslashes($task['message']),null, 'utf-8') , 100 )." - ".$task['commentcount']." replies </span>
+					
 				</div>";
 			$i++;
 		};

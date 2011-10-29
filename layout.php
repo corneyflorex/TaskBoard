@@ -271,17 +271,15 @@ if (in_array("tasksView", $mode)) {
 			}
 			?>
 			|
-			<?php if (in_array("tasksList", $mode)) { ?>
-					<?php if (!empty($tags)){?>
-						<a style="font-weight:bold;" href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
-					<?php } else {?>
-						<a style="font-weight:bold;" href="?q=/tasks/new">Post new task here</a>
-					<?php }?>
+			<?php if (in_array("tasksList", $mode) && !empty($tags)){?>
+				<a style="font-weight:bold;" href="?q=/tasks/new&tag=<?php echo $tags[0];?>">Create New '<?php echo $tags[0];?>' Task</a>
+			<?php } else if (!empty($_GET['referral_tag'])){?>
+				<a style="font-weight:bold;" href="?q=/tasks/new&tag=<?php echo $_GET['referral_tag'];?>">Create New '<?php echo $_GET['referral_tag'];?>' Task</a>
+			<?php } else {?>
+				<a style="font-weight:bold;" href="?q=/tasks/new">Post new task here</a>
+			<?php }?>
 			|		
-			<?php } else {
 
-				  }
-			?>
 			<!-- THERE IS SOME PROBLEM WITH SEARCH AT THE MOMENT
 			<a href="?q=/tasks/search">Search</a>
 			|	
