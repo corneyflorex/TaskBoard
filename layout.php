@@ -347,7 +347,7 @@ if (in_array("tasksView", $mode)) {
 
 					
 					<?php if($task['imagetype'] != NULL){ ?>
-					<div style="text-align:center;" class="blackbox">
+					<div style="text-align:center;" class="cloudbox">
 						<a href="?q=/image/<?php echo $task['task_id']; ?>"><img border="0" src="?q=/image/<?php echo $task['task_id']; ?>" alt="Pulpit rock" style="max-width:100%"/></a>
 					</div>
 					<?php } ?>

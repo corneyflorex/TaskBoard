@@ -113,13 +113,16 @@
 						<b>".__humanTiming ($task['bumped'])." ago</b>
 					</div>
 					
-					<div style='display: inline-block;' >$thumbnailHTML</div>
+					<div style='display: inline-block;float:right; margin-right:10px;' >$thumbnailHTML</div>
 					
 					<span style='display: inline-block;' class='title'>
 						<a target='_top' href='?q=/view/".$task['task_id'].$referaltagURL."' >".substr(htmlentities(stripslashes($task['title']),null, 'utf-8'),0,40)."</a>
 						<br/>
 						<span class='message'>".__cut_text( htmlentities(stripslashes($task['message']),null, 'utf-8') , 100 )." - ".$task['commentcount']." replies </span>
 					</span>
+					
+					<div style='clear:both;'>
+					</div>
 					
 				</div>";
 			$i++;
