@@ -111,6 +111,8 @@ switch($uri_parts[0]){
                  * Submit and process the new task
                  */
                 case 'submitnew':
+								var_dump($_POST);
+
 					/*
 						Grab the latest photos and insert into $imageFileBinary
 					*/
@@ -180,8 +182,9 @@ switch($uri_parts[0]){
 						Message*:<br />	<textarea class='' rows=5 name='message'><?php echo $_POST['message'];?></textarea><BR>			
 						Tags:<BR><INPUT type='text' name='tags' value='<?php echo $_POST['tags'];?>'><BR>
 
-							<input type="hidden" name="taskID" value="<?php echo $_POST['taskID']; ?>"><br/>
+							<input type="hidden" name="taskID" value="<?php //echo $_POST['taskID']; ?>"><br/>
 							<INPUT type='hidden' name='keyfile' />
+							<INPUT type='hidden' name='respondid' value="<?php echo $_POST['respondid'];?>" />
                             <INPUT type='hidden' name='password' value="<?php echo $_POST['password'];?>" >
 							<b>CAPTCHA:</b> 
 							<img src="./captcha/CaptchaSecurityImages.php?<?php echo htmlspecialchars(SID); ?>&width=100&height=40&characters=5" /><br />
@@ -226,8 +229,7 @@ switch($uri_parts[0]){
                         echo      "<div style='z-index:100;background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>";
 						echo		__prettyTripFormatter($s_pass);
                     }
-										
-                    $newTaskID = $board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag_array, $imageFileBinary);
+                    $newTaskID = $board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag_array, $_POST['respondid'], $imageFileBinary);
                     echo "Post submitted!<br/>";
 					echo "Tags:".implode(" ",$s_tag_array)."<br/>";
 					echo "<a href='?q=/view/".$newTaskID."'>Click to go to your new task</a>";

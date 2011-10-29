@@ -35,9 +35,11 @@ class Taskboard {
      * @param type $tags The tags this task contains
      * @return type The task id
      */
-    public function createTask($tripcode, $title, $message, $tags, $imageBinary = NULL, $fileBinary = NULL){
+    public function createTask($tripcode, $title, $message, $tags, $respondid=NULL, $imageBinary = NULL, $fileBinary = NULL){
         //Create the array we will store in the database
         $data = array(
+			'md5id' => md5($message),
+			'responding_to_task_id' => $respondid,
             'created' => time(),
             'bumped' => time(),
             'title' => $title,
@@ -51,6 +53,8 @@ class Taskboard {
 
         //Data types to put into the database
         $dataType = array(
+			'md5id' => 'STR',
+			'responding_to_task_id' => 'INT',
             'created' => 'INT',
             'bumped' => 'INT',
             'title' => 'STR',
@@ -492,6 +496,7 @@ class Taskboard {
 				$sql[] = <<<SQL
 CREATE TABLE IF NOT EXISTS tasks ( 
 id INTEGER PRIMARY KEY AUTOINCREMENT,
+md5id VARCHAR(25),
 tripcode VARCHAR(25),
 status INTEGER ,
 created INTEGER ,
@@ -556,6 +561,7 @@ created INTEGER
 				$sql[] = <<<SQL
 CREATE TABLE IF NOT EXISTS tasks ( 
 id INTEGER NOT NULL AUTO_INCREMENT,
+md5id VARCHAR(25),
 tripcode VARCHAR(25),
 status INT ,
 created INT ,
