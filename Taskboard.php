@@ -248,7 +248,7 @@ class Taskboard {
      * @return type 
      */
     public function getTaskByID($id=''){
-        $sql = "SELECT DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title, tasks.message, tasks.imagetype FROM tasks WHERE tasks.id = $id LIMIT 1";
+        $sql = "SELECT DISTINCT tasks.id AS task_id, tasks.tripcode, tasks.created, tasks.bumped, tasks.title, tasks.message, tasks.imagetype, tasks.responding_to_task_id FROM tasks WHERE tasks.id = $id LIMIT 1";
 
         try {
             $rs = Database::query($sql);

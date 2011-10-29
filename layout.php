@@ -313,6 +313,12 @@ if (in_array("tasksView", $mode)) {
 						<?php }?>
 					</div>
 					
+					<?php if(isset($task['responding_to_task_id'])){?>
+						<div class="task1">
+							>> This Task is a reponse to this <a href="?q=/view/<?php echo $task['responding_to_task_id'] ?>" target="_blank">Parent Task</a>
+						</div>	
+					<?php } ?>
+					
 					<!--COUNTDOWN SYSTEM-->
 					<?php if($countdown != ""){ ?>
 					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="blackbox">
@@ -366,12 +372,20 @@ if (in_array("tasksView", $mode)) {
 						<span><?php echo date('F j, Y, g:i a', $task['created']);?></span>
 						<span style='font-size:0.6em;' ><i><div id='OPGUID' >MD5 Global ID: <?php echo md5($task['message']); ?></div></i></span>
 						<br />
-						<span class="message"><?php echo nl2br(__encodeTextStyle(htmlentities(stripslashes($task['message'].$tagmessage),null, 'utf-8'))); ?></span>
+						<span class="message">
+							<?php echo nl2br(
+												__encodeTextStyle(htmlentities(stripslashes(
+													$task['message'] 
+													.$tagmessage
+												),null, 'utf-8'))
+											); ?>
+						</span>
 					</div>
+					<!--
 					<div class="task1">
 						<a href="http://tinychat.com/<?php echo md5($task['message']);?>" target="_blank">Conference via TinyChat - click here</a>
 					</div>
-					
+					-->
 					<div style="text-align:center; border-width:1px; border-radius: 10px;" class="greybox">
 						<a style="color:grey;" href="#add_comment">Post Comment</a>
 					</div>
