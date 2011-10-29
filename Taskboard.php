@@ -51,15 +51,15 @@ class Taskboard {
 
         //Data types to put into the database
         $dataType = array(
-            'INT',
-            'INT',
-            'STR',
-            'STR',
-            'STR',
-            'INT',
-			'LARGEOBJECT',
-			'STR',
-			'LARGEOBJECT'
+            'created' => 'INT',
+            'bumped' => 'INT',
+            'title' => 'STR',
+            'message' => 'STR',
+            'tripcode' => 'STR',
+            'status' => 'INT',
+			'image' => 'LARGEOBJECT',
+			'imagetype' => 'STR',
+			'file' => 'LARGEOBJECT'
         );
 
         //Insert the data
@@ -81,9 +81,9 @@ class Taskboard {
                 );
 
                 $sql_tagsType = array(
-                    'INT',
-                    'STR',
-					'INT'
+                    'task_id' => 'INT',
+                    'label' => 'STR',
+					'created' => 'INT'
                 );
 
                 // TODO: These values should really be in 1 insert query
@@ -122,7 +122,7 @@ class Taskboard {
                     'id' => $s_id,
                 );
                 $sql_type[] = array(
-                    'INT'
+                    'id' => 'INT'
                 );
 				
                 break;
@@ -134,7 +134,7 @@ class Taskboard {
                     'tripcode' => $s_pass,
                 );
                 $sql_type[] = array(
-                    'STR'
+                    'tripcode' => 'STR'
                 );
                 break;
 
@@ -147,8 +147,8 @@ class Taskboard {
                     'tripcode' => $s_pass,
                 );
                 $sql_type[] = array(
-                    'INT',
-                    'STR'
+                    'id' => 'INT',
+                    'tripcode' => 'STR'
                 );
 				
                 $sql[] = "DELETE FROM tags WHERE task_id = ? ";
@@ -156,7 +156,7 @@ class Taskboard {
                     'id' => $s_ID
                 );
                 $sql_type[] = array(
-                    'INT'
+                    'id' => 'INT'
                 );
                 break;
             
@@ -194,12 +194,12 @@ class Taskboard {
 
         //Data types to put into the database
         $dataType = array(
-            'INT',
-            'STR',
-            'INT',
-            'INT',
-            'STR',
-            'INT'
+            'task_id' => 'INT',
+            'tripcode' => 'STR',
+            'reply_comment_id' => 'INT',
+            'created' => 'INT',
+            'message' => 'STR',
+            'vote' => 'INT'
         );
 
         //Insert the data
@@ -281,7 +281,7 @@ class Taskboard {
 		);
 		//Data types of query input
 		$dataType = array(
-			'INT',
+			'id' => 'INT',
 		);
 		
         try {

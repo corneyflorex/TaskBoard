@@ -67,9 +67,9 @@ class Database {
 			// this is since it always place 'quotes' around each value
 			// hence causes error in cases like "LIMIT ?" -> "LIMIT '1'" (which fails in mysql)
 			$i_data=0;
-			foreach($data as $value){
-				if(!empty($type[$i_data])){
-					switch($type[$i_data]){
+			foreach($data as $key => $value){
+				if(!empty($type[$key])){
+					switch($type[$key]){
 						case 'INT':
 							$valueType=PDO::PARAM_INT;
 							break;
@@ -151,9 +151,9 @@ class Database {
 			// this is since it always place 'quotes' around each value
 			// hence causes error in cases like "LIMIT ?" -> "LIMIT '1'" (which fails in mysql)
 			$i_data=0;
-			foreach(array_values($data[0]) as $value){
-				if(!empty($type[$i_data])){
-					switch($type[$i_data]){
+			foreach(array_values($data[0]) as $key => $value){
+				if(!empty($type[$key])){
+					switch($type[$key]){
 						case 'INT':
 							$valueType=PDO::PARAM_INT;
 							break;
