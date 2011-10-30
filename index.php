@@ -163,7 +163,7 @@ switch($uri_parts[0]){
 						$first = true;
 					}
 					
-				   if( ($missingfield = false) && ($_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ))  ) {
+				   if( ($missingfield == false) && ($_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ))  ) {
 						echo 'Your captcha code was valid.';
 						unset($_SESSION['security_code']);
 				   } else {

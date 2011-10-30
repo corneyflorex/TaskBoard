@@ -39,7 +39,7 @@ class Taskboard {
         
 		// Setup and create thumbnail version of imagebinary as well as the normal image
 			$imagemimetype = __image_file_type_from_binary($imageBinary);
-			if($imageBinary != NULL){
+			if( ($imageBinary != NULL) && ($imagemimetype != NULL) ){
 				
 				// Get new sizes
 				$desired_width = 50;
@@ -60,7 +60,7 @@ class Taskboard {
 				ob_end_clean(); // Dump the stdout so it does not screw other output.
 				
 				//imagedestroy($new); //?? do we really need to?
-			}
+			}else{$sBinaryThumbnail = NULL;}
 		//Create the array we will store in the database
         $data = array(
 			'md5id' => md5($message),
@@ -156,6 +156,15 @@ class Taskboard {
                     'id' => 'INT'
                 );
 				
+                $sql[] = "DELETE FROM tags WHERE task_id = ? ";
+				$sql_data[] = array(
+                    'id' => $s_id
+                );
+                $sql_type[] = array(
+                    'id' => 'INT'
+                );
+				
+				
                 break;
 
             case 'Delete all post by trip':    // $input <-- Tripcode name ##DANGER## This will delete everything done by a poster
@@ -182,6 +191,7 @@ class Taskboard {
                     'tripcode' => 'STR'
                 );
 				
+				
                 $sql[] = "DELETE FROM tags WHERE task_id = ? ";
 				$sql_data[] = array(
                     'id' => $s_ID
@@ -189,6 +199,7 @@ class Taskboard {
                 $sql_type[] = array(
                     'id' => 'INT'
                 );
+				
                 break;
             
             default:
