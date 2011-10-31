@@ -488,7 +488,7 @@ class Taskboard {
             FROM tags 
             GROUP BY label 
             ORDER BY count DESC 
-            LIMIT ?)
+            LIMIT ?) AS tags
             ORDER BY label DESC 
 			";
         //$rs = Database::query($sql, array($limit));
