@@ -1,4 +1,6 @@
 <?php
+// Set timezone to UTC
+date_default_timezone_set('UTC'); 
 
 // Deals with the annoying problem of 'get_magic_quotes_gpc' in some shared hosting
 // Source: http://stackoverflow.com/questions/517008/how-to-turn-off-magic-quotes-on-shared-hosting
