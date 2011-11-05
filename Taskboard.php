@@ -547,7 +547,7 @@ class Taskboard {
 				$sql[] = <<<SQL
 CREATE TABLE IF NOT EXISTS tasks ( 
 id INTEGER PRIMARY KEY AUTOINCREMENT,
-md5id VARCHAR(25),
+md5id VARCHAR(40),
 tripcode VARCHAR(25),
 status INTEGER ,
 created INTEGER ,
