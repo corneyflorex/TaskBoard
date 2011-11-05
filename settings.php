@@ -22,7 +22,7 @@
 	if(!isset($__salt)){$__salt = sha1($_SERVER['DOCUMENT_ROOT'].$_SERVER['SERVER_SOFTWARE']);}
 	
 	// DATABASE CONFIG
-	$settingMode = "sqlite";
+	$settingMode = "mysql";
 	switch($settingMode){
 		case "mysql":
 			$dbType		= "mysql";

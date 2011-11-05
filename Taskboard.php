@@ -484,11 +484,12 @@ class Taskboard {
     public function tagsWeight($limit=100){
         $sql = "SELECT label, count
 			FROM
-			(SELECT label, COUNT(*) AS count
-            FROM tags 
-            GROUP BY label 
-            ORDER BY count DESC 
-            LIMIT ?) AS tags
+				(SELECT label, COUNT(*) AS count
+				FROM tags 
+				GROUP BY label 
+				ORDER BY count DESC 
+				LIMIT ?) 
+				AS tags
             ORDER BY label DESC 
 			";
         //$rs = Database::query($sql, array($limit));
@@ -507,12 +508,13 @@ class Taskboard {
     public function tagsByID($ID,$limit=10){
         $sql = "SELECT label, count
 			FROM
-			(SELECT label, COUNT(*) AS count
-            FROM tags 
-			WHERE task_id = ?
-            GROUP BY label 
-            ORDER BY count DESC 
-            LIMIT ?)
+				(SELECT label, COUNT(*) AS count
+				FROM tags 
+				WHERE task_id = ?
+				GROUP BY label 
+				ORDER BY count DESC 
+				LIMIT ?)
+				AS tags
             ORDER BY label DESC 
 			";
         $rs = Database::query($sql, array($ID,$limit),array("INT","INT"));
@@ -609,7 +611,7 @@ created INTEGER
 			case "mysql":
 				$sql[] = <<<SQL
 CREATE TABLE IF NOT EXISTS tasks ( 
-id INTEGER NOT NULL AUTO_INCREMENT,
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 md5id VARCHAR(25),
 tripcode VARCHAR(25),
 status INT ,
@@ -622,8 +624,7 @@ image BLOB,
 thumbnail BLOB,
 imagetype VARCHAR(100),
 file BLOB,
-filename VARCHAR(100),
-PRIMARY KEY (id)
+filename VARCHAR(100)
 );
 SQL;
 
@@ -637,26 +638,25 @@ SQL;
 
 				//Create comments table
 				$sql[] = "CREATE TABLE IF NOT EXISTS comments (
-id INTEGER NOT NULL AUTO_INCREMENT,
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 task_id INT NOT NULL,
 tripcode VARCHAR(25),
 reply_comment_id INT,
 created INT,
 message TEXT,
-vote INT,
-PRIMARY KEY (id)
+vote INT
 );";
 
 				//Uniqueness check (for enforcing originality
 				$sql[] = "CREATE TABLE IF NOT EXISTS uniqueHash (
-id INTEGER NOT NULL AUTO_INCREMENT,
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 hash VARCHAR(25),
 created INT
 );";
 				
 				//Generalized 'session' holder. E.g. whos online recently.
 				$sql[] = "CREATE TABLE IF NOT EXISTS miniSessionHash (
-id INTEGER NOT NULL AUTO_INCREMENT,
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 hash VARCHAR(25),
 info VARCHAR(25),
 intinfo INT,
