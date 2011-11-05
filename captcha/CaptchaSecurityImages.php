@@ -30,7 +30,7 @@ session_start();
 
 class CaptchaSecurityImages {
 
-	var $font = 'monofont.ttf';
+	var $font = './monofont.ttf';
 
 	function generateCode($characters) {
 		/* list all possible characters, similar looking characters and vowels have been removed */
