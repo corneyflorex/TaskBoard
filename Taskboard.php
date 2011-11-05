@@ -612,7 +612,7 @@ created INTEGER
 				$sql[] = <<<SQL
 CREATE TABLE IF NOT EXISTS tasks ( 
 id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-md5id VARCHAR(25),
+md5id VARCHAR(40),
 tripcode VARCHAR(25),
 status INT ,
 created INT ,
