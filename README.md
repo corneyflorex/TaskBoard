@@ -55,6 +55,7 @@ also if there is an error still, please check index.php settings, to see if it m
 Installing Taskboard to a linux box via ssh, and making it hidden behind tor
 ======
 in console:
+	cd /var/www/
 	apt-update
 	apt-get install tor apache2 php5 mysql_server mysql_client php5-gd php5-mysql unzip
 	wget https://github.com/corneyflorex/TaskBoard/zipball/master --no-check-certificate
@@ -71,8 +72,8 @@ make sure it contains the equivelant of (may not be always the same file path, i
 
 basic gist of mysql setup for taskboard (in mysql console as mysqlroot)
 	mysql> CREATE DATABASE taskboard;
-	mysql> CREATE USER 'tbuser'@'%' IDENTIFIED BY 'SomE_paSs';
-	mysql> GRANT ALL PRIVILEGES ON taskboard.* TO 'tbuser'@'%';
+	mysql> CREATE USER 'tbuser'@'localhost' IDENTIFIED BY 'SomE_paSs';
+	mysql> GRANT ALL PRIVILEGES ON taskboard.* TO 'tbuser'@'localhost';
 		
 edit settings.php with mysql settings etc.
 

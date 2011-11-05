@@ -260,7 +260,7 @@ class Taskboard {
         $sql = "UPDATE tasks
             SET
 			bumped = ?
-			WHERE id == ?
+			WHERE id = ?
 			";
 
         try {
