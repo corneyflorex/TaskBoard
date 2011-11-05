@@ -36,7 +36,15 @@ class Taskboard {
      * @return type The task id
      */
     public function createTask($tripcode, $title, $message, $tags, $respondid=NULL, $imageBinary = NULL, $fileBinary = NULL){
-        
+		
+		/*this is a hacky fix! if better alternative exist, code it!*/
+		// for some reason we are receiving respond id as a string... need to fix that
+		$respondid = intval($respondid);
+		//sometimes respondid is an empty string
+		if ( $respondid == '' ){
+			$respondid = NULL;
+		}
+		
 		// Setup and create thumbnail version of imagebinary as well as the normal image
 			$imagemimetype = __image_file_type_from_binary($imageBinary);
 			if( ($imageBinary != NULL) && ($imagemimetype != NULL) ){

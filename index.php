@@ -232,6 +232,7 @@ switch($uri_parts[0]){
                         echo      "<div style='z-index:100;background-color:white;color:black;'>Your new password is: '<bold>".$newpass."</bold>' keep it safe! </div>";
 						echo		__prettyTripFormatter($s_pass);
                     }
+										
                     $newTaskID = $board->createTask($s_pass, $_POST['title'], $_POST['message'], $s_tag_array, $_POST['respondid'], $imageFileBinary);
                     echo "Post submitted!<br/>";
 					echo "Tags:".implode(" ",$s_tag_array)."<br/>";
